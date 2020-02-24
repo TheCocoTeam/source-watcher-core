@@ -1,0 +1,21 @@
+{
+    "name": "coco/source-watcher",
+    "description": "Project which allows to watch different sources of data",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jean Paul Ruiz",
+            "email": "jpruiz114@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^4.1",
+        "paquettg/php-html-parser": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Coco\\SourceWatcher\\": "src/"
+        }
+    }
+}
