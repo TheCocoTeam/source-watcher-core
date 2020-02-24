@@ -31,9 +31,9 @@ class StackOverflowPHPJobsWebPageSource extends WebPageSource {
 
             if ( $jobId != null && $resultId != null && $previewUrl != null ) {
                 $currentJob = new StackOverflowJob();
-                $currentJob->setJobId($jobId);
-                $currentJob->setResultId($resultId);
-                $currentJob->setPreviewUrl($previewUrl);
+                $currentJob->setJobId( $jobId );
+                $currentJob->setResultId( $resultId );
+                $currentJob->setPreviewUrl( $previewUrl );
 
                 array_push( $results, $currentJob );
             }

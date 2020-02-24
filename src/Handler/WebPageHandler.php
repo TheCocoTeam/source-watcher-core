@@ -34,7 +34,7 @@ class WebPageHandler implements Handler {
         }
 
         try {
-            $this->dom->loadFromUrl($this->url);
+            $this->dom->loadFromUrl( $this->url );
         } catch ( ChildNotFoundException $e ) {
 
         } catch ( CircularException $e ) {
@@ -46,7 +46,7 @@ class WebPageHandler implements Handler {
         }
     }
 
-    public function getDom() : Dom {
+    public function getDom () : Dom {
         return $this->dom;
     }
 
