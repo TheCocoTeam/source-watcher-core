@@ -10,8 +10,8 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^4.1",
-        "paquettg/php-html-parser": "^2.2"
+        "ext-dom": "*",
+        "vlucas/phpdotenv": "^4.1"
     },
     "autoload": {
         "psr-4": {
