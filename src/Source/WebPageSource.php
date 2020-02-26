@@ -5,28 +5,34 @@ namespace Coco\SourceWatcher\Source;
 use Coco\SourceWatcher\Handler\Handler;
 use Coco\SourceWatcher\Handler\WebPageHandler;
 
-class WebPageSource implements Source {
-    private String $url;
-    private WebPageHandler $handler;
+class WebPageSource implements Source
+{
+    protected String $url;
+    protected WebPageHandler $handler;
 
-    public function __construct ( String $url ) {
+    public function __construct ( String $url )
+    {
         $this->url = $url;
         $this->handler = new WebPageHandler( $url );
     }
 
-    public function getUrl () : String {
+    public function getUrl () : String
+    {
         return $this->url;
     }
 
-    public function setUrl ( String $url ) : void {
+    public function setUrl ( String $url ) : void
+    {
         $this->url = $url;
     }
 
-    public function getHandler () : Handler {
+    public function getHandler () : Handler
+    {
         return $this->handler;
     }
 
-    public function setHandler ( Handler $handler ) : void {
+    public function setHandler ( Handler $handler ) : void
+    {
         $this->handler = $handler;
     }
 }
