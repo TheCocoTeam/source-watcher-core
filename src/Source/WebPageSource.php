@@ -6,8 +6,8 @@ use Coco\SourceWatcher\Handler\Handler;
 use Coco\SourceWatcher\Handler\WebPageHandler;
 
 class WebPageSource implements Source {
-    private String $url;
-    private WebPageHandler $handler;
+    protected String $url;
+    protected WebPageHandler $handler;
 
     public function __construct ( String $url ) {
         $this->url = $url;

@@ -21,7 +21,7 @@ class StackOverflowWebPageHandler extends WebPageHandler {
 
         $this->results = array();
 
-        $dom = parent::getDom();
+        $dom = $this->dom;
 
         $finder = new DomXPath($dom);
         $classname = "listResults";
@@ -32,7 +32,7 @@ class StackOverflowWebPageHandler extends WebPageHandler {
 
             if ( $currentDomNode->hasChildNodes() ) {
                 $children = $currentDomNode->childNodes; // DOMNodeList
-                print_r( $children );
+                //print_r( $children );
 
                 for ( $j = 0; $j < $children->count(); $j++ ) {
                     $currentChildrenNode = $children->item( $j ); // DOMNode

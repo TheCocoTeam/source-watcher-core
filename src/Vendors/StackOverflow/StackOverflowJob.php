@@ -7,7 +7,7 @@ class StackOverflowJob {
     private ?string $resultId = null;
     private ?string $previewUrl = null;
 
-    private string $baseURL = "https://stackoverflow.com/";
+    private string $baseURL = "https://stackoverflow.com";
 
     public function __construct () {
 
@@ -36,6 +36,20 @@ class StackOverflowJob {
             return $this->baseURL . $this->previewUrl;
         }
     }
+	
+	public function removeUrlParameters () : string {
+		$pieces = explode( "?", $this->getPreviewUrl() );
+		
+		$refinedUrl = "";
+		
+		if ( $pieces != null ) {
+			if ( sizeof( $pieces ) >= 1 ) {
+				$refinedUrl = $pieces[0];
+			}
+		}
+		
+		return $refinedUrl;
+	}
 
     public function setPreviewUrl ( string $previewUrl ) : void {
         $this->previewUrl = $previewUrl;
