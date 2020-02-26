@@ -2,29 +2,25 @@
 
 namespace Coco\SourceWatcher\Handler;
 
+use DOMDocument;
 use Exception;
-use PHPHtmlParser\Dom;
-use PHPHtmlParser\Exceptions\ChildNotFoundException;
-use PHPHtmlParser\Exceptions\CircularException;
-use PHPHtmlParser\Exceptions\CurlException;
-use PHPHtmlParser\Exceptions\StrictException;
 
 class WebPageHandler implements Handler {
     private string $url;
-    private Dom $dom;
+    private string $html;
+    private DOMDocument $dom;
 
     public function __construct ( string $url ) {
         $this->url = $url;
-        $this->dom = new Dom();
-
-        $this->read();
+        $this->html = "";
+        $this->dom = new DOMDocument();
     }
 
     public function getUrl () : string {
         return $this->url;
     }
 
-    public function setUrl ( $url ) : void {
+    public function setUrl ( string $url ) : void {
         $this->url = $url;
     }
 
@@ -34,23 +30,33 @@ class WebPageHandler implements Handler {
         }
 
         try {
-            $this->dom->loadFromUrl( $this->url );
-        } catch ( ChildNotFoundException $e ) {
+            $ch = curl_init();
 
-        } catch ( CircularException $e ) {
+            $timeout = 5;
 
-        } catch ( CurlException $e ) {
+            curl_setopt( $ch, CURLOPT_URL, $this->url );
+            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+            curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, $timeout );
 
-        } catch ( StrictException $e ) {
+            $this->html = curl_exec( $ch );
+
+            curl_close( $ch );
+
+            # Create a DOM parser object
+            $this->dom = new DOMDocument();
+
+            # The @ before the method call suppresses any warnings that loadHTML might throw because of invalid HTML in the page.
+            @$this->dom->loadHTML( $this->html );
+        } catch ( Exception $e ) {
 
         }
     }
 
-    public function getDom () : Dom {
+    public function getDom () : DOMDocument {
         return $this->dom;
     }
 
     public function getHtml () : string {
-        return $this->dom->outerHtml;
+        return $this->html;
     }
 }
