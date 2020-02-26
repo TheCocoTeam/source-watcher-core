@@ -1,5 +1,8 @@
 <?php
 
-interface Communicator {
-    public function send();
+namespace Coco\SourceWatcher\Communicator;
+
+interface Communicator
+{
+    public function send ();
 }

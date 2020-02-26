@@ -6,9 +6,9 @@ use DOMDocument;
 use Exception;
 
 class WebPageHandler implements Handler {
-    private string $url;
-    private string $html;
-    private DOMDocument $dom;
+    protected string $url;
+    protected string $html;
+    protected DOMDocument $dom;
 
     public function __construct ( string $url ) {
         $this->url = $url;

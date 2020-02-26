@@ -1,21 +1,24 @@
 {
-    "name": "coco/source-watcher",
-    "description": "Project which allows to watch different sources of data",
-    "type": "project",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Jean Paul Ruiz",
-            "email": "jpruiz114@gmail.com"
-        }
-    ],
-    "require": {
-        "ext-dom": "*",
-        "vlucas/phpdotenv": "^4.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "Coco\\SourceWatcher\\": "src/"
-        }
+  "name": "coco/source-watcher",
+  "description": "Project which allows to watch different sources of data",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jean Paul Ruiz",
+      "email": "jpruiz114@gmail.com"
     }
+  ],
+  "require": {
+    "ext-curl": "*",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "vlucas/phpdotenv": "^4.1",
+    "php": "~7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Coco\\SourceWatcher\\": "src/"
+    }
+  }
 }
