@@ -12,7 +12,7 @@ sudo docker-compose -f docker-compose.yaml build
 Alternatively, you can simply build the Docker image with:
 
 ```shell
-docker-compose build
+sudo docker-compose build
 ```
 
 Optional step, list the Docker images to confirm it's there:
