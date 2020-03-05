@@ -2,7 +2,7 @@
 
 namespace Coco\SourceWatcher\Vendors\StackOverflow;
 
-use Coco\SourceWatcher\Communicator\SlackCommunicator;
+use Coco\SourceWatcher\Watcher\Communicator\SlackCommunicator;
 
 class StackOverflowSlackCommunicator extends SlackCommunicator
 {
