@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+
+  web:
+    image: nginx:latest
+    ports: 
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/default.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php
+
+  php:
+    build:
+      context: ./docker/php
+    volumes:
+      - ./:/var/www
+
