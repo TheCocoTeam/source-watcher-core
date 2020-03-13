@@ -2,7 +2,7 @@
 
 namespace Coco\SourceWatcher\Vendors\StackOverflow;
 
-use Coco\SourceWatcher\Source\WebPageSource;
+use Coco\SourceWatcher\Watcher\Source\WebPageSource;
 
 class StackOverflowWebPageSource extends WebPageSource
 {

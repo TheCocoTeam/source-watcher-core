@@ -9,7 +9,7 @@ class StackOverflowJob
     private ?string $jobId = null;
     private ?string $resultId = null;
     private ?string $previewUrl = null;
-    private ?string $logo = null;
+    private ?string $logo = "https://pbs.twimg.com/profile_images/425274582581264384/X3QXBN8C.jpeg"; // https://cdn.sstatic.net/careers/Img/ico-no-company-logo.svg
     private ?string $title = null;
     private ?string $company = null;
     private ?string $location = null;

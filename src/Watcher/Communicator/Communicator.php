@@ -1,6 +1,6 @@
 <?php
 
-namespace Coco\SourceWatcher\Communicator;
+namespace Coco\SourceWatcher\Watcher\Communicator;
 
 interface Communicator
 {
