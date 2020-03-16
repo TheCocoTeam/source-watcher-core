@@ -2,7 +2,7 @@
 
 namespace Coco\SourceWatcher\Core;
 
-class Loader extends Step
+abstract class Loader extends Step
 {
-
+    abstract public function load ( Row $row );
 }
