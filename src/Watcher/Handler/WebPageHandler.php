@@ -50,8 +50,12 @@ class WebPageHandler implements Handler
             # Create a DOM parser object
             $this->dom = new DOMDocument();
 
-            # The @ before the method call suppresses any warnings that loadHTML might throw because of invalid HTML in the page.
-            @$this->dom->loadHTML( $this->html );
+            if ( isset( $this->html ) && $this->html !== "" ) {
+                # The @ before the method call suppresses any warnings that loadHTML might throw because of invalid HTML in the page.
+                @$this->dom->loadHTML( $this->html );
+            } else {
+                // TODO: Handle re-attempts when no response found.
+            }
         } catch ( Exception $e ) {
 
         }
