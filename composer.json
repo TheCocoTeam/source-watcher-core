@@ -10,11 +10,12 @@
     }
   ],
   "require": {
+    "doctrine/dbal": "^2.10",
     "ext-curl": "*",
     "ext-dom": "*",
     "ext-json": "*",
-    "vlucas/phpdotenv": "^4.1",
-    "php": "~7.4"
+    "php": "~7.4",
+    "vlucas/phpdotenv": "^4.1"
   },
   "autoload": {
     "psr-4": {
