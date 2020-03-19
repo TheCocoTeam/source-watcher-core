@@ -2,6 +2,7 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
+use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -12,7 +13,7 @@ use Exception;
  * Class PostgreSqlConnector
  * @package Coco\SourceWatcher\Core\Database\Connections
  *
- * Following the definition from https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#pdo-pgsql
+ * Following the definition from: https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#pdo-pgsql
  */
 class PostgreSqlConnector extends Connector
 {
@@ -28,6 +29,8 @@ class PostgreSqlConnector extends Connector
     public function __construct ()
     {
         $this->driver = "pdo_pgsql";
+
+        $this->port = 5432;
     }
 
     public function connect () : Connection
@@ -62,5 +65,10 @@ class PostgreSqlConnector extends Connector
         $this->connectionParameters["application_name"] = $this->applicationName;
 
         return $this->connectionParameters;
+    }
+
+    public function insert ( Row $row ) : void
+    {
+        // TODO: Implement insert() method.
     }
 }

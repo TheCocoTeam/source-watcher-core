@@ -2,6 +2,7 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
+use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -89,5 +90,16 @@ class MySqlConnector extends Connector
         }
 
         return $this->connectionParameters;
+    }
+
+    public function insert ( Row $row ) : void
+    {
+        if ( $this->tableName == null || $this->tableName == "" ) {
+            throw new SourceWatcherException( "No table name found." );
+        }
+
+        $connection = $this->connect();
+
+        $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
     }
 }

@@ -2,11 +2,12 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
+use Coco\SourceWatcher\Core\Row;
 use Doctrine\DBAL\Connection;
 
 abstract class Connector
 {
-    protected string $driver;
+    protected string $driver = "";
     protected array $connectionParameters = [];
 
     protected string $user;
@@ -15,7 +16,11 @@ abstract class Connector
     protected int $port;
     protected string $dbName;
 
+    protected string $tableName = "";
+
     public abstract function connect () : Connection;
+
+    public abstract function insert ( Row $row ) : void;
 
     /**
      * @return string
@@ -105,5 +110,21 @@ abstract class Connector
     public function setDbName ( string $dbName ) : void
     {
         $this->dbName = $dbName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableName () : string
+    {
+        return $this->tableName;
+    }
+
+    /**
+     * @param string $tableName
+     */
+    public function setTableName ( string $tableName ) : void
+    {
+        $this->tableName = $tableName;
     }
 }
