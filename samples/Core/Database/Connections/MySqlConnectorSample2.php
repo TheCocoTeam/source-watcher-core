@@ -1,8 +1,8 @@
 <?php
 
-include __DIR__ . "/../../includes/cli-execution-only.php";
+include __DIR__ . "/../../../includes/cli-execution-only.php";
 
-require_once __DIR__ . "/../../../vendor/autoload.php";
+require_once __DIR__ . "/../../../../vendor/autoload.php";
 
 use Coco\SourceWatcher\Core\Database\Connections\MySqlConnector;
 

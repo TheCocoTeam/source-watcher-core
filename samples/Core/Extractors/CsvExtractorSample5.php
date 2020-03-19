@@ -1,8 +1,8 @@
 <?php
 
-include __DIR__ . "/includes/cli-execution-only.php";
+include __DIR__ . "/../../includes/cli-execution-only.php";
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../../../vendor/autoload.php";
 
 use Coco\SourceWatcher\Core\Extractors\CsvExtractor;
 
@@ -11,10 +11,10 @@ $csvExtractor->setColumns( array() );
 $csvExtractor->setDelimiter( "," );
 $csvExtractor->setEnclosure( "" );
 
-$csvExtractor->setInput( __DIR__ . "/data/csv/virology/coronavirusdataset/patient.csv" );
+$csvExtractor->setInput( __DIR__ . "/../../data/csv/virology/coronavirusdataset/patient.csv" );
 $patientsResult = $csvExtractor->extract();
 
-$csvExtractor->setInput( __DIR__ . "/data/csv/virology/coronavirusdataset/route.csv" );
+$csvExtractor->setInput( __DIR__ . "/../../data/csv/virology/coronavirusdataset/route.csv" );
 $routeResult = $csvExtractor->extract();
 
 foreach ( $patientsResult as $currentPatientIndex => $currentPatientRow ) {

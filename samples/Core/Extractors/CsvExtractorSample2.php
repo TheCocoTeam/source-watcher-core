@@ -1,13 +1,13 @@
 <?php
 
-include __DIR__ . "/includes/cli-execution-only.php";
+include __DIR__ . "/../../includes/cli-execution-only.php";
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../../../vendor/autoload.php";
 
 use Coco\SourceWatcher\Core\Extractors\CsvExtractor;
 
 $csvExtractor = new CsvExtractor();
-$csvExtractor->setInput( __DIR__ . "/data/csv/csv1.csv" );
+$csvExtractor->setInput( __DIR__ . "/../../data/csv/csv1.csv" );
 $csvExtractor->setColumns( array( "id", "email" ) );
 $csvExtractor->setDelimiter( "," );
 $csvExtractor->setEnclosure( "" );
