@@ -1,0 +1,595 @@
+date,state,confirmed,deaths
+2020-03-06,Bogota,1,0
+2020-03-06,Amazonas,0,0
+2020-03-06,Antioquia,0,0
+2020-03-06,Arauca,0,0
+2020-03-06,Atlantico,0,0
+2020-03-06,Bolivar,0,0
+2020-03-06,Boyaca,0,0
+2020-03-06,Caldas,0,0
+2020-03-06,Caqueta,0,0
+2020-03-06,Casanare,0,0
+2020-03-06,Cauca,0,0
+2020-03-06,Cesar,0,0
+2020-03-06,Choco,0,0
+2020-03-06,Cordoba,0,0
+2020-03-06,Cundinamarca,0,0
+2020-03-06,Guainia,0,0
+2020-03-06,Guaviare,0,0
+2020-03-06,Huila,0,0
+2020-03-06,La Guajira,0,0
+2020-03-06,Magdalena,0,0
+2020-03-06,Meta,0,0
+2020-03-06,Narino,0,0
+2020-03-06,Norte de Santander,0,0
+2020-03-06,Putumayo,0,0
+2020-03-06,Quindio,0,0
+2020-03-06,Risaralda,0,0
+2020-03-06,San Andres y Providencia,0,0
+2020-03-06,Santander,0,0
+2020-03-06,Sucre,0,0
+2020-03-06,Tolima,0,0
+2020-03-06,Valle del Cauca,0,0
+2020-03-06,Vaupes,0,0
+2020-03-06,Vichada,0,0
+2020-03-07,Bogota,1,0
+2020-03-07,Amazonas,0,0
+2020-03-07,Antioquia,0,0
+2020-03-07,Arauca,0,0
+2020-03-07,Atlantico,0,0
+2020-03-07,Bolivar,0,0
+2020-03-07,Boyaca,0,0
+2020-03-07,Caldas,0,0
+2020-03-07,Caqueta,0,0
+2020-03-07,Casanare,0,0
+2020-03-07,Cauca,0,0
+2020-03-07,Cesar,0,0
+2020-03-07,Choco,0,0
+2020-03-07,Cordoba,0,0
+2020-03-07,Cundinamarca,0,0
+2020-03-07,Guainia,0,0
+2020-03-07,Guaviare,0,0
+2020-03-07,Huila,0,0
+2020-03-07,La Guajira,0,0
+2020-03-07,Magdalena,0,0
+2020-03-07,Meta,0,0
+2020-03-07,Narino,0,0
+2020-03-07,Norte de Santander,0,0
+2020-03-07,Putumayo,0,0
+2020-03-07,Quindio,0,0
+2020-03-07,Risaralda,0,0
+2020-03-07,San Andres y Providencia,0,0
+2020-03-07,Santander,0,0
+2020-03-07,Sucre,0,0
+2020-03-07,Tolima,0,0
+2020-03-07,Valle del Cauca,0,0
+2020-03-07,Vaupes,0,0
+2020-03-07,Vichada,0,0
+2020-03-08,Bogota,1,0
+2020-03-08,Amazonas,0,0
+2020-03-08,Antioquia,0,0
+2020-03-08,Arauca,0,0
+2020-03-08,Atlantico,0,0
+2020-03-08,Bolivar,0,0
+2020-03-08,Boyaca,0,0
+2020-03-08,Caldas,0,0
+2020-03-08,Caqueta,0,0
+2020-03-08,Casanare,0,0
+2020-03-08,Cauca,0,0
+2020-03-08,Cesar,0,0
+2020-03-08,Choco,0,0
+2020-03-08,Cordoba,0,0
+2020-03-08,Cundinamarca,0,0
+2020-03-08,Guainia,0,0
+2020-03-08,Guaviare,0,0
+2020-03-08,Huila,0,0
+2020-03-08,La Guajira,0,0
+2020-03-08,Magdalena,0,0
+2020-03-08,Meta,0,0
+2020-03-08,Narino,0,0
+2020-03-08,Norte de Santander,0,0
+2020-03-08,Putumayo,0,0
+2020-03-08,Quindio,0,0
+2020-03-08,Risaralda,0,0
+2020-03-08,San Andres y Providencia,0,0
+2020-03-08,Santander,0,0
+2020-03-08,Sucre,0,0
+2020-03-08,Tolima,0,0
+2020-03-08,Valle del Cauca,1,0
+2020-03-08,Vaupes,0,0
+2020-03-08,Vichada,0,0
+2020-03-09,Bogota,1,0
+2020-03-09,Amazonas,0,0
+2020-03-09,Antioquia,1,0
+2020-03-09,Arauca,0,0
+2020-03-09,Atlantico,0,0
+2020-03-09,Bolivar,0,0
+2020-03-09,Boyaca,0,0
+2020-03-09,Caldas,0,0
+2020-03-09,Caqueta,0,0
+2020-03-09,Casanare,0,0
+2020-03-09,Cauca,0,0
+2020-03-09,Cesar,0,0
+2020-03-09,Choco,0,0
+2020-03-09,Cordoba,0,0
+2020-03-09,Cundinamarca,0,0
+2020-03-09,Guainia,0,0
+2020-03-09,Guaviare,0,0
+2020-03-09,Huila,0,0
+2020-03-09,La Guajira,0,0
+2020-03-09,Magdalena,0,0
+2020-03-09,Meta,0,0
+2020-03-09,Narino,0,0
+2020-03-09,Norte de Santander,0,0
+2020-03-09,Putumayo,0,0
+2020-03-09,Quindio,0,0
+2020-03-09,Risaralda,0,0
+2020-03-09,San Andres y Providencia,0,0
+2020-03-09,Santander,0,0
+2020-03-09,Sucre,0,0
+2020-03-09,Tolima,0,0
+2020-03-09,Valle del Cauca,1,0
+2020-03-09,Vaupes,0,0
+2020-03-09,Vichada,0,0
+2020-03-10,Bogota,1,0
+2020-03-10,Amazonas,0,0
+2020-03-10,Antioquia,1,0
+2020-03-10,Arauca,0,0
+2020-03-10,Atlantico,0,0
+2020-03-10,Bolivar,0,0
+2020-03-10,Boyaca,0,0
+2020-03-10,Caldas,0,0
+2020-03-10,Caqueta,0,0
+2020-03-10,Casanare,0,0
+2020-03-10,Cauca,0,0
+2020-03-10,Cesar,0,0
+2020-03-10,Choco,0,0
+2020-03-10,Cordoba,0,0
+2020-03-10,Cundinamarca,0,0
+2020-03-10,Guainia,0,0
+2020-03-10,Guaviare,0,0
+2020-03-10,Huila,0,0
+2020-03-10,La Guajira,0,0
+2020-03-10,Magdalena,0,0
+2020-03-10,Meta,0,0
+2020-03-10,Narino,0,0
+2020-03-10,Norte de Santander,0,0
+2020-03-10,Putumayo,0,0
+2020-03-10,Quindio,0,0
+2020-03-10,Risaralda,0,0
+2020-03-10,San Andres y Providencia,0,0
+2020-03-10,Santander,0,0
+2020-03-10,Sucre,0,0
+2020-03-10,Tolima,0,0
+2020-03-10,Valle del Cauca,1,0
+2020-03-10,Vaupes,0,0
+2020-03-10,Vichada,0,0
+2020-03-11,Bogota,3,0
+2020-03-11,Amazonas,0,0
+2020-03-11,Antioquia,4,0
+2020-03-11,Arauca,0,0
+2020-03-11,Atlantico,0,0
+2020-03-11,Bolivar,1,0
+2020-03-11,Boyaca,0,0
+2020-03-11,Caldas,0,0
+2020-03-11,Caqueta,0,0
+2020-03-11,Casanare,0,0
+2020-03-11,Cauca,0,0
+2020-03-11,Cesar,0,0
+2020-03-11,Choco,0,0
+2020-03-11,Cordoba,0,0
+2020-03-11,Cundinamarca,0,0
+2020-03-11,Guainia,0,0
+2020-03-11,Guaviare,0,0
+2020-03-11,Huila,0,0
+2020-03-11,La Guajira,0,0
+2020-03-11,Magdalena,0,0
+2020-03-11,Meta,0,0
+2020-03-11,Narino,0,0
+2020-03-11,Norte de Santander,0,0
+2020-03-11,Putumayo,0,0
+2020-03-11,Quindio,0,0
+2020-03-11,Risaralda,0,0
+2020-03-11,San Andres y Providencia,0,0
+2020-03-11,Santander,0,0
+2020-03-11,Sucre,0,0
+2020-03-11,Tolima,0,0
+2020-03-11,Valle del Cauca,1,0
+2020-03-11,Vaupes,0,0
+2020-03-11,Vichada,0,0
+2020-03-12,Bogota,3,0
+2020-03-12,Amazonas,0,0
+2020-03-12,Antioquia,4,0
+2020-03-12,Arauca,0,0
+2020-03-12,Atlantico,0,0
+2020-03-12,Bolivar,1,0
+2020-03-12,Boyaca,0,0
+2020-03-12,Caldas,0,0
+2020-03-12,Caqueta,0,0
+2020-03-12,Casanare,0,0
+2020-03-12,Cauca,0,0
+2020-03-12,Cesar,0,0
+2020-03-12,Choco,0,0
+2020-03-12,Cordoba,0,0
+2020-03-12,Cundinamarca,0,0
+2020-03-12,Guainia,0,0
+2020-03-12,Guaviare,0,0
+2020-03-12,Huila,0,0
+2020-03-12,La Guajira,0,0
+2020-03-12,Magdalena,0,0
+2020-03-12,Meta,0,0
+2020-03-12,Narino,0,0
+2020-03-12,Norte de Santander,0,0
+2020-03-12,Putumayo,0,0
+2020-03-12,Quindio,0,0
+2020-03-12,Risaralda,0,0
+2020-03-12,San Andres y Providencia,0,0
+2020-03-12,Santander,0,0
+2020-03-12,Sucre,0,0
+2020-03-12,Tolima,0,0
+2020-03-12,Valle del Cauca,1,0
+2020-03-12,Vaupes,0,0
+2020-03-12,Vichada,0,0
+2020-03-13,Bogota,6,0
+2020-03-13,Amazonas,0,0
+2020-03-13,Antioquia,4,0
+2020-03-13,Arauca,0,0
+2020-03-13,Atlantico,0,0
+2020-03-13,Bolivar,1,0
+2020-03-13,Boyaca,0,0
+2020-03-13,Caldas,0,0
+2020-03-13,Caqueta,0,0
+2020-03-13,Casanare,0,0
+2020-03-13,Cauca,0,0
+2020-03-13,Cesar,0,0
+2020-03-13,Choco,0,0
+2020-03-13,Cordoba,0,0
+2020-03-13,Cundinamarca,0,0
+2020-03-13,Guainia,0,0
+2020-03-13,Guaviare,0,0
+2020-03-13,Huila,2,0
+2020-03-13,La Guajira,0,0
+2020-03-13,Magdalena,0,0
+2020-03-13,Meta,1,0
+2020-03-13,Narino,0,0
+2020-03-13,Norte de Santander,0,0
+2020-03-13,Putumayo,0,0
+2020-03-13,Quindio,0,0
+2020-03-13,Risaralda,0,0
+2020-03-13,San Andres y Providencia,0,0
+2020-03-13,Santander,0,0
+2020-03-13,Sucre,0,0
+2020-03-13,Tolima,0,0
+2020-03-13,Valle del Cauca,2,0
+2020-03-13,Vaupes,0,0
+2020-03-13,Vichada,0,0
+2020-03-14,Bogota,11,0
+2020-03-14,Amazonas,0,0
+2020-03-14,Antioquia,7,0
+2020-03-14,Arauca,0,0
+2020-03-14,Atlantico,0,0
+2020-03-14,Bolivar,1,0
+2020-03-14,Boyaca,0,0
+2020-03-14,Caldas,0,0
+2020-03-14,Caqueta,0,0
+2020-03-14,Casanare,0,0
+2020-03-14,Cauca,0,0
+2020-03-14,Cesar,0,0
+2020-03-14,Choco,0,0
+2020-03-14,Cordoba,0,0
+2020-03-14,Cundinamarca,0,0
+2020-03-14,Guainia,0,0
+2020-03-14,Guaviare,0,0
+2020-03-14,Huila,2,0
+2020-03-14,La Guajira,0,0
+2020-03-14,Magdalena,0,0
+2020-03-14,Meta,1,0
+2020-03-14,Narino,0,0
+2020-03-14,Norte de Santander,0,0
+2020-03-14,Putumayo,0,0
+2020-03-14,Quindio,0,0
+2020-03-14,Risaralda,0,0
+2020-03-14,San Andres y Providencia,0,0
+2020-03-14,Santander,0,0
+2020-03-14,Sucre,0,0
+2020-03-14,Tolima,0,0
+2020-03-14,Valle del Cauca,2,0
+2020-03-14,Vaupes,0,0
+2020-03-14,Vichada,0,0
+2020-03-15,Bogota,19,0
+2020-03-15,Amazonas,0,0
+2020-03-15,Antioquia,8,0
+2020-03-15,Arauca,0,0
+2020-03-15,Atlantico,0,0
+2020-03-15,Bolivar,3,0
+2020-03-15,Boyaca,0,0
+2020-03-15,Caldas,1,0
+2020-03-15,Caqueta,0,0
+2020-03-15,Casanare,0,0
+2020-03-15,Cauca,0,0
+2020-03-15,Cesar,0,0
+2020-03-15,Choco,0,0
+2020-03-15,Cordoba,0,0
+2020-03-15,Cundinamarca,1,0
+2020-03-15,Guainia,0,0
+2020-03-15,Guaviare,0,0
+2020-03-15,Huila,7,0
+2020-03-15,La Guajira,0,0
+2020-03-15,Magdalena,0,0
+2020-03-15,Meta,1,0
+2020-03-15,Narino,0,0
+2020-03-15,Norte de Santander,1,0
+2020-03-15,Putumayo,0,0
+2020-03-15,Quindio,0,0
+2020-03-15,Risaralda,1,0
+2020-03-15,San Andres y Providencia,0,0
+2020-03-15,Santander,0,0
+2020-03-15,Sucre,0,0
+2020-03-15,Tolima,0,0
+2020-03-15,Valle del Cauca,3,0
+2020-03-15,Vaupes,0,0
+2020-03-15,Vichada,0,0
+2020-03-16,Bogota,31,0
+2020-03-16,Amazonas,0,0
+2020-03-16,Antioquia,8,0
+2020-03-16,Arauca,0,0
+2020-03-16,Atlantico,0,0
+2020-03-16,Bolivar,3,0
+2020-03-16,Boyaca,0,0
+2020-03-16,Caldas,1,0
+2020-03-16,Caqueta,0,0
+2020-03-16,Casanare,0,0
+2020-03-16,Cauca,0,0
+2020-03-16,Cesar,0,0
+2020-03-16,Choco,0,0
+2020-03-16,Cordoba,0,0
+2020-03-16,Cundinamarca,1,0
+2020-03-16,Guainia,0,0
+2020-03-16,Guaviare,0,0
+2020-03-16,Huila,7,0
+2020-03-16,La Guajira,0,0
+2020-03-16,Magdalena,0,0
+2020-03-16,Meta,1,0
+2020-03-16,Narino,0,0
+2020-03-16,Norte de Santander,1,0
+2020-03-16,Putumayo,0,0
+2020-03-16,Quindio,0,0
+2020-03-16,Risaralda,1,0
+2020-03-16,San Andres y Providencia,0,0
+2020-03-16,Santander,0,0
+2020-03-16,Sucre,0,0
+2020-03-16,Tolima,0,0
+2020-03-16,Valle del Cauca,3,0
+2020-03-16,Vaupes,0,0
+2020-03-16,Vichada,0,0
+2020-03-17,Bogota,40,0
+2020-03-17,Amazonas,0,0
+2020-03-17,Antioquia,8,0
+2020-03-17,Arauca,0,0
+2020-03-17,Atlantico,2,0
+2020-03-17,Bolivar,5,0
+2020-03-17,Boyaca,0,0
+2020-03-17,Caldas,1,0
+2020-03-17,Caqueta,0,0
+2020-03-17,Casanare,0,0
+2020-03-17,Cauca,0,0
+2020-03-17,Cesar,0,0
+2020-03-17,Choco,0,0
+2020-03-17,Cordoba,0,0
+2020-03-17,Cundinamarca,1,0
+2020-03-17,Guainia,0,0
+2020-03-17,Guaviare,0,0
+2020-03-17,Huila,7,0
+2020-03-17,La Guajira,0,0
+2020-03-17,Magdalena,0,0
+2020-03-17,Meta,1,0
+2020-03-17,Narino,0,0
+2020-03-17,Norte de Santander,3,0
+2020-03-17,Putumayo,0,0
+2020-03-17,Quindio,0,0
+2020-03-17,Risaralda,1,0
+2020-03-17,San Andres y Providencia,0,0
+2020-03-17,Santander,1,0
+2020-03-17,Sucre,0,0
+2020-03-17,Tolima,0,0
+2020-03-17,Valle del Cauca,5,0
+2020-03-17,Vaupes,0,0
+2020-03-17,Vichada,0,0
+2020-03-18,Bogota,45,0
+2020-03-18,Amazonas,0,0
+2020-03-18,Antioquia,8,0
+2020-03-18,Arauca,0,0
+2020-03-18,Atlantico,2,0
+2020-03-18,Bolivar,7,0
+2020-03-18,Boyaca,0,0
+2020-03-18,Caldas,1,0
+2020-03-18,Caqueta,0,0
+2020-03-18,Casanare,0,0
+2020-03-18,Cauca,0,0
+2020-03-18,Cesar,0,0
+2020-03-18,Choco,0,0
+2020-03-18,Cordoba,0,0
+2020-03-18,Cundinamarca,3,0
+2020-03-18,Guainia,0,0
+2020-03-18,Guaviare,0,0
+2020-03-18,Huila,8,0
+2020-03-18,La Guajira,0,0
+2020-03-18,Magdalena,0,0
+2020-03-18,Meta,1,0
+2020-03-18,Narino,0,0
+2020-03-18,Norte de Santander,3,0
+2020-03-18,Putumayo,0,0
+2020-03-18,Quindio,2,0
+2020-03-18,Risaralda,5,0
+2020-03-18,San Andres y Providencia,0,0
+2020-03-18,Santander,2,0
+2020-03-18,Sucre,0,0
+2020-03-18,Tolima,2,0
+2020-03-18,Valle del Cauca,13,0
+2020-03-18,Vaupes,0,0
+2020-03-18,Vichada,0,0
+2020-03-19,Bogota,53,0
+2020-03-19,Amazonas,0,0
+2020-03-19,Antioquia,11,0
+2020-03-19,Arauca,0,0
+2020-03-19,Atlantico,5,0
+2020-03-19,Bolivar,9,0
+2020-03-19,Boyaca,0,0
+2020-03-19,Caldas,2,0
+2020-03-19,Caqueta,0,0
+2020-03-19,Casanare,0,0
+2020-03-19,Cauca,2,0
+2020-03-19,Cesar,0,0
+2020-03-19,Choco,0,0
+2020-03-19,Cordoba,0,0
+2020-03-19,Cundinamarca,4,0
+2020-03-19,Guainia,0,0
+2020-03-19,Guaviare,0,0
+2020-03-19,Huila,9,0
+2020-03-19,La Guajira,0,0
+2020-03-19,Magdalena,0,0
+2020-03-19,Meta,1,0
+2020-03-19,Narino,0,0
+2020-03-19,Norte de Santander,6,0
+2020-03-19,Putumayo,0,0
+2020-03-19,Quindio,3,0
+2020-03-19,Risaralda,5,0
+2020-03-19,San Andres y Providencia,0,0
+2020-03-19,Santander,2,0
+2020-03-19,Sucre,0,0
+2020-03-19,Tolima,2,0
+2020-03-19,Valle del Cauca,14,0
+2020-03-19,Vaupes,0,0
+2020-03-19,Vichada,0,0
+2020-03-20,Bogota,65,0
+2020-03-20,Amazonas,0,0
+2020-03-20,Antioquia,22,0
+2020-03-20,Arauca,0,0
+2020-03-20,Atlantico,5,0
+2020-03-20,Bolivar,9,0
+2020-03-20,Boyaca,0,0
+2020-03-20,Caldas,2,0
+2020-03-20,Caqueta,0,0
+2020-03-20,Casanare,0,0
+2020-03-20,Cauca,2,0
+2020-03-20,Cesar,0,0
+2020-03-20,Choco,0,0
+2020-03-20,Cordoba,0,0
+2020-03-20,Cundinamarca,7,0
+2020-03-20,Guainia,0,0
+2020-03-20,Guaviare,0,0
+2020-03-20,Huila,9,0
+2020-03-20,La Guajira,0,0
+2020-03-20,Magdalena,2,0
+2020-03-20,Meta,1,0
+2020-03-20,Narino,0,0
+2020-03-20,Norte de Santander,6,0
+2020-03-20,Putumayo,0,0
+2020-03-20,Quindio,3,0
+2020-03-20,Risaralda,6,0
+2020-03-20,San Andres y Providencia,0,0
+2020-03-20,Santander,2,0
+2020-03-20,Sucre,0,0
+2020-03-20,Tolima,2,0
+2020-03-20,Valle del Cauca,15,0
+2020-03-20,Vaupes,0,0
+2020-03-20,Vichada,0,0
+2020-03-21,Bogota,88,0
+2020-03-21,Amazonas,0,0
+2020-03-21,Antioquia,25,0
+2020-03-21,Arauca,0,0
+2020-03-21,Atlantico,7,0
+2020-03-21,Bolivar,14,0
+2020-03-21,Boyaca,0,0
+2020-03-21,Caldas,3,0
+2020-03-21,Caqueta,0,0
+2020-03-21,Casanare,0,0
+2020-03-21,Cauca,2,0
+2020-03-21,Cesar,0,0
+2020-03-21,Choco,0,0
+2020-03-21,Cordoba,0,0
+2020-03-21,Cundinamarca,8,0
+2020-03-21,Guainia,0,0
+2020-03-21,Guaviare,0,0
+2020-03-21,Huila,10,0
+2020-03-21,La Guajira,0,0
+2020-03-21,Magdalena,2,0
+2020-03-21,Meta,1,0
+2020-03-21,Narino,0,0
+2020-03-21,Norte de Santander,8,0
+2020-03-21,Putumayo,0,0
+2020-03-21,Quindio,3,0
+2020-03-21,Risaralda,8,0
+2020-03-21,San Andres y Providencia,0,0
+2020-03-21,Santander,2,0
+2020-03-21,Sucre,0,0
+2020-03-21,Tolima,3,0
+2020-03-21,Valle del Cauca,26,0
+2020-03-21,Vaupes,0,0
+2020-03-21,Vichada,0,0
+2020-03-22,Bogota,92,0
+2020-03-22,Amazonas,0,0
+2020-03-22,Antioquia,25,0
+2020-03-22,Arauca,0,0
+2020-03-22,Atlantico,7,0
+2020-03-22,Bolivar,14,1
+2020-03-22,Boyaca,0,0
+2020-03-22,Caldas,6,0
+2020-03-22,Caqueta,0,0
+2020-03-22,Casanare,1,0
+2020-03-22,Cauca,2,0
+2020-03-22,Cesar,1,0
+2020-03-22,Choco,0,0
+2020-03-22,Cordoba,0,0
+2020-03-22,Cundinamarca,8,0
+2020-03-22,Guainia,0,0
+2020-03-22,Guaviare,0,0
+2020-03-22,Huila,10,0
+2020-03-22,La Guajira,0,0
+2020-03-22,Magdalena,2,0
+2020-03-22,Meta,1,0
+2020-03-22,Narino,0,0
+2020-03-22,Norte de Santander,8,0
+2020-03-22,Putumayo,0,0
+2020-03-22,Quindio,6,0
+2020-03-22,Risaralda,13,0
+2020-03-22,San Andres y Providencia,1,0
+2020-03-22,Santander,3,0
+2020-03-22,Sucre,0,0
+2020-03-22,Tolima,4,0
+2020-03-22,Valle del Cauca,31,1
+2020-03-22,Vaupes,0,0
+2020-03-22,Vichada,0,0
+2020-03-23,Bogota,114,0
+2020-03-23,Amazonas,0,0
+2020-03-23,Antioquia,51,0
+2020-03-23,Arauca,0,0
+2020-03-23,Atlantico,7,0
+2020-03-23,Bolivar,16,1
+2020-03-23,Boyaca,0,0
+2020-03-23,Caldas,7,0
+2020-03-23,Caqueta,0,0
+2020-03-23,Casanare,1,0
+2020-03-23,Cauca,2,0
+2020-03-23,Cesar,1,0
+2020-03-23,Choco,0,0
+2020-03-23,Cordoba,0,0
+2020-03-23,Cundinamarca,13,0
+2020-03-23,Guainia,0,0
+2020-03-23,Guaviare,0,0
+2020-03-23,Huila,11,0
+2020-03-23,La Guajira,0,0
+2020-03-23,Magdalena,3,1
+2020-03-23,Meta,5,0
+2020-03-23,Narino,0,0
+2020-03-23,Norte de Santander,8,0
+2020-03-23,Putumayo,0,0
+2020-03-23,Quindio,7,0
+2020-03-23,Risaralda,14,0
+2020-03-23,San Andres y Providencia,1,0
+2020-03-23,Santander,4,0
+2020-03-23,Sucre,0,0
+2020-03-23,Tolima,4,0
+2020-03-23,Valle del Cauca,37,1
+2020-03-23,Vaupes,0,0
+2020-03-23,Vichada,0,0
