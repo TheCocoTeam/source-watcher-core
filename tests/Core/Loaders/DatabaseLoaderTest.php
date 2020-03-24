@@ -3,18 +3,18 @@
 namespace Coco\SourceWatcher\Tests\Core\Loaders;
 
 use PHPUnit\Framework\TestCase;
-use Coco\SourceWatcher\Core\Database\Connections\MySqlConnector;
+use Coco\SourceWatcher\Core\Database\Connections\Connector;
 use Coco\SourceWatcher\Core\Loaders\DatabaseLoader;
 
 class DatabaseLoaderTest extends TestCase
 {
     public function testSetAndGetConnector () : void
     {
-        $expectedMySqlConnector = new MySqlConnector();
+        $expectedConnector = $this->createMock( Connector::class );
 
         $databaseLoader = new DatabaseLoader();
-        $databaseLoader->setConnector( $expectedMySqlConnector );
+        $databaseLoader->setConnector( $expectedConnector );
 
-        $this->assertSame( $expectedMySqlConnector, $databaseLoader->getConnector() );
+        $this->assertSame( $expectedConnector, $databaseLoader->getConnector() );
     }
 }
