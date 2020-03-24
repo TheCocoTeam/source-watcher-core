@@ -2,8 +2,15 @@
 
 namespace Coco\SourceWatcher\Core;
 
+/**
+ * Class Extractor
+ * @package Coco\SourceWatcher\Core
+ */
 abstract class Extractor extends Step
 {
+    /**
+     * @var mixed
+     */
     protected $input;
 
     /**
@@ -22,5 +29,8 @@ abstract class Extractor extends Step
         $this->input = $input;
     }
 
+    /**
+     * @return mixed
+     */
     public abstract function extract ();
 }
