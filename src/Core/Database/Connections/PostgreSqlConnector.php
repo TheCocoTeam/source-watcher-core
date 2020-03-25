@@ -15,7 +15,7 @@ use Exception;
  *
  * Following the definition from: https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#pdo-pgsql
  */
-class PostgreSqlConnector extends Connector
+class PostgreSqlConnector extends ClientServerDatabaseConnector
 {
     protected string $charset;
     protected string $defaultDatabaseName;

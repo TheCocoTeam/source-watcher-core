@@ -10,53 +10,53 @@ use Doctrine\DBAL\DriverManager;
 use Exception;
 
 /**
- * Class MySqlConnector
+ * Class SqliteConnector
  * @package Coco\SourceWatcher\Core\Database\Connections
  *
- * Following the definition from: https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#pdo-mysql
+ * Following the definition from: https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#pdo-sqlite
  */
-class MySqlConnector extends ClientServerDatabaseConnector
+class SqliteConnector extends EmbeddedDatabaseConnector
 {
-    protected string $unixSocket = "";
-    protected string $charset = "";
+    protected string $path;
+    protected bool $memory;
 
     public function __construct ()
     {
-        $this->driver = "pdo_mysql";
+        $this->driver = "pdo_sqlite";
 
-        $this->port = 3306;
+        $this->memory = false;
     }
 
     /**
      * @return string
      */
-    public function getUnixSocket () : string
+    public function getPath () : string
     {
-        return $this->unixSocket;
+        return $this->path;
     }
 
     /**
-     * @param string $unixSocket
+     * @param string $path
      */
-    public function setUnixSocket ( string $unixSocket ) : void
+    public function setPath ( string $path ) : void
     {
-        $this->unixSocket = $unixSocket;
+        $this->path = $path;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getCharset () : string
+    public function isMemory () : bool
     {
-        return $this->charset;
+        return $this->memory;
     }
 
     /**
-     * @param string $charset
+     * @param bool $memory
      */
-    public function setCharset ( string $charset ) : void
+    public function setMemory ( bool $memory ) : void
     {
-        $this->charset = $charset;
+        $this->memory = $memory;
     }
 
     public function connect () : Connection
@@ -77,17 +77,12 @@ class MySqlConnector extends ClientServerDatabaseConnector
         $this->connectionParameters["driver"] = $this->driver;
         $this->connectionParameters["user"] = $this->user;
         $this->connectionParameters["password"] = $this->password;
-        $this->connectionParameters["host"] = $this->host;
-        $this->connectionParameters["port"] = $this->port;
-        $this->connectionParameters["dbname"] = $this->dbName;
 
-        if ( isset( $this->unixSocket ) && $this->unixSocket !== "" ) {
-            $this->connectionParameters["unix_socket"] = $this->unixSocket;
+        if ( isset( $this->path ) && $this->path !== "" ) {
+            $this->connectionParameters["path"] = $this->path;
         }
 
-        if ( isset( $this->charset ) && $this->charset !== "" ) {
-            $this->connectionParameters["charset"] = $this->charset;
-        }
+        $this->connectionParameters["memory"] = $this->memory;
 
         return $this->connectionParameters;
     }
