@@ -1,4 +1,4 @@
-# SourceWatcher [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TheCocoTeam/SourceWatcher/badges/quality-score.png?b=etl-core)](https://scrutinizer-ci.com/g/TheCocoTeam/SourceWatcher/?branch=etl-core)
+# SourceWatcher [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TheCocoTeam/SourceWatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TheCocoTeam/SourceWatcher/?branch=master)
 Project which allows to watch different sources of data
 
 ## Docker container
