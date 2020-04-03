@@ -23,8 +23,18 @@ use Coco\SourceWatcher\Core\Extractors\JsonExtractor;
  */
 
 $jsonExtractor = new JsonExtractor();
-$jsonExtractor->setColumns( array( "cca2" => "$.*.cca2", "name" => "$.*.name.official" ) );
+$jsonExtractor->setColumns( array( "isbn" => "$.*.isbn" ) );
 
-$jsonExtractor->setInput( __DIR__ . "/../../data/json/countries.json" );
-$countriesResult = $jsonExtractor->extract();
-print_r( $countriesResult );
+$jsonExtractor->setInput( __DIR__ . "/../../data/json/books.json" );
+$booksResult = $jsonExtractor->extract();
+
+foreach ( $booksResult as $index => $value ) {
+    echo "index: " . $index . PHP_EOL;
+    echo "value: " . print_r( $value, true ) . PHP_EOL;
+
+    $isbn = $value->isbn;
+
+    $jsonExtractor->setColumns( array( "title" => "$.[?(@.isbn=$isbn)].title", "thumbnailUrl" => "$.[?(@.isbn=$isbn)].thumbnailUrl" ) );
+    $isbnResult = $jsonExtractor->extract();
+    print_r( $isbnResult );
+}

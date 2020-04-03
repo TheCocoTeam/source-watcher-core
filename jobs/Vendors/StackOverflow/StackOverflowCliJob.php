@@ -34,5 +34,5 @@ if ( $jobsUrl != null && $jobsUrl != "" && $slackWebHookUrl != null && $slackWeb
     $communicator->setWebHookUrl( $slackWebHookUrl );
     $communicator->send();
 } else {
-    echo "check the jobs url and slack web hook url parameters";
+    echo "check the jobs url and slack web hook url parameters" . PHP_EOL;
 }
