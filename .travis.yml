@@ -1,0 +1,17 @@
+language: php
+
+dist: bionic
+
+php:
+  - 7.4
+
+before_script:
+  - rm -f composer.lock
+  - travis_retry composer install --no-interaction --prefer-source --dev
+
+script:
+  - vendor/bin/phpunit --coverage-clover=clover.xml
+
+after_success:
+  - export CODECOV_TOKEN="ebd97fbb-5461-4c4a-8012-17cb92ceee69"
+  - bash <(curl -s https://codecov.io/bash)
