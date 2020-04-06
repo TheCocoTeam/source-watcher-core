@@ -4,8 +4,7 @@ namespace Coco\SourceWatcher\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractor;
 use Coco\SourceWatcher\Core\Row;
-
-use Exception;
+use Coco\SourceWatcher\Core\SourceWatcherException;
 
 class CsvExtractor extends Extractor
 {
@@ -71,7 +70,7 @@ class CsvExtractor extends Extractor
     public function extract () : array
     {
         if ( $this->input == null ) {
-            throw new Exception( "An input must be provided." );
+            throw new SourceWatcherException( "An input must be provided." );
         }
 
         $result = array();

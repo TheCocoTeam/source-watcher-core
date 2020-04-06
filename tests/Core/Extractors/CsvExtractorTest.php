@@ -2,9 +2,11 @@
 
 namespace Coco\SourceWatcher\Tests\Core\Extractors;
 
-use PHPUnit\Framework\TestCase;
 use Coco\SourceWatcher\Core\Extractors\CsvExtractor;
 use Coco\SourceWatcher\Core\Row;
+use Coco\SourceWatcher\Core\SourceWatcherException;
+
+use PHPUnit\Framework\TestCase;
 
 class CsvExtractorTest extends TestCase
 {
@@ -63,6 +65,63 @@ class CsvExtractorTest extends TestCase
         $expected = [ new Row( [ "id" => 1, "name" => "John Doe", "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "name" => "Jane Doe", "email" => "janedoe@email.com" ] ) ];
 
         $csvExtractor->setInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" );
+
+        $this->assertEquals( $expected, $csvExtractor->extract() );
+    }
+
+    public function testNoInputException () : void
+    {
+        $this->expectException( SourceWatcherException::class );
+
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setInput( null );
+        $csvExtractor->extract();
+    }
+
+    /**
+     * This test is similar to the code from: samples/Core/Extractors/CsvExtractorSample2.php
+     *
+     * @throws SourceWatcherException
+     */
+    public function testColumnsWithNoIndex1 () : void
+    {
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setColumns( array( "id", "email" ) );
+        $csvExtractor->setInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" );
+
+        $expected = [ new Row( [ "id" => 1, "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "email" => "janedoe@email.com" ] ) ];
+
+        $this->assertEquals( $expected, $csvExtractor->extract() );
+    }
+
+    /**
+     * This test is similar to the code from: samples/Core/Extractors/CsvExtractorSample3.php
+     *
+     * @throws SourceWatcherException
+     */
+    public function testColumnsWithNoIndex2 () : void
+    {
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setColumns( array( "id", "name", "email" ) );
+        $csvExtractor->setInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" );
+
+        $expected = [ new Row( [ "id" => 1, "name" => "John Doe", "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "name" => "Jane Doe", "email" => "janedoe@email.com" ] ) ];
+
+        $this->assertEquals( $expected, $csvExtractor->extract() );
+    }
+
+    /**
+     * This test is similar to the code from: samples/Core/Extractors/CsvExtractorSample4.php
+     *
+     * @throws SourceWatcherException
+     */
+    public function testGetColumnsWithDifferentNames () : void
+    {
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setColumns( array( "id" => "id", "email" => "email_address" ) );
+        $csvExtractor->setInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" );
+
+        $expected = [ new Row( [ "id" => 1, "email_address" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "email_address" => "janedoe@email.com" ] ) ];
 
         $this->assertEquals( $expected, $csvExtractor->extract() );
     }
