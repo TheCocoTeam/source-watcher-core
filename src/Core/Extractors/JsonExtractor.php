@@ -4,7 +4,7 @@ namespace Coco\SourceWatcher\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractor;
 use Coco\SourceWatcher\Core\Row;
-
+use Coco\SourceWatcher\Core\SourceWatcherException;
 use Flow\JSONPath\JSONPath;
 use Flow\JSONPath\JSONPathException;
 
@@ -42,25 +42,33 @@ class JsonExtractor extends Extractor
 
     /**
      * @return array|mixed
-     * @throws JSONPathException
+     * @throws SourceWatcherException
      */
     public function extract ()
     {
         if ( $this->input == null ) {
-            throw new Exception( "An input must be provided." );
+            throw new SourceWatcherException( "An input must be provided." );
         }
 
         $result = array();
 
-        // @todo: check if file exists
+        if ( !file_exists( $this->input ) ) {
+            throw new SourceWatcherException( "The file " . $this->input . " could not be found." );
+        }
+
         $data = json_decode( file_get_contents( $this->input ), true );
 
         if ( $this->columns ) {
-            // @todo: control possible JSONPathException exception
             $jsonPath = new JSONPath( $data );
 
-            foreach ( $this->columns as $key => $path ) {
-                $this->columns[$key] = $jsonPath->find( $path )->data();
+            try {
+                foreach ( $this->columns as $key => $path ) {
+                    $this->columns[$key] = $jsonPath->find( $path )->data();
+                }
+            } catch ( JSONPathException $jsonPathException ) {
+                throw new SourceWatcherException( "Something went wrong trying to extract the JSON file: " . $jsonPathException->getMessage() );
+            } catch ( Exception $exception ) {
+                throw new SourceWatcherException( "Something unexpected went wrong trying to extract the JSON file: " . $exception->getMessage() );
             }
 
             $data = $this->transpose( $this->columns );
