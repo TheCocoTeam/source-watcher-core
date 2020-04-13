@@ -46,7 +46,7 @@ class Covid19FloridaApiReader extends ApiReader
     /**
      * @var string
      */
-    private string $deathsParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"FLResDeaths","outStatisticFieldName":"value"}]&cacheHint=true';
+    private string $deathsParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"Deaths","outStatisticFieldName":"value"}]&cacheHint=true';
 
     /**
      * @var string
