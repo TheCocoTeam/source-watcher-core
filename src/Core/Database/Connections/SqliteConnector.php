@@ -59,6 +59,10 @@ class SqliteConnector extends EmbeddedDatabaseConnector
         $this->memory = $memory;
     }
 
+    /**
+     * @return Connection
+     * @throws SourceWatcherException
+     */
     public function connect () : Connection
     {
         try {
@@ -70,6 +74,9 @@ class SqliteConnector extends EmbeddedDatabaseConnector
         }
     }
 
+    /**
+     * @return array
+     */
     protected function getConnectionParameters () : array
     {
         $this->connectionParameters = array();
@@ -87,6 +94,11 @@ class SqliteConnector extends EmbeddedDatabaseConnector
         return $this->connectionParameters;
     }
 
+    /**
+     * @param Row $row
+     * @throws DBALException
+     * @throws SourceWatcherException
+     */
     public function insert ( Row $row ) : void
     {
         if ( $this->tableName == null || $this->tableName == "" ) {

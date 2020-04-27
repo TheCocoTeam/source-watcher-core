@@ -5,7 +5,6 @@ namespace Coco\SourceWatcher\Tests\Core\Extractors;
 use Coco\SourceWatcher\Core\Extractors\CsvExtractor;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
-
 use PHPUnit\Framework\TestCase;
 
 class CsvExtractorTest extends TestCase
