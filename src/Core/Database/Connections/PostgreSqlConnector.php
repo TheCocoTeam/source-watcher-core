@@ -67,7 +67,7 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
         return $this->connectionParameters;
     }
 
-    public function insert ( Row $row ) : void
+    public function insert ( Row $row ) : int
     {
         // TODO: Implement insert() method.
     }

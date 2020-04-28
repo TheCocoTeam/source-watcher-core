@@ -96,10 +96,10 @@ class SqliteConnector extends EmbeddedDatabaseConnector
 
     /**
      * @param Row $row
-     * @throws DBALException
+     * @return int
      * @throws SourceWatcherException
      */
-    public function insert ( Row $row ) : void
+    public function insert ( Row $row ) : int
     {
         if ( $this->tableName == null || $this->tableName == "" ) {
             throw new SourceWatcherException( "No table name found." );
@@ -107,6 +107,16 @@ class SqliteConnector extends EmbeddedDatabaseConnector
 
         $connection = $this->connect();
 
-        $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
+        try {
+            $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
+        } catch ( DBALException $dbalException ) {
+            $errorMessage = sprintf( "Something went wrong while trying to insert the row: %s", $dbalException->getMessage() );
+            throw new SourceWatcherException( $errorMessage );
+        } catch ( Exception $exception ) {
+            $errorMessage = sprintf( "Something unexpected went wrong while trying to insert the row: %s", $exception->getMessage() );
+            throw new SourceWatcherException( $errorMessage );
+        }
+
+        return $numberOfAffectedRows;
     }
 }

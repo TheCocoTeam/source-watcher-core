@@ -5,15 +5,35 @@ namespace Coco\SourceWatcher\Core\Database\Connections;
 use Coco\SourceWatcher\Core\Row;
 use Doctrine\DBAL\Connection;
 
+/**
+ * Class Connector
+ * @package Coco\SourceWatcher\Core\Database\Connections
+ */
 abstract class Connector
 {
+    /**
+     * @var string
+     */
     protected string $driver = "";
 
+    /**
+     * @var array
+     */
     protected array $connectionParameters = [];
 
+    /**
+     * @var string
+     */
     protected string $user = "";
+
+    /**
+     * @var string
+     */
     protected string $password = "";
 
+    /**
+     * @var string
+     */
     protected string $tableName = "";
 
     /**
@@ -23,8 +43,9 @@ abstract class Connector
 
     /**
      * @param Row $row
+     * @return int
      */
-    public abstract function insert ( Row $row ) : void;
+    public abstract function insert ( Row $row ) : int;
 
     /**
      * @return string

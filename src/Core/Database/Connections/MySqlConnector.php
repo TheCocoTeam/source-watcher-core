@@ -17,9 +17,19 @@ use Exception;
  */
 class MySqlConnector extends ClientServerDatabaseConnector
 {
+    /**
+     * @var string
+     */
     protected string $unixSocket = "";
+
+    /**
+     * @var string
+     */
     protected string $charset = "";
 
+    /**
+     * MySqlConnector constructor.
+     */
     public function __construct ()
     {
         $this->driver = "pdo_mysql";
@@ -59,6 +69,10 @@ class MySqlConnector extends ClientServerDatabaseConnector
         $this->charset = $charset;
     }
 
+    /**
+     * @return Connection
+     * @throws SourceWatcherException
+     */
     public function connect () : Connection
     {
         try {
@@ -70,6 +84,9 @@ class MySqlConnector extends ClientServerDatabaseConnector
         }
     }
 
+    /**
+     * @return array
+     */
     protected function getConnectionParameters () : array
     {
         $this->connectionParameters = array();
@@ -92,7 +109,12 @@ class MySqlConnector extends ClientServerDatabaseConnector
         return $this->connectionParameters;
     }
 
-    public function insert ( Row $row ) : void
+    /**
+     * @param Row $row
+     * @return int
+     * @throws SourceWatcherException
+     */
+    public function insert ( Row $row ) : int
     {
         if ( $this->tableName == null || $this->tableName == "" ) {
             throw new SourceWatcherException( "No table name found." );
@@ -100,6 +122,16 @@ class MySqlConnector extends ClientServerDatabaseConnector
 
         $connection = $this->connect();
 
-        $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
+        try {
+            $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
+        } catch ( DBALException $dbalException ) {
+            $errorMessage = sprintf( "Something went wrong while trying to insert the row: %s", $dbalException->getMessage() );
+            throw new SourceWatcherException( $errorMessage );
+        } catch ( Exception $exception ) {
+            $errorMessage = sprintf( "Something unexpected went wrong while trying to insert the row: %s", $exception->getMessage() );
+            throw new SourceWatcherException( $errorMessage );
+        }
+
+        return $numberOfAffectedRows;
     }
 }
