@@ -15,7 +15,7 @@ Alternatively, you can simply build the Docker image with:
 sudo docker-compose build
 ```
 
-Optional step, list the Docker images to confirm it's there:
+An optional step, list the Docker images to confirm it's there:
 
 ```shell
 sudo docker image ls
