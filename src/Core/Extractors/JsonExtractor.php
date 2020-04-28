@@ -20,7 +20,7 @@ class JsonExtractor extends Extractor
     private array $columns = [];
 
     /**
-     * @var array
+     * @var array|string[]
      */
     protected array $availableOptions = [ "columns" ];
 

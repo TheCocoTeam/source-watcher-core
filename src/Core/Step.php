@@ -2,6 +2,8 @@
 
 namespace Coco\SourceWatcher\Core;
 
+use Coco\SourceWatcher\Utils\TextUtils;
+
 /**
  * Class Step
  * @package Coco\SourceWatcher\Core
@@ -33,21 +35,7 @@ class Step
      */
     protected function textToCamelCase ( string $word ) : string
     {
-        // Make an array of word parts exploding the word by "_"
-        $wordParts = explode( "_", $word );
-
-        // Make every word part lower case
-        $wordParts = array_map( "strtolower", $wordParts );
-
-        // Make ever word part first character uppercase
-        $wordParts = array_map( "ucfirst", $wordParts );
-
-        // Make the new word as the combination of the given word parts
-        $newWord = implode( "", $wordParts );
-
-        // Make the new word first character lowercase
-        $newWord = lcfirst( $newWord );
-
-        return $newWord;
+        $textUtils = new TextUtils();
+        return $textUtils->textToCamelCase( $word );
     }
 }

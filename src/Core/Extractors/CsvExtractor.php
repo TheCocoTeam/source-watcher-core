@@ -6,12 +6,35 @@ use Coco\SourceWatcher\Core\Extractor;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 
+/**
+ * Class CsvExtractor
+ * @package Coco\SourceWatcher\Core\Extractors
+ */
 class CsvExtractor extends Extractor
 {
+    /**
+     * @var array
+     */
     private array $columns;
+
+    /**
+     * @var string
+     */
     private string $delimiter;
+
+    /**
+     * @var string
+     */
     private string $enclosure;
 
+    /**
+     * @var array|string[]
+     */
+    protected array $availableOptions = [ "columns", "delimiter", "enclosure" ];
+
+    /**
+     * CsvExtractor constructor.
+     */
     public function __construct ()
     {
         $this->columns = array();
