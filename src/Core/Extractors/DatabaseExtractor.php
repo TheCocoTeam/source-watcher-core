@@ -10,9 +10,6 @@ use Coco\SourceWatcher\Core\Extractor;
  */
 class DatabaseExtractor extends Extractor
 {
-    /**
-     * @inheritDoc
-     */
     public function extract ()
     {
         // TODO: Implement extract() method.

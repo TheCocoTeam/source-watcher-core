@@ -3,7 +3,7 @@
 namespace Coco\SourceWatcher\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractor;
-use Coco\SourceWatcher\Core\Inputs\FileInput;
+use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 
@@ -16,17 +16,17 @@ class CsvExtractor extends Extractor
     /**
      * @var array
      */
-    private array $columns;
+    protected array $columns;
 
     /**
      * @var string
      */
-    private string $delimiter;
+    protected string $delimiter;
 
     /**
      * @var string
      */
-    private string $enclosure;
+    protected string $enclosure;
 
     /**
      * @var array|string[]

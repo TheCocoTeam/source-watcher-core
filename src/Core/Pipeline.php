@@ -13,12 +13,22 @@ class Pipeline implements Iterator
     /**
      * @var Extractor
      */
-    private Extractor $extractor;
+    private ?Extractor $extractor = null;
 
     /**
      * @var array
      */
-    private array $steps;
+    private array $steps = [];
+
+    /**
+     * @var array
+     */
+    private array $results = [];
+
+    public function __construct ()
+    {
+
+    }
 
     /**
      * @return Extractor
@@ -53,43 +63,46 @@ class Pipeline implements Iterator
     }
 
     /**
-     * @return mixed|void
+     * @return array
      */
+    public function getResults () : array
+    {
+        return $this->results;
+    }
+
+    /**
+     * @param array $results
+     */
+    public function setResults ( array $results ) : void
+    {
+        $this->results = $results;
+    }
+
+    private int $index = 0;
+
     public function current ()
     {
-        // TODO: Implement current() method.
+        return $this->results[$this->index];
     }
 
-    /**
-     *
-     */
     public function next ()
     {
-        // TODO: Implement next() method.
+        $this->index++;
     }
 
-    /**
-     * @return bool|float|int|string|void|null
-     */
     public function key ()
     {
-        // TODO: Implement key() method.
+        return $this->index;
     }
 
-    /**
-     * @return bool|void
-     */
     public function valid ()
     {
-        // TODO: Implement valid() method.
+        return isset( $this->results[$this->key()] );
     }
 
-    /**
-     *
-     */
     public function rewind ()
     {
-        // TODO: Implement rewind() method.
+        $this->index = 0;
     }
 
     /**
@@ -98,5 +111,24 @@ class Pipeline implements Iterator
     public function pipe ( Step $step ) : void
     {
         $this->steps[] = $step;
+    }
+
+    public function execute () : void
+    {
+        $this->results = $this->extractor->extract();
+
+        foreach ( $this->steps as $currentStep ) {
+            if ( $currentStep instanceof Transformer ) {
+                foreach ( $this->results as $currentIndex => $currentItem ) {
+                    $currentStep->transform( $this->results[$currentIndex] );
+                }
+            }
+
+            if ( $currentStep instanceof Loader ) {
+                foreach ( $this->results as $currentIndex => $currentItem ) {
+                    $currentStep->load( $currentItem );
+                }
+            }
+        }
     }
 }

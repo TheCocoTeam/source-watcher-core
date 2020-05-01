@@ -3,6 +3,7 @@
 namespace Coco\SourceWatcher\Tests\Core\Loaders;
 
 use Coco\SourceWatcher\Core\Database\Connections\Connector;
+use Coco\SourceWatcher\Core\IO\Outputs\DatabaseOutput;
 use Coco\SourceWatcher\Core\Loaders\DatabaseLoader;
 use PHPUnit\Framework\TestCase;
 
@@ -15,13 +16,15 @@ class DatabaseLoaderTest extends TestCase
     /**
      *
      */
-    public function testSetAndGetConnector () : void
+    public function testSetAndGetOutput () : void
     {
         $expectedConnector = $this->createMock( Connector::class );
 
-        $databaseLoader = new DatabaseLoader();
-        $databaseLoader->setConnector( $expectedConnector );
+        $databaseOutput = new DatabaseOutput( $expectedConnector );
 
-        $this->assertSame( $expectedConnector, $databaseLoader->getConnector() );
+        $databaseLoader = new DatabaseLoader();
+        $databaseLoader->setOutput( $databaseOutput );
+
+        $this->assertSame( $databaseOutput, $databaseLoader->getOutput() );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Coco\SourceWatcher\Core\Inputs;
+namespace Coco\SourceWatcher\Core\IO\Inputs;
 
 abstract class Input
 {

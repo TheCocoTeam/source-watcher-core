@@ -3,7 +3,7 @@
 namespace Coco\SourceWatcher\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractor;
-use Coco\SourceWatcher\Core\Inputs\FileInput;
+use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Flow\JSONPath\JSONPath;
@@ -18,7 +18,7 @@ class JsonExtractor extends Extractor
     /**
      * @var array
      */
-    private array $columns = [];
+    protected array $columns = [];
 
     /**
      * @var array|string[]
