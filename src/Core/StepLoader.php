@@ -35,9 +35,15 @@ class StepLoader
      * @return Step
      * @throws SourceWatcherException
      */
-    public function step ( string $parentClassName, string $stepName ) : Step
+    public function getStep ( string $parentClassName, string $stepName ) : ?Step
     {
-        $parentClassShortName = "";
+        if ( empty( $parentClassName ) ) {
+            throw new SourceWatcherException( "The parent class name must be provided." );
+        }
+
+        if ( empty( $stepName ) ) {
+            throw new SourceWatcherException( "The step name must be provided." );
+        }
 
         try {
             $reflection = new ReflectionClass( $parentClassName );

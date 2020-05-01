@@ -2,6 +2,8 @@
 
 namespace Coco\SourceWatcher\Core;
 
+use Coco\SourceWatcher\Core\Inputs\Input;
+
 /**
  * Class Extractor
  * @package Coco\SourceWatcher\Core
@@ -9,22 +11,22 @@ namespace Coco\SourceWatcher\Core;
 abstract class Extractor extends Step
 {
     /**
-     * @var mixed
+     * @var Input|null
      */
-    protected $input;
+    protected ?Input $input = null;
 
     /**
-     * @return mixed
+     * @return Input
      */
-    public function getInput ()
+    public function getInput () : Input
     {
         return $this->input;
     }
 
     /**
-     * @param mixed $input
+     * @param Input $input
      */
-    public function setInput ( $input ) : void
+    public function setInput ( Input $input ) : void
     {
         $this->input = $input;
     }

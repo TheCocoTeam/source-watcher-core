@@ -2,13 +2,29 @@
 
 namespace Coco\SourceWatcher\Core;
 
+/**
+ * Class SourceWatcher
+ * @package Coco\SourceWatcher\Core
+ */
 class SourceWatcher
 {
+    /**
+     * @var StepLoader
+     */
     private StepLoader $stepLoader;
 
+    /**
+     * @var Pipeline
+     */
+    private Pipeline $pipeline;
+
+    /**
+     * SourceWatcher constructor.
+     */
     public function __construct ()
     {
         $this->stepLoader = new StepLoader();
+        $this->pipeline = new Pipeline();
     }
 
     public function extract ( string $extractorName, $input, array $options = [] ) : SourceWatcher
@@ -21,9 +37,15 @@ class SourceWatcher
          * Coco\SourceWatcher\Core\Extractor, $extractorName
          */
 
-        $extractor = $this->stepLoader->step( Extractor::class, $extractorName );
-        $extractor->setInput( $input );
-        $extractor->options( $options );
+        try {
+            $extractor = $this->stepLoader->getStep( Extractor::class, $extractorName );
+            $extractor->setInput( $input );
+            $extractor->options( $options );
+
+            $this->pipeline->setExtractor( $extractor );
+        } catch ( SourceWatcherException $sourceWatcherException ) {
+
+        }
 
         return $this;
     }

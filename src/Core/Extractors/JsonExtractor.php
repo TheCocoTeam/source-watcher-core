@@ -3,6 +3,7 @@
 namespace Coco\SourceWatcher\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractor;
+use Coco\SourceWatcher\Core\Inputs\FileInput;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Flow\JSONPath\JSONPath;
@@ -41,7 +42,7 @@ class JsonExtractor extends Extractor
     }
 
     /**
-     * @return array|mixed
+     * @return array
      * @throws SourceWatcherException
      */
     public function extract ()
@@ -50,13 +51,19 @@ class JsonExtractor extends Extractor
             throw new SourceWatcherException( "An input must be provided." );
         }
 
-        $result = array();
+        $inputIsFileInput = $this->input instanceof FileInput;
 
-        if ( !file_exists( $this->input ) ) {
-            throw new SourceWatcherException( "The file " . $this->input . " could not be found." );
+        if ( !$inputIsFileInput ) {
+            throw new SourceWatcherException( sprintf( "The input must be an instance of %s", FileInput::class ) );
         }
 
-        $data = json_decode( file_get_contents( $this->input ), true );
+        $result = array();
+
+        if ( !file_exists( $this->input->getInput() ) ) {
+            throw new SourceWatcherException( "The file " . $this->input->getInput() . " could not be found." );
+        }
+
+        $data = json_decode( file_get_contents( $this->input->getInput() ), true );
 
         if ( $this->columns ) {
             $jsonPath = new JSONPath( $data );

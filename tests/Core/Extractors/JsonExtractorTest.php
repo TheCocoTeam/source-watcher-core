@@ -3,6 +3,7 @@
 namespace Coco\SourceWatcher\Tests\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractors\JsonExtractor;
+use Coco\SourceWatcher\Core\Inputs\FileInput;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use PHPUnit\Framework\TestCase;
@@ -13,24 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 class JsonExtractorTest extends TestCase
 {
-    /**
-     *
-     */
-    public function testSetterGetterAttributeInput () : void
-    {
-        $jsonExtractor = new JsonExtractor();
-
-        $givenInput = "/some/file/path/file.json";
-        $expectedInput = "/some/file/path/file.json";
-
-        $jsonExtractor->setInput( $givenInput );
-
-        $this->assertEquals( $expectedInput, $jsonExtractor->getInput() );
-    }
-
-    /**
-     *
-     */
     public function testSetGetColumns () : void
     {
         $jsonExtractor = new JsonExtractor();
@@ -43,54 +26,58 @@ class JsonExtractorTest extends TestCase
         $this->assertEquals( $expectedColumns, $jsonExtractor->getColumns() );
     }
 
-    /**
-     * @throws SourceWatcherException
-     */
-    public function testExtractColors () : void
+    public function testSetGetInput () : void
     {
         $jsonExtractor = new JsonExtractor();
-        $jsonExtractor->setColumns( array( "color" => "colors.*.color" ) );
-        $jsonExtractor->setInput( __DIR__ . "/../../../samples/data/json/colors.json" );
 
-        $expected = [ new Row( [ "color" => "black" ] ), new Row( [ "color" => "white" ] ), new Row( [ "color" => "red" ] ), new Row( [ "color" => "blue" ] ), new Row( [ "color" => "yellow" ] ), new Row( [ "color" => "green" ] ) ];
+        $givenInput = new FileInput( "/some/file/path/file.json" );
+        $expectedInput = new FileInput( "/some/file/path/file.json" );
 
-        $this->assertEquals( $expected, $jsonExtractor->extract() );
+        $jsonExtractor->setInput( $givenInput );
+
+        $this->assertEquals( $expectedInput, $jsonExtractor->getInput() );
     }
 
-    /**
-     * @throws SourceWatcherException
-     */
-    public function testNoInputException () : void
+    public function testExceptionNoInput () : void
     {
         $this->expectException( SourceWatcherException::class );
 
         $jsonExtractor = new JsonExtractor();
-        $jsonExtractor->setInput( null );
+
         $jsonExtractor->extract();
     }
 
-    /**
-     * @throws SourceWatcherException
-     */
+    public function testExtractColors () : void
+    {
+        try {
+            $jsonExtractor = new JsonExtractor();
+            $jsonExtractor->setColumns( array( "color" => "colors.*.color" ) );
+            $jsonExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/json/colors.json" ) );
+
+            $expected = [ new Row( [ "color" => "black" ] ), new Row( [ "color" => "white" ] ), new Row( [ "color" => "red" ] ), new Row( [ "color" => "blue" ] ), new Row( [ "color" => "yellow" ] ), new Row( [ "color" => "green" ] ) ];
+
+            $this->assertEquals( $expected, $jsonExtractor->extract() );
+        } catch ( SourceWatcherException $sourceWatcherException ) {
+
+        }
+    }
+
     public function testNonexistentPath () : void
     {
         $this->expectException( SourceWatcherException::class );
 
         $jsonExtractor = new JsonExtractor();
-        $jsonExtractor->setInput( "/file/path/this/doest/not/exist/file.json" );
+        $jsonExtractor->setInput( new FileInput( "/file/path/this/doest/not/exist/file.json" ) );
         $jsonExtractor->extract();
     }
 
-    /**
-     * @throws SourceWatcherException
-     */
     public function testWrongColumnSelectorException () : void
     {
         $this->expectException( SourceWatcherException::class );
 
         $jsonExtractor = new JsonExtractor();
         $jsonExtractor->setColumns( array( "color" => "$.bad-!-selector" ) );
-        $jsonExtractor->setInput( __DIR__ . "/../../../samples/data/json/colors.json" );
+        $jsonExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/json/colors.json" ) );
         $jsonExtractor->extract();
     }
 }

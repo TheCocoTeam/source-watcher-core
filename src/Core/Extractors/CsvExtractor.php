@@ -3,6 +3,7 @@
 namespace Coco\SourceWatcher\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractor;
+use Coco\SourceWatcher\Core\Inputs\FileInput;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 
@@ -37,7 +38,7 @@ class CsvExtractor extends Extractor
      */
     public function __construct ()
     {
-        $this->columns = array();
+        $this->columns = [];
         $this->delimiter = ",";
         $this->enclosure = "\"";
     }
@@ -90,15 +91,25 @@ class CsvExtractor extends Extractor
         $this->enclosure = $enclosure;
     }
 
+    /**
+     * @return array
+     * @throws SourceWatcherException
+     */
     public function extract () : array
     {
         if ( $this->input == null ) {
             throw new SourceWatcherException( "An input must be provided." );
         }
 
+        $inputIsFileInput = $this->input instanceof FileInput;
+
+        if ( !$inputIsFileInput ) {
+            throw new SourceWatcherException( sprintf( "The input must be an instance of %s", FileInput::class ) );
+        }
+
         $result = array();
 
-        $fileHandler = fopen( $this->input, "r" );
+        $fileHandler = fopen( $this->input->getInput(), "r" );
 
         $columns = $this->generateColumns( $fileHandler );
 
