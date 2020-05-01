@@ -4,6 +4,7 @@ namespace Coco\SourceWatcher\Tests\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractors\CsvExtractor;
 use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
+use Coco\SourceWatcher\Core\IO\Inputs\Input;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use PHPUnit\Framework\TestCase;
@@ -67,7 +68,15 @@ class CsvExtractorTest extends TestCase
         $this->expectException( SourceWatcherException::class );
 
         $csvExtractor = new CsvExtractor();
+        $csvExtractor->extract();
+    }
 
+    public function testExceptionNoFileInput () : void
+    {
+        $this->expectException( SourceWatcherException::class );
+
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setInput( $this->createMock( Input::class ) );
         $csvExtractor->extract();
     }
 
