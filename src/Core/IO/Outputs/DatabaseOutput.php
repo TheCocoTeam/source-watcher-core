@@ -12,7 +12,7 @@ class DatabaseOutput extends Output
 {
     private ?Connector $databaseConnector = null;
 
-    public function __construct ( Connector $databaseConnector )
+    public function __construct ( Connector $databaseConnector = null )
     {
         $this->databaseConnector = $databaseConnector;
     }
