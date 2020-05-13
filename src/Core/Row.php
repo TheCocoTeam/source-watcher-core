@@ -40,11 +40,6 @@ class Row implements ArrayAccess, ArrayListAccess
         $this->attributes = $attributes;
     }
 
-    public function transform ()
-    {
-
-    }
-
     /**
      * @inheritDoc
      */

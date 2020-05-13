@@ -7,47 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class RowTest extends TestCase
 {
-    public function testGetAttribute () : void
-    {
-        $row = new Row( [ "name" => "Jane Doe" ] );
-        $expectedAttributeValue = "Jane Doe";
-        $this->assertEquals( $expectedAttributeValue, $row->get( "name" ) );
-    }
-
-    public function testSetAttribute () : void
-    {
-        $row = new Row( [ "name" => "Jane Doe" ] );
-        $row->set( "name", "John Doe" );
-
-        $expectedAttributeValue = "John Doe";
-
-        $this->assertEquals( $expectedAttributeValue, $row->get( "name" ) );
-    }
-
-    public function testRemoveAttribute () : void
-    {
-        $row = new Row( [ "name" => "Jane Doe" ] );
-        $row->remove( "name" );
-
-        $expectedAttributeValue = null;
-
-        $this->assertEquals( $expectedAttributeValue, $row->get( "name" ) );
-    }
-
-    public function testAccessAttributeNotationArray () : void
-    {
-        $row = new Row( [ "name" => "Jane Doe" ] );
-        $expectedAttributeValue = "Jane Doe";
-        $this->assertEquals( $expectedAttributeValue, $row["name"] );
-    }
-
-    public function testAccessAttributeNotationObject () : void
-    {
-        $row = new Row( [ "name" => "Jane Doe" ] );
-        $expectedAttributeValue = "Jane Doe";
-        $this->assertEquals( $expectedAttributeValue, $row->name );
-    }
-
     public function testOffsetExistsViaEmpty () : void
     {
         $row = new Row( [ "name" => "Jane Doe" ] );
@@ -87,5 +46,43 @@ class RowTest extends TestCase
         $expectedRow = new Row( [ "name" => "Jane Doe" ] );
 
         $this->assertEquals( $expectedRow, $row );
+    }
+
+    public function testGetAndSetAttribute () : void
+    {
+        $givenName = "Jane Doe";
+
+        $row = new Row( [ "id" => 1 ] );
+        $row->set( "name", $givenName );    // test the set method
+
+        $expectedName = "Jane Doe";
+        $actualName = $row->get( "name" );  // test the get method
+
+        $this->assertEquals( $expectedName, $actualName );
+    }
+
+    public function testRemoveAttribute () : void
+    {
+        $row = new Row( [ "id" => 1, "name" => "Jane Doe" ] );
+
+        // test the remove method
+        $row->remove( "id" );
+
+        $expectedRow = new Row( [ "name" => "Jane Doe" ] );
+
+        $this->assertEquals( $expectedRow, $row );
+    }
+
+    public function testGetAndSetWithObjectNotation () : void
+    {
+        $givenName = "Jane Doe";
+
+        $row = new Row( [ "id" => 1 ] );
+        $row->name = $givenName;    // test the __set method
+
+        $expectedName = "Jane Doe";
+        $actualName = $row->name;   // test the __get method
+
+        $this->assertEquals( $expectedName, $actualName );
     }
 }
