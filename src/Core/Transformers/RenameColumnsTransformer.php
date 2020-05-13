@@ -2,9 +2,13 @@
 
 namespace Coco\SourceWatcher\Core\Transformers;
 
-use Coco\SourceWatcher\Core\Transformer;
 use Coco\SourceWatcher\Core\Row;
+use Coco\SourceWatcher\Core\Transformer;
 
+/**
+ * Class RenameColumnsTransformer
+ * @package Coco\SourceWatcher\Core\Transformers
+ */
 class RenameColumnsTransformer extends Transformer
 {
     /**

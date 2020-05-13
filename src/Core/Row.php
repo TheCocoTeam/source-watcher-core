@@ -4,6 +4,10 @@ namespace Coco\SourceWatcher\Core;
 
 use ArrayAccess;
 
+/**
+ * Class Row
+ * @package Coco\SourceWatcher\Core
+ */
 class Row implements ArrayAccess, ArrayListAccess
 {
     /**
@@ -73,26 +77,45 @@ class Row implements ArrayAccess, ArrayListAccess
         unset( $this->attributes[$offset] );
     }
 
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
     public function get ( string $key )
     {
         return $this->attributes[$key] ?? null;
     }
 
+    /**
+     * @param string $key
+     * @param $value
+     */
     public function set ( string $key, $value ) : void
     {
         $this->attributes[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     */
     public function remove ( string $key ) : void
     {
         unset( $this->attributes[$key] );
     }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
     public function __get ( $key )
     {
         return $this->attributes[$key];
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     public function __set ( $key, $value )
     {
         $this->attributes[$key] = $value;
