@@ -52,34 +52,20 @@ class StepLoader
         } catch ( ReflectionException $reflectionException ) {
             $errorMessage = sprintf( "Something went wrong while trying to get the short class name: %s", $reflectionException->getMessage() );
             throw new SourceWatcherException( $errorMessage );
-        } catch ( Exception $exception ) {
-            $errorMessage = sprintf( "Something unexpected went wrong while trying to get the short class name: %s", $exception->getMessage() );
-            throw new SourceWatcherException( $errorMessage );
         }
 
         $baseNameSpace = "Coco\\SourceWatcher\\Core";
 
         $packages = [ "Extractor" => sprintf( "%s\\%s", $baseNameSpace, "Extractors" ), "Transformer" => sprintf( "%s\\%s", $baseNameSpace, "Transformers" ), "Loader" => sprintf( "%s\\%s", $baseNameSpace, "Loaders" ) ];
 
-        $subPackage = $packages[$parentClassShortName];
+        $step = null;
 
         $textUtils = new TextUtils();
 
-        $step = null;
+        $fullyQualifiedClassName = sprintf( "%s\\%s", $packages[$parentClassShortName], $textUtils->textToPascalCase( sprintf( "%s_%s", $stepName, $parentClassShortName ) ) );
 
-        try {
-            $temporaryClassName = sprintf( "%s_%s", $stepName, $parentClassShortName );
-
-            $pascalCaseClassName = $textUtils->textToPascalCase( $temporaryClassName );
-
-            $fullyQualifiedClassName = sprintf( "%s\\%s", $subPackage, $pascalCaseClassName );
-
-            if ( class_exists( $fullyQualifiedClassName ) ) {
-                $step = new $fullyQualifiedClassName();
-            }
-        } catch ( Exception $exception ) {
-            $errorMessage = sprintf( "Something unexpected went wrong while trying to load the step: %s", $exception->getMessage() );
-            throw new SourceWatcherException( $errorMessage );
+        if ( class_exists( $fullyQualifiedClassName ) ) {
+            $step = new $fullyQualifiedClassName();
         }
 
         return $step;
