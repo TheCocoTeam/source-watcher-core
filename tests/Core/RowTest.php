@@ -7,6 +7,19 @@ use PHPUnit\Framework\TestCase;
 
 class RowTest extends TestCase
 {
+    public function testGetAndSetAttributes () : void
+    {
+        $givenAttributes = [ "id", "name" ];
+
+        $row = new Row( [] );
+        $row->setAttributes( $givenAttributes );
+
+        $expectedAttributes = [ "id", "name" ];
+        $actualAttributes = $row->getAttributes();
+
+        $this->assertEquals( $expectedAttributes, $actualAttributes );
+    }
+
     public function testOffsetExistsViaEmpty () : void
     {
         $row = new Row( [ "name" => "Jane Doe" ] );
