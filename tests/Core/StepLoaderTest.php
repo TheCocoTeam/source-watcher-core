@@ -13,28 +13,45 @@ use PHPUnit\Framework\TestCase;
  */
 class StepLoaderTest extends TestCase
 {
+    /**
+     *
+     */
+    public function testGetInstanceViaStaticMethodNotNull () : void
+    {
+        $this->assertNotNull( StepLoader::getInstance() );
+    }
+
+    /**
+     *
+     */
+    public function testGetInstanceViaStaticMethodIsStepLoader () : void
+    {
+        $this->assertInstanceOf( StepLoader::class, StepLoader::getInstance() );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetExtractor () : void
     {
-        try {
-            $stepLoader = new StepLoader();
-            $extractor = $stepLoader->getStep( Extractor::class, "csv" );
-            $this->assertNotNull( $extractor );
-        } catch ( SourceWatcherException $sourceWatcherException ) {
-
-        }
+        $stepLoader = new StepLoader();
+        $extractor = $stepLoader->getStep( Extractor::class, "csv" );
+        $this->assertNotNull( $extractor );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetExtractorValidated () : void
     {
-        try {
-            $stepLoader = new StepLoader();
-            $extractor = $stepLoader->getStep( Extractor::class, "csv" );
-            $this->assertInstanceOf( Extractor::class, $extractor );
-        } catch ( SourceWatcherException $sourceWatcherException ) {
-
-        }
+        $stepLoader = new StepLoader();
+        $extractor = $stepLoader->getStep( Extractor::class, "csv" );
+        $this->assertInstanceOf( Extractor::class, $extractor );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetExtractorNoParentClassName () : void
     {
         $this->expectException( SourceWatcherException::class );
@@ -43,6 +60,9 @@ class StepLoaderTest extends TestCase
         $stepLoader->getStep( "", "csv" );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetExtractorNoStepName () : void
     {
         $this->expectException( SourceWatcherException::class );
@@ -51,6 +71,9 @@ class StepLoaderTest extends TestCase
         $stepLoader->getStep( Extractor::class, "" );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetNonExistingParentStep () : void
     {
         $this->expectException( SourceWatcherException::class );
@@ -59,14 +82,13 @@ class StepLoaderTest extends TestCase
         $stepLoader->getStep( "Sequencer", "csv" );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetNonExistingStepName () : void
     {
-        try {
-            $stepLoader = new StepLoader();
-            $extractor = $stepLoader->getStep( Extractor::class, "rainbow" );
-            $this->assertNull( $extractor );
-        } catch ( SourceWatcherException $sourceWatcherException ) {
-
-        }
+        $stepLoader = new StepLoader();
+        $extractor = $stepLoader->getStep( Extractor::class, "rainbow" );
+        $this->assertNull( $extractor );
     }
 }

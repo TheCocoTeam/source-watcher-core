@@ -13,9 +13,9 @@ use ReflectionException;
 class StepLoader
 {
     /**
-     * @var StepLoader
+     * @var StepLoader|null
      */
-    private static StepLoader $instance;
+    private static ?StepLoader $instance = null;
 
     /**
      * @return StepLoader
