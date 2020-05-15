@@ -21,9 +21,7 @@ class DatabaseLoaderTest extends TestCase
      */
     public function testSetAndGetOutput () : void
     {
-        $connectorMock = $this->createMock( Connector::class );
-
-        $databaseOutput = new DatabaseOutput( $connectorMock );
+        $databaseOutput = new DatabaseOutput( $this->createMock( Connector::class ) );
 
         $databaseLoader = new DatabaseLoader();
         $databaseLoader->setOutput( $databaseOutput );
@@ -64,5 +62,16 @@ class DatabaseLoaderTest extends TestCase
         $databaseLoader = new DatabaseLoader();
         $databaseLoader->setOutput( new DatabaseOutput() );
         $databaseLoader->load( new Row( [ "name" => "Jane Doe" ] ) );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testInsertRowWithDatabaseOutputWithMockConnector () : void
+    {
+        $databaseLoader = new DatabaseLoader();
+        $databaseLoader->setOutput( new DatabaseOutput( $this->createMock( Connector::class ) ) );
+
+        $this->assertNull( $databaseLoader->load( new Row( [ "name" => "Jane Doe" ] ) ) );
     }
 }
