@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
  */
 class JsonExtractorTest extends TestCase
 {
+    /**
+     *
+     */
     public function testSetGetColumns () : void
     {
         $jsonExtractor = new JsonExtractor();
@@ -26,6 +29,9 @@ class JsonExtractorTest extends TestCase
         $this->assertEquals( $expectedColumns, $jsonExtractor->getColumns() );
     }
 
+    /**
+     *
+     */
     public function testSetGetInput () : void
     {
         $jsonExtractor = new JsonExtractor();
@@ -38,6 +44,9 @@ class JsonExtractorTest extends TestCase
         $this->assertEquals( $expectedInput, $jsonExtractor->getInput() );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testExceptionNoInput () : void
     {
         $this->expectException( SourceWatcherException::class );
@@ -47,21 +56,23 @@ class JsonExtractorTest extends TestCase
         $jsonExtractor->extract();
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testExtractColors () : void
     {
-        try {
-            $jsonExtractor = new JsonExtractor();
-            $jsonExtractor->setColumns( array( "color" => "colors.*.color" ) );
-            $jsonExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/json/colors.json" ) );
+        $jsonExtractor = new JsonExtractor();
+        $jsonExtractor->setColumns( array( "color" => "colors.*.color" ) );
+        $jsonExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/json/colors.json" ) );
 
-            $expected = [ new Row( [ "color" => "black" ] ), new Row( [ "color" => "white" ] ), new Row( [ "color" => "red" ] ), new Row( [ "color" => "blue" ] ), new Row( [ "color" => "yellow" ] ), new Row( [ "color" => "green" ] ) ];
+        $expected = [ new Row( [ "color" => "black" ] ), new Row( [ "color" => "white" ] ), new Row( [ "color" => "red" ] ), new Row( [ "color" => "blue" ] ), new Row( [ "color" => "yellow" ] ), new Row( [ "color" => "green" ] ) ];
 
-            $this->assertEquals( $expected, $jsonExtractor->extract() );
-        } catch ( SourceWatcherException $sourceWatcherException ) {
-
-        }
+        $this->assertEquals( $expected, $jsonExtractor->extract() );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testNonexistentPath () : void
     {
         $this->expectException( SourceWatcherException::class );
@@ -71,6 +82,9 @@ class JsonExtractorTest extends TestCase
         $jsonExtractor->extract();
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testWrongColumnSelectorException () : void
     {
         $this->expectException( SourceWatcherException::class );

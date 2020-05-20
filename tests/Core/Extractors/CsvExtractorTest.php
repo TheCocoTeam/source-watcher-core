@@ -15,6 +15,9 @@ use PHPUnit\Framework\TestCase;
  */
 class CsvExtractorTest extends TestCase
 {
+    /**
+     *
+     */
     public function testSetGetColumns () : void
     {
         $csvExtractor = new CsvExtractor();
@@ -27,6 +30,9 @@ class CsvExtractorTest extends TestCase
         $this->assertEquals( $expectedColumns, $csvExtractor->getColumns() );
     }
 
+    /**
+     *
+     */
     public function testSetGetDelimiter () : void
     {
         $csvExtractor = new CsvExtractor();
@@ -39,6 +45,9 @@ class CsvExtractorTest extends TestCase
         $this->assertEquals( $expectedDelimiter, $csvExtractor->getDelimiter() );
     }
 
+    /**
+     *
+     */
     public function testSetGetEnclosure () : void
     {
         $csvExtractor = new CsvExtractor();
@@ -51,6 +60,9 @@ class CsvExtractorTest extends TestCase
         $this->assertEquals( $expectedEnclosure, $csvExtractor->getEnclosure() );
     }
 
+    /**
+     *
+     */
     public function testSetGetInput () : void
     {
         $csvExtractor = new CsvExtractor();
@@ -63,6 +75,9 @@ class CsvExtractorTest extends TestCase
         $this->assertEquals( $expectedInput, $csvExtractor->getInput() );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testExceptionNoInput () : void
     {
         $this->expectException( SourceWatcherException::class );
@@ -71,6 +86,9 @@ class CsvExtractorTest extends TestCase
         $csvExtractor->extract();
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testExceptionNoFileInput () : void
     {
         $this->expectException( SourceWatcherException::class );
@@ -80,63 +98,59 @@ class CsvExtractorTest extends TestCase
         $csvExtractor->extract();
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testLoadCsvWithDefaultOptions () : void
     {
-        try {
-            $csvExtractor = new CsvExtractor();
+        $csvExtractor = new CsvExtractor();
 
-            $expected = [ new Row( [ "id" => 1, "name" => "John Doe", "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "name" => "Jane Doe", "email" => "janedoe@email.com" ] ) ];
+        $expected = [ new Row( [ "id" => 1, "name" => "John Doe", "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "name" => "Jane Doe", "email" => "janedoe@email.com" ] ) ];
 
-            $csvExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" ) );
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" ) );
 
-            $this->assertEquals( $expected, $csvExtractor->extract() );
-        } catch ( SourceWatcherException $sourceWatcherException ) {
-
-        }
+        $this->assertEquals( $expected, $csvExtractor->extract() );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testColumnsWithNoIndex1 () : void
     {
-        try {
-            $csvExtractor = new CsvExtractor();
-            $csvExtractor->setColumns( array( "id", "email" ) );
-            $csvExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" ) );
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setColumns( array( "id", "email" ) );
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" ) );
 
-            $expected = [ new Row( [ "id" => 1, "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "email" => "janedoe@email.com" ] ) ];
+        $expected = [ new Row( [ "id" => 1, "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "email" => "janedoe@email.com" ] ) ];
 
-            $this->assertEquals( $expected, $csvExtractor->extract() );
-        } catch ( SourceWatcherException $sourceWatcherException ) {
-
-        }
+        $this->assertEquals( $expected, $csvExtractor->extract() );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testColumnsWithNoIndex2 () : void
     {
-        try {
-            $csvExtractor = new CsvExtractor();
-            $csvExtractor->setColumns( array( "id", "name", "email" ) );
-            $csvExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" ) );
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setColumns( array( "id", "name", "email" ) );
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" ) );
 
-            $expected = [ new Row( [ "id" => 1, "name" => "John Doe", "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "name" => "Jane Doe", "email" => "janedoe@email.com" ] ) ];
+        $expected = [ new Row( [ "id" => 1, "name" => "John Doe", "email" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "name" => "Jane Doe", "email" => "janedoe@email.com" ] ) ];
 
-            $this->assertEquals( $expected, $csvExtractor->extract() );
-        } catch ( SourceWatcherException $sourceWatcherException ) {
-
-        }
+        $this->assertEquals( $expected, $csvExtractor->extract() );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetColumnsWithDifferentNames () : void
     {
-        try {
-            $csvExtractor = new CsvExtractor();
-            $csvExtractor->setColumns( array( "id" => "id", "email" => "email_address" ) );
-            $csvExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" ) );
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setColumns( array( "id" => "id", "email" => "email_address" ) );
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/csv/csv1.csv" ) );
 
-            $expected = [ new Row( [ "id" => 1, "email_address" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "email_address" => "janedoe@email.com" ] ) ];
+        $expected = [ new Row( [ "id" => 1, "email_address" => "johndoe@email.com" ] ), new Row( [ "id" => 2, "email_address" => "janedoe@email.com" ] ) ];
 
-            $this->assertEquals( $expected, $csvExtractor->extract() );
-        } catch ( SourceWatcherException $sourceWatcherException ) {
-
-        }
+        $this->assertEquals( $expected, $csvExtractor->extract() );
     }
 }
