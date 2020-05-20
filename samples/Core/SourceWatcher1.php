@@ -8,6 +8,7 @@ use Coco\SourceWatcher\Core\Database\Connections\MySqlConnector;
 use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
 use Coco\SourceWatcher\Core\IO\Outputs\DatabaseOutput;
 use Coco\SourceWatcher\Core\SourceWatcher;
+use Coco\SourceWatcher\Core\SourceWatcherException;
 
 $mysqlConnector = new MySqlConnector();
 $mysqlConnector->setUser( "user" );
@@ -18,8 +19,13 @@ $mysqlConnector->setDbName( "tests" );
 $mysqlConnector->setTableName( "people" );
 
 $sourceWatcher = new SourceWatcher();
-$sourceWatcher
-    ->extract( "Csv", new FileInput( __DIR__ . "/../data/csv/csv1.csv" ), [ "columns" => array( "name", "email" ) ] )
-    ->transform( "RenameColumns", [ "columns" => array( "email" => "email_address" ) ] )
-    ->load( "Database", new DatabaseOutput( $mysqlConnector ) )
-    ->run();
+
+try {
+    $sourceWatcher
+        ->extract( "Csv", new FileInput( __DIR__ . "/../data/csv/csv1.csv" ), [ "columns" => array( "name", "email" ) ] )
+        ->transform( "RenameColumns", [ "columns" => array( "email" => "email_address" ) ] )
+        ->load( "Database", new DatabaseOutput( $mysqlConnector ) )
+        ->run();
+} catch ( SourceWatcherException $exception ) {
+    echo sprintf( "Something unexpected went wrong: %s", $exception->getMessage() );
+}
