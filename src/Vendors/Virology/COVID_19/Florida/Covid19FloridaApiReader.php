@@ -2,17 +2,15 @@
 
 namespace Coco\SourceWatcher\Vendors\Virology\COVID_19\Florida;
 
-use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Core\Api\ApiReader;
+use Coco\SourceWatcher\Core\SourceWatcherException;
+use Exception;
 
 /**
  * Class Covid19FloridaApiReader
  *
  * Layer: Florida_COVID_Cases (ID:0)
  * https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/ArcGIS/rest/services/Florida_COVID19_Cases/FeatureServer/0
- *
- * Layer: Florida_COVID19_Case_Line_Data (ID:0)
- * https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Case_Line_Data/FeatureServer/0/
  *
  * @package Coco\SourceWatcher\Vendors\Virology\COVID_19\Florida
  */
@@ -21,47 +19,27 @@ class Covid19FloridaApiReader extends ApiReader
     /**
      * @var string
      */
-    private string $floridaCOVID19Cases = "https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Cases/FeatureServer/0/query?";
+    private string $floridaCOVID19CasesURL = "https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Cases/FeatureServer/0/query?";
 
     /**
      * @var string
      */
-    private string $floridaCOVID19CaseLineData = "https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Case_Line_Data/FeatureServer/0/query?";
+    private string $genericQueryParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"%s","outStatisticFieldName":"value"}]&cacheHint=true';
 
     /**
-     * @var string
+     * @var array|string[]
      */
-    private string $totalPositiveCasesParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"T_positive","outStatisticFieldName":"value"}]&cacheHint=true';
+    private array $statisticFields = [ "T_positive" => "Total Positive Cases",
 
-    /**
-     * @var string
-     */
-    private string $totalNegativeResidentsParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"T_NegRes","outStatisticFieldName":"value"}]&cacheHint=true';
+        "T_NegRes" => "Total Negative Florida Residents", "T_NegNotFLRes " => "Total Negative Non-Florida Residents",
 
-    /**
-     * @var string
-     */
-    private string $totalTestsParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"T_total","outStatisticFieldName":"value"}]&cacheHint=true';
+        "T_total" => "Total Number Of Tests",
 
-    /**
-     * @var string
-     */
-    private string $deathsParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"Deaths","outStatisticFieldName":"value"}]&cacheHint=true';
+        "Deaths" => "Deaths",
 
-    /**
-     * @var string
-     */
-    private string $flResParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"C_FLRes","outStatisticFieldName":"value"}]&cacheHint=true';
+        "C_FLRes" => "Positive Florida Residents", "C_FLResOut" => "Positive Non-Florida Residents",
 
-    /**
-     * @var string
-     */
-    private string $flResOutParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"C_FLResOut","outStatisticFieldName":"value"}]&cacheHint=true';
-
-    /**
-     * @var string
-     */
-    private string $hospitalizedParameters = '';
+        "C_HospYes_Res" => "Hospitalizations Florida Residents", "C_HospYes_NonRes" => "Hospitalizations Non-Florida Residents" ];
 
     /**
      * Covid19FloridaApiReader constructor.
@@ -69,171 +47,53 @@ class Covid19FloridaApiReader extends ApiReader
     public function __construct ()
     {
         parent::__construct();
-
-        $this->hospitalizedParameters = 'f=json&where=' . urlencode( "Hospitalized='Yes' AND Jurisdiction='FL resident'" ) . '&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"count","onStatisticField":"ObjectId","outStatisticFieldName":"value"}]&cacheHint=true';
     }
 
     /**
-     *
-     */
-    public function getTotalPositiveCases () : string
-    {
-        $this->endpoint = $this->floridaCOVID19Cases . $this->totalPositiveCasesParameters;
-
-        $totalPositiveCases = "0";
-
-        try {
-            $jsonResult = json_decode( parent::read(), true );
-
-            if ( $jsonResult != null ) {
-                $totalPositiveCases = $jsonResult["features"][0]["attributes"]["value"];
-            }
-        } catch ( SourceWatcherException $exception ) {
-
-        } catch ( Exception $exception ) {
-
-        }
-
-        return $totalPositiveCases;
-    }
-
-    /**
+     * @param string $url
      * @return string
+     * @throws SourceWatcherException
      */
-    public function getTotalNegativeResidents () : string
+    public function getResultFromURL ( string $url ) : string
     {
-        $this->endpoint = $this->floridaCOVID19Cases . $this->totalNegativeResidentsParameters;
+        $this->endpoint = $url;
 
-        $totalNegativeResidents = "0";
+        $result = "0";
 
         try {
             $jsonResult = json_decode( parent::read(), true );
 
             if ( $jsonResult != null ) {
-                $totalNegativeResidents = $jsonResult["features"][0]["attributes"]["value"];
+                $result = $jsonResult["features"][0]["attributes"]["value"];
             }
         } catch ( SourceWatcherException $exception ) {
-
+            $errorMessage = sprintf( "Something went wrong while trying to get the result from the URL: %s", $exception->getMessage() );
+            throw new SourceWatcherException( $errorMessage );
         } catch ( Exception $exception ) {
-
+            $errorMessage = sprintf( "Something unexpected went wrong while trying to get the result from the URL: %s", $exception->getMessage() );
+            throw new SourceWatcherException( $errorMessage );
         }
 
-        return $totalNegativeResidents;
+        return $result;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getTotalTests () : string
+    public function getResults () : array
     {
-        $this->endpoint = $this->floridaCOVID19Cases . $this->totalTestsParameters;
+        $results = [];
 
-        $totalTests = "0";
+        foreach ( $this->statisticFields as $parameter => $description ) {
+            $queryParameters = sprintf( $this->genericQueryParameters, $parameter );
 
-        try {
-            $jsonResult = json_decode( parent::read(), true );
-
-            if ( $jsonResult != null ) {
-                $totalTests = $jsonResult["features"][0]["attributes"]["value"];
+            try {
+                $results[$parameter] = [ "description" => $description, "value" => $this->getResultFromURL( "{$this->floridaCOVID19CasesURL}{$queryParameters}" ) ];
+            } catch ( SourceWatcherException $exception ) {
+                $results[$parameter] = [ "description" => sprintf( "Field %s couldn't be retrieved", $parameter ), "value" => "" ];
             }
-        } catch ( SourceWatcherException $exception ) {
-
-        } catch ( Exception $exception ) {
-
         }
 
-        return $totalTests;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDeaths () : string
-    {
-        $this->endpoint = $this->floridaCOVID19Cases . $this->deathsParameters;
-
-        $deaths = "0";
-
-        try {
-            $jsonResult = json_decode( parent::read(), true );
-
-            if ( $jsonResult != null ) {
-                $deaths = $jsonResult["features"][0]["attributes"]["value"];
-            }
-        } catch ( SourceWatcherException $exception ) {
-
-        } catch ( Exception $exception ) {
-
-        }
-
-        return $deaths;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPositiveResidents () : string
-    {
-        // Get the C_FLRes result
-
-        $this->endpoint = $this->floridaCOVID19Cases . $this->flResParameters;
-
-        $flResParameters = "0";
-
-        try {
-            $jsonResult = json_decode( parent::read(), true );
-
-            if ( $jsonResult != null ) {
-                $flResParameters = $jsonResult["features"][0]["attributes"]["value"];
-            }
-        } catch ( SourceWatcherException $exception ) {
-
-        } catch ( Exception $exception ) {
-
-        }
-
-        // Get the C_FLResOut result
-
-        $this->endpoint = $this->floridaCOVID19Cases . $this->flResOutParameters;
-
-        $flResOutParameters = "0";
-
-        try {
-            $jsonResult = json_decode( parent::read(), true );
-
-            if ( $jsonResult != null ) {
-                $flResOutParameters = $jsonResult["features"][0]["attributes"]["value"];
-            }
-        } catch ( SourceWatcherException $exception ) {
-
-        } catch ( Exception $exception ) {
-
-        }
-
-        return intval( $flResParameters ) + intval( $flResOutParameters );
-    }
-
-    /**
-     * @return string
-     */
-    public function getHospitalized () : string
-    {
-        $this->endpoint = $this->floridaCOVID19CaseLineData . $this->hospitalizedParameters;
-
-        $hospitalized = "0";
-
-        try {
-            $jsonResult = json_decode( parent::read(), true );
-
-            if ( $jsonResult != null ) {
-                $hospitalized = $jsonResult["features"][0]["attributes"]["value"];
-            }
-        } catch ( SourceWatcherException $exception ) {
-
-        } catch ( Exception $exception ) {
-
-        }
-
-        return $hospitalized;
+        return $results;
     }
 }
