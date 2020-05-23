@@ -3,9 +3,14 @@
 namespace Coco\SourceWatcher\Core\Api;
 
 use Coco\SourceWatcher\Core\SourceWatcherException;
+use Coco\SourceWatcher\Utils\i18n;
 
 /**
  * Class ApiReader
+ *
+ * When you describe the endpoint, you list the end path only (hence the term "end point").
+ * The full path that contains both the base path and the endpoint is often called a resource URL.
+ *
  * @package Coco\SourceWatcher\Core\Api
  */
 class ApiReader implements Reader
@@ -13,7 +18,7 @@ class ApiReader implements Reader
     /**
      * @var string
      */
-    protected string $endpoint;
+    protected ?string $resourceURL = null;
 
     /**
      * @var int
@@ -41,17 +46,17 @@ class ApiReader implements Reader
     /**
      * @return string
      */
-    public function getEndpoint () : string
+    public function getResourceURL () : string
     {
-        return $this->endpoint;
+        return $this->resourceURL;
     }
 
     /**
-     * @param string $endpoint
+     * @param string $resourceURL
      */
-    public function setEndpoint ( string $endpoint ) : void
+    public function setResourceURL ( string $resourceURL ) : void
     {
-        $this->endpoint = $endpoint;
+        $this->resourceURL = $resourceURL;
     }
 
     /**
@@ -76,13 +81,13 @@ class ApiReader implements Reader
      */
     public function read ()
     {
-        if ( $this->endpoint == null || $this->endpoint == "" ) {
-            throw new SourceWatcherException( "No endpoint found." );
+        if ( $this->resourceURL == null || $this->resourceURL == "" ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( "en_US", ApiReader::class, "No_Resource_URL_Found" ) );
         }
 
         $curl = curl_init();
 
-        curl_setopt( $curl, CURLOPT_URL, $this->endpoint );
+        curl_setopt( $curl, CURLOPT_URL, $this->resourceURL );
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt( $curl, CURLOPT_CONNECTTIMEOUT, $this->timeout );
 

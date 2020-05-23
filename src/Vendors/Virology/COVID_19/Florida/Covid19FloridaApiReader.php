@@ -56,7 +56,7 @@ class Covid19FloridaApiReader extends ApiReader
      */
     public function getResultFromURL ( string $url ) : string
     {
-        $this->endpoint = $url;
+        $this->resourceURL = $url;
 
         $result = "0";
 

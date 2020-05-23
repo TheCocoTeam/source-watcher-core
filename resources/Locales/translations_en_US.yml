@@ -1,0 +1,10 @@
+Coco:
+  SourceWatcher:
+    Core:
+      Api:
+        ApiReader:
+          No_Resource_URL_Found: No resource URL found.
+    Tests:
+      Utils:
+        i18nTest:
+          This_Is_A_Test_Entry: This is a test entry!
