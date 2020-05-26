@@ -79,8 +79,18 @@ class ApiReaderTest extends TestCase
         $apiReader = new ApiReader();
         $apiReader->setResourceURL( "https://api.github.com/emojis" );
         $apiReader->setHeaders( [ "User-Agent: request" ] );
-        $result = $apiReader->read();
 
-        $this->assertNotNull( $result );
+        $this->assertNotNull( $apiReader->read() );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testAttemptsLoop () : void
+    {
+        $apiReader = new ApiReader();
+        $apiReader->setResourceURL( "https://thiswebsiteisnotreal.com" );
+
+        $this->assertNotNull( $apiReader->read() );
     }
 }

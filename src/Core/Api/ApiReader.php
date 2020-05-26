@@ -130,7 +130,7 @@ class ApiReader implements Reader
         if ( $response == false ) {
             if ( $this->currentAttempt < $this->attempts ) {
                 $this->currentAttempt++;
-                $this->read();
+                return $this->read();
             }
         }
 
