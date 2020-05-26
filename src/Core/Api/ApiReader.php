@@ -26,6 +26,11 @@ class ApiReader implements Reader
     protected int $timeout = 5;
 
     /**
+     * @var array
+     */
+    protected array $headers = [];
+
+    /**
      * @var int
      */
     protected int $currentAttempt;
@@ -76,6 +81,22 @@ class ApiReader implements Reader
     }
 
     /**
+     * @return array
+     */
+    public function getHeaders () : array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     */
+    public function setHeaders ( array $headers ) : void
+    {
+        $this->headers = $headers;
+    }
+
+    /**
      * @return bool|string
      * @throws SourceWatcherException
      */
@@ -90,6 +111,10 @@ class ApiReader implements Reader
         curl_setopt( $curl, CURLOPT_URL, $this->resourceURL );
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt( $curl, CURLOPT_CONNECTTIMEOUT, $this->timeout );
+
+        if ( !empty( $this->headers ) ) {
+            curl_setopt( $curl, CURLOPT_HTTPHEADER, $this->headers );
+        }
 
         /**
          * https://www.php.net/manual/en/function.curl-exec.php

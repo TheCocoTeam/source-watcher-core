@@ -4,6 +4,7 @@ namespace Coco\SourceWatcher\Core;
 
 use Coco\SourceWatcher\Core\IO\Inputs\Input;
 use Coco\SourceWatcher\Core\IO\Outputs\Output;
+use Coco\SourceWatcher\Utils\i18n;
 
 /**
  * Class SourceWatcher
@@ -58,7 +59,7 @@ class SourceWatcher
         $extractor = $this->stepLoader->getStep( Extractor::class, $extractorName );
 
         if ( $extractor == null ) {
-            throw new SourceWatcherException( sprintf( "The extractor %s can't be found.", $extractorName ) );
+            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( "en_US", SourceWatcher::class, "Extractor_Not_Found" ), $extractorName ) );
         }
 
         $extractor->setInput( $input );
@@ -80,7 +81,7 @@ class SourceWatcher
         $transformer = $this->stepLoader->getStep( Transformer::class, $transformerName );
 
         if ( $transformer == null ) {
-            throw new SourceWatcherException( sprintf( "The transformer %s can't be found.", $transformerName ) );
+            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( "en_US", SourceWatcher::class, "Transformer_Not_Found" ), $transformerName ) );
         }
 
         $transformer->options( $options );
@@ -102,7 +103,7 @@ class SourceWatcher
         $loader = $this->stepLoader->getStep( Loader::class, $loaderName );
 
         if ( $loader == null ) {
-            throw new SourceWatcherException( sprintf( "The loader %s can't be found.", $loaderName ) );
+            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( "en_US", SourceWatcher::class, "Loader_Not_Found" ), $loaderName ) );
         }
 
         $loader->setOutput( $output );

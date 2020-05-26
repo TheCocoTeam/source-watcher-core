@@ -1,6 +1,10 @@
 Coco:
   SourceWatcher:
     Core:
+      SourceWatcher:
+        Extractor_Not_Found: The extractor %s can't be found.
+        Transformer_Not_Found: The transformer %s can't be found.
+        Loader_Not_Found: The loader %s can't be found.
       Api:
         ApiReader:
           No_Resource_URL_Found: No resource URL found.
