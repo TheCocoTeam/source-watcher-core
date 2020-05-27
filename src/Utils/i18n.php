@@ -29,10 +29,21 @@ class i18n
      */
     private function getLanguageFromEnvFile () : ?string
     {
-        $dotEnv = Dotenv::createImmutable( __DIR__ . "./../../" );
-        $dotEnv->load();
+        $language = array_key_exists( "I18N_LANGUAGE", $_ENV ) ? $_ENV["I18N_LANGUAGE"] : null;
 
-        return array_key_exists( "I18N_LANGUAGE", $_ENV ) ? $_ENV["I18N_LANGUAGE"] : null;
+        if ( empty( $language ) ) {
+            $envFileDirectory = __DIR__ . "/../../";
+            $envFileLocation = $envFileDirectory . ".env";
+
+            if ( file_exists( $envFileLocation ) ) {
+                $dotEnv = Dotenv::createImmutable( $envFileDirectory );
+                $dotEnv->load();
+
+                $language = array_key_exists( "I18N_LANGUAGE", $_ENV ) ? $_ENV["I18N_LANGUAGE"] : null;
+            }
+        }
+
+        return $language;
     }
 
     /**
