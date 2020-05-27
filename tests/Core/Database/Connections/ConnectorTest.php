@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types = 1 );
 
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
@@ -11,6 +11,18 @@ use PHPUnit\Framework\TestCase;
  */
 class ConnectorTest extends TestCase
 {
+    /**
+     *
+     */
+    public function testGetDriver () : void
+    {
+        $connector = new MySqlConnector();
+
+        $expected = "pdo_mysql";
+
+        $this->assertEquals( $expected, $connector->getDriver() );
+    }
+
     /**
      *
      */
