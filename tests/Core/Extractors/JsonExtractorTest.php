@@ -4,6 +4,7 @@ namespace Coco\SourceWatcher\Tests\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Extractors\JsonExtractor;
 use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
+use Coco\SourceWatcher\Core\IO\Inputs\Input;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use PHPUnit\Framework\TestCase;
@@ -92,6 +93,19 @@ class JsonExtractorTest extends TestCase
         $jsonExtractor = new JsonExtractor();
         $jsonExtractor->setColumns( array( "color" => "$.bad-!-selector" ) );
         $jsonExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/json/colors.json" ) );
+        $jsonExtractor->extract();
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testNoFileInputProvided () : void
+    {
+        $this->expectException( SourceWatcherException::class );
+
+        $jsonExtractor = new JsonExtractor();
+        $jsonExtractor->setColumns( array( "color" => "some.selector" ) );
+        $jsonExtractor->setInput( $this->createMock( Input::class ) );
         $jsonExtractor->extract();
     }
 }

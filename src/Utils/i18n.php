@@ -2,6 +2,7 @@
 
 namespace Coco\SourceWatcher\Utils;
 
+use Dotenv\Dotenv;
 use Symfony\Component\Yaml\Yaml;
 
 class i18n
@@ -23,9 +24,32 @@ class i18n
         return static::$instance;
     }
 
-    public function getText ( string $language = "en_US", string $className, string $entry ) : string
+    /**
+     * @return string|null
+     */
+    private function getLanguageFromEnvFile () : ?string
     {
-        $result = "";
+        $dotEnv = Dotenv::createImmutable( __DIR__ . "./../../" );
+        $dotEnv->load();
+
+        return array_key_exists( "I18N_LANGUAGE", $_ENV ) ? $_ENV["I18N_LANGUAGE"] : null;
+    }
+
+    /**
+     * @param string $className
+     * @param string $entry
+     * @param string|null $language
+     * @return string
+     */
+    public function getText ( string $className, string $entry, string $language = null ) : string
+    {
+        if ( empty( $language ) ) {
+            $language = $this->getLanguageFromEnvFile();
+        }
+
+        if ( empty( $language ) ) {
+            $language = "en_US";
+        }
 
         $data = Yaml::parseFile( __DIR__ . sprintf( "/../../resources/Locales/translations_%s.yml", $language ) );
 
@@ -37,8 +61,6 @@ class i18n
             $dataCopy = $dataCopy[$currentPart];
         }
 
-        $result = $dataCopy[$entry];
-
-        return $result;
+        return $dataCopy[$entry];
     }
 }

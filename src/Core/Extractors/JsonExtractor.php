@@ -6,6 +6,7 @@ use Coco\SourceWatcher\Core\Extractor;
 use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
+use Coco\SourceWatcher\Utils\i18n;
 use Flow\JSONPath\JSONPath;
 use Flow\JSONPath\JSONPathException;
 
@@ -48,19 +49,19 @@ class JsonExtractor extends Extractor
     public function extract ()
     {
         if ( $this->input == null ) {
-            throw new SourceWatcherException( "An input must be provided." );
+            throw new SourceWatcherException( i18n::getInstance()->getText( JsonExtractor::class, "No_Input_Provided" ) );
         }
 
         $inputIsFileInput = $this->input instanceof FileInput;
 
         if ( !$inputIsFileInput ) {
-            throw new SourceWatcherException( sprintf( "The input must be an instance of %s", FileInput::class ) );
+            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( JsonExtractor::class, "Input_Not_Instance_Of_File_Input" ), FileInput::class ) );
         }
 
         $result = array();
 
         if ( !file_exists( $this->input->getInput() ) ) {
-            throw new SourceWatcherException( "The file " . $this->input->getInput() . " could not be found." );
+            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( JsonExtractor::class, "File_Input_File_Not_Found" ), $this->input->getInput() ) );
         }
 
         $data = json_decode( file_get_contents( $this->input->getInput() ), true );
@@ -73,9 +74,7 @@ class JsonExtractor extends Extractor
                     $this->columns[$key] = $jsonPath->find( $path )->data();
                 }
             } catch ( JSONPathException $jsonPathException ) {
-                throw new SourceWatcherException( "Something went wrong trying to extract the JSON file: " . $jsonPathException->getMessage() );
-            } catch ( Exception $exception ) {
-                throw new SourceWatcherException( "Something unexpected went wrong trying to extract the JSON file: " . $exception->getMessage() );
+                throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( JsonExtractor::class, "JSON_Path_Exception" ), $jsonPathException->getMessage() ) );
             }
 
             $data = $this->transpose( $this->columns );

@@ -103,7 +103,7 @@ class ApiReader implements Reader
     public function read ()
     {
         if ( $this->resourceURL == null || $this->resourceURL == "" ) {
-            throw new SourceWatcherException( i18n::getInstance()->getText( "en_US", ApiReader::class, "No_Resource_URL_Found" ) );
+            throw new SourceWatcherException( i18n::getInstance()->getText( ApiReader::class, "No_Resource_URL_Found" ) );
         }
 
         $curl = curl_init();

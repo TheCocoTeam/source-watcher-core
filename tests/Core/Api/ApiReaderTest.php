@@ -66,7 +66,7 @@ class ApiReaderTest extends TestCase
         $apiReader = new ApiReader();
 
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( "en_US", ApiReader::class, "No_Resource_URL_Found" ) );
+        $this->expectExceptionMessage( i18n::getInstance()->getText( ApiReader::class, "No_Resource_URL_Found" ) );
 
         $apiReader->read();
     }

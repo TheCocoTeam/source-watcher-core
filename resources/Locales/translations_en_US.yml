@@ -1,13 +1,19 @@
 Coco:
   SourceWatcher:
     Core:
+      Api:
+        ApiReader:
+          No_Resource_URL_Found: No resource URL found.
+      Extractors:
+        JsonExtractor:
+          No_Input_Provided: An input must be provided.
+          Input_Not_Instance_Of_File_Input: The input must be an instance of %s.
+          File_Input_File_Not_Found: The file %s could not be found.
+          JSON_Path_Exception: Something went wrong trying to extract the JSON file %s.
       SourceWatcher:
         Extractor_Not_Found: The extractor %s can't be found.
         Transformer_Not_Found: The transformer %s can't be found.
         Loader_Not_Found: The loader %s can't be found.
-      Api:
-        ApiReader:
-          No_Resource_URL_Found: No resource URL found.
     Tests:
       Utils:
         i18nTest:

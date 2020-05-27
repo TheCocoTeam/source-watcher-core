@@ -59,7 +59,7 @@ class SourceWatcher
         $extractor = $this->stepLoader->getStep( Extractor::class, $extractorName );
 
         if ( $extractor == null ) {
-            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( "en_US", SourceWatcher::class, "Extractor_Not_Found" ), $extractorName ) );
+            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( SourceWatcher::class, "Extractor_Not_Found" ), $extractorName ) );
         }
 
         $extractor->setInput( $input );
@@ -81,7 +81,7 @@ class SourceWatcher
         $transformer = $this->stepLoader->getStep( Transformer::class, $transformerName );
 
         if ( $transformer == null ) {
-            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( "en_US", SourceWatcher::class, "Transformer_Not_Found" ), $transformerName ) );
+            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( SourceWatcher::class, "Transformer_Not_Found" ), $transformerName ) );
         }
 
         $transformer->options( $options );
@@ -103,7 +103,7 @@ class SourceWatcher
         $loader = $this->stepLoader->getStep( Loader::class, $loaderName );
 
         if ( $loader == null ) {
-            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( "en_US", SourceWatcher::class, "Loader_Not_Found" ), $loaderName ) );
+            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( SourceWatcher::class, "Loader_Not_Found" ), $loaderName ) );
         }
 
         $loader->setOutput( $output );
