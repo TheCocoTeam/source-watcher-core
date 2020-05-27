@@ -2,22 +2,22 @@
 
 namespace Coco\SourceWatcher\Tests\Core\Extractors;
 
-use Coco\SourceWatcher\Core\Extractors\DatabaseExtractor;
+use Coco\SourceWatcher\Core\Extractors\XmlExtractor;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class DatabaseExtractorTest
+ * Class XmlExtractorTest
  * @package Coco\SourceWatcher\Tests\Core\Extractors
  */
-class DatabaseExtractorTest extends TestCase
+class XmlExtractorTest extends TestCase
 {
     /**
      *
      */
     public function testExtract () : void
     {
-        $dbExtractor = new DatabaseExtractor();
+        $xmlExtractor = new XmlExtractor();
 
-        $this->assertNull( $dbExtractor->extract() );
+        $this->assertNull( $xmlExtractor->extract() );
     }
 }
