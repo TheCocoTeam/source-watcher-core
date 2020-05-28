@@ -4,6 +4,10 @@ Coco:
       Api:
         ApiReader:
           No_Resource_URL_Found: No resource URL found.
+      Database:
+        Connections:
+          MySqlConnector:
+            No_Table_Name_Found: No table name found.
       Extractors:
         JsonExtractor:
           No_Input_Provided: An input must be provided.

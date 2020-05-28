@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class ClientServerDatabaseConnectorTest
+ * @package Coco\SourceWatcher\Tests\Core\Database\Connections
  */
 class ClientServerDatabaseConnectorTest extends TestCase
 {
