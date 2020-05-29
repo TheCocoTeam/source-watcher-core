@@ -6,9 +6,11 @@ Coco:
           No_Resource_URL_Found: No resource URL found.
       Database:
         Connections:
-          MySqlConnector:
+          ClientServerDatabaseConnector:
             No_Table_Name_Found: No table name found.
             Connection_Object_Not_Connected_Cannot_Insert: The connection object is not connected. Can't insert into the table.
+          EmbeddedDatabaseConnector:
+            No_Table_Name_Found: No table name found.
       Extractors:
         JsonExtractor:
           No_Input_Provided: An input must be provided.

@@ -37,17 +37,6 @@ abstract class Connector
     protected string $tableName = "";
 
     /**
-     * @return Connection
-     */
-    public abstract function connect () : Connection;
-
-    /**
-     * @param Row $row
-     * @return int
-     */
-    public abstract function insert ( Row $row ) : int;
-
-    /**
      * @return string
      */
     public function getDriver () : string
@@ -107,4 +96,15 @@ abstract class Connector
     {
         $this->tableName = $tableName;
     }
+
+    /**
+     * @return Connection
+     */
+    public abstract function connect () : Connection;
+
+    /**
+     * @param Row $row
+     * @return int
+     */
+    public abstract function insert ( Row $row ) : int;
 }

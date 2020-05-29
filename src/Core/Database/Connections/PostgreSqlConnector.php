@@ -2,12 +2,10 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
-use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Exception;
 
 /**
  * Class PostgreSqlConnector
@@ -17,15 +15,49 @@ use Exception;
  */
 class PostgreSqlConnector extends ClientServerDatabaseConnector
 {
-    protected string $charset;
-    protected string $defaultDatabaseName;
-    protected string $sslMode;
-    protected string $sslRootCert;
-    protected string $sslCert;
-    protected string $sslKey;
-    protected string $sslCrl;
-    protected string $applicationName;
+    /**
+     * @var string
+     */
+    protected string $charset = "";
 
+    /**
+     * @var string
+     */
+    protected string $defaultDatabaseName = "";
+
+    /**
+     * @var string
+     */
+    protected string $sslMode = "";
+
+    /**
+     * @var string
+     */
+    protected string $sslRootCert = "";
+
+    /**
+     * @var string
+     */
+    protected string $sslCert = "";
+
+    /**
+     * @var string
+     */
+    protected string $sslKey = "";
+
+    /**
+     * @var string
+     */
+    protected string $sslCrl = "";
+
+    /**
+     * @var string
+     */
+    protected string $applicationName = "";
+
+    /**
+     * PostgreSqlConnector constructor.
+     */
     public function __construct ()
     {
         $this->driver = "pdo_pgsql";
@@ -33,17 +65,38 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
         $this->port = 5432;
     }
 
+    /**
+     * @return string
+     */
+    public function getCharset () : string
+    {
+        return $this->charset;
+    }
+
+    /**
+     * @param string $charset
+     */
+    public function setCharset ( string $charset ) : void
+    {
+        $this->charset = $charset;
+    }
+
+    /**
+     * @return Connection
+     * @throws SourceWatcherException
+     */
     public function connect () : Connection
     {
         try {
             return DriverManager::getConnection( $this->getConnectionParameters() );
         } catch ( DBALException $dbalException ) {
             throw new SourceWatcherException( "Something went wrong trying to get a connection: " . $dbalException->getMessage() );
-        } catch ( Exception $exception ) {
-            throw new SourceWatcherException( "Something unexpected went wrong trying to get a connection: " . $exception->getMessage() );
         }
     }
 
+    /**
+     * @return array
+     */
     protected function getConnectionParameters () : array
     {
         $this->connectionParameters = array();
@@ -65,10 +118,5 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
         $this->connectionParameters["application_name"] = $this->applicationName;
 
         return $this->connectionParameters;
-    }
-
-    public function insert ( Row $row ) : int
-    {
-        // TODO: Implement insert() method.
     }
 }

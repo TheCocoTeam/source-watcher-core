@@ -2,12 +2,10 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
-use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Exception;
 
 /**
  * Class SqliteConnector
@@ -17,9 +15,19 @@ use Exception;
  */
 class SqliteConnector extends EmbeddedDatabaseConnector
 {
+    /**
+     * @var string
+     */
     protected string $path;
+
+    /**
+     * @var bool
+     */
     protected bool $memory;
 
+    /**
+     * SqliteConnector constructor.
+     */
     public function __construct ()
     {
         $this->driver = "pdo_sqlite";
@@ -69,8 +77,6 @@ class SqliteConnector extends EmbeddedDatabaseConnector
             return DriverManager::getConnection( $this->getConnectionParameters() );
         } catch ( DBALException $dbalException ) {
             throw new SourceWatcherException( "Something went wrong trying to get a connection: " . $dbalException->getMessage() );
-        } catch ( Exception $exception ) {
-            throw new SourceWatcherException( "Something unexpected went wrong trying to get a connection: " . $exception->getMessage() );
         }
     }
 
@@ -92,31 +98,5 @@ class SqliteConnector extends EmbeddedDatabaseConnector
         $this->connectionParameters["memory"] = $this->memory;
 
         return $this->connectionParameters;
-    }
-
-    /**
-     * @param Row $row
-     * @return int
-     * @throws SourceWatcherException
-     */
-    public function insert ( Row $row ) : int
-    {
-        if ( $this->tableName == null || $this->tableName == "" ) {
-            throw new SourceWatcherException( "No table name found." );
-        }
-
-        $connection = $this->connect();
-
-        try {
-            $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
-        } catch ( DBALException $dbalException ) {
-            $errorMessage = sprintf( "Something went wrong while trying to insert the row: %s", $dbalException->getMessage() );
-            throw new SourceWatcherException( $errorMessage );
-        } catch ( Exception $exception ) {
-            $errorMessage = sprintf( "Something unexpected went wrong while trying to insert the row: %s", $exception->getMessage() );
-            throw new SourceWatcherException( $errorMessage );
-        }
-
-        return $numberOfAffectedRows;
     }
 }

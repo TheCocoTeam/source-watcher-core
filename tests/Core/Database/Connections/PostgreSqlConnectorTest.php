@@ -2,6 +2,7 @@
 
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
+use Coco\SourceWatcher\Core\Database\Connections\PostgreSqlConnector;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,5 +11,18 @@ use PHPUnit\Framework\TestCase;
  */
 class PostgreSqlConnectorTest extends TestCase
 {
+    /**
+     *
+     */
+    public function testSetGetCharset () : void
+    {
+        $connector = new PostgreSqlConnector();
 
+        $givenCharset = "utf8";
+        $expectedCharset = "utf8";
+
+        $connector->setCharset( $givenCharset );
+
+        $this->assertEquals( $expectedCharset, $connector->getCharset() );
+    }
 }
