@@ -120,8 +120,14 @@ class MySqlConnector extends ClientServerDatabaseConnector
 
         $connection = $this->connect();
 
+        if ( !$connection->isConnected() ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( MySqlConnector::class, "Connection_Object_Not_Connected_Cannot_Insert" ) );
+        }
+
         try {
             $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
+
+            $connection->close();
         } catch ( DBALException $dbalException ) {
             $errorMessage = sprintf( "Something went wrong while trying to insert the row: %s", $dbalException->getMessage() );
             throw new SourceWatcherException( $errorMessage );

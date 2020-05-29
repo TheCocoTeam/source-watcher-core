@@ -6,6 +6,7 @@ use Coco\SourceWatcher\Core\Database\Connections\MySqlConnector;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Utils\i18n;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -64,7 +65,7 @@ class MySqlConnectorTest extends TestCase
     /**
      * @throws SourceWatcherException
      */
-    public function testInsertUsingWrongConnectionParameters () : void
+    public function testInsertWithNoTableSpecified () : void
     {
         $this->expectException( SourceWatcherException::class );
         $this->expectExceptionMessage( i18n::getInstance()->getText( MySqlConnector::class, "No_Table_Name_Found" ) );
@@ -81,5 +82,50 @@ class MySqlConnectorTest extends TestCase
         $row = new Row( [ "id" => "1", "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
 
         $connector->insert( $row );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testInsertUsingWrongConnectionParameters () : void
+    {
+        $this->expectException( SourceWatcherException::class );
+        $this->expectExceptionMessage( i18n::getInstance()->getText( MySqlConnector::class, "Connection_Object_Not_Connected_Cannot_Insert" ) );
+
+        $connector = new MySqlConnector();
+        $connector->setUser( "admin" );
+        $connector->setPassword( "secret" );
+        $connector->setHost( "localhost" );
+        $connector->setPort( 3306 );;
+        $connector->setDbName( "people" );
+        $connector->setUnixSocket( "/var/run/mysqld/mysqld.sock" );
+        $connector->setCharset( "utf-8" );
+
+        $connector->setTableName( "people" );
+
+        $row = new Row( [ "id" => "1", "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+
+        $connector->insert( $row );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testInsertWithMockConnection () : void
+    {
+        $mockConnection = $this->createMock( Connection::class );
+        $mockConnection->method( "isConnected" )->willReturn( true );
+
+        $mockMySqlConnector = $this->createMock( MySqlConnector::class );
+        $mockMySqlConnector->method( "connect" )->willReturn( $mockConnection );
+        $mockMySqlConnector->method( "insert" )->willReturn( 1 );
+
+        $mockMySqlConnector->setTableName( "people" );
+
+        $row = new Row( [ "id" => "1", "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+
+        $expectedNumberOfAffectedRows = 1;
+
+        $this->assertEquals( $expectedNumberOfAffectedRows, $mockMySqlConnector->insert( $row ) );
     }
 }
