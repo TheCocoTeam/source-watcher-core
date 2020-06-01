@@ -21,7 +21,7 @@ env:
   - UNIT_TEST_MYSQL_DATABASE="secrethub://coco/source-watcher/unit-test-mysql-database"
 
 script:
-  - vendor/bin/phpunit --coverage-clover=clover.xml
+  - secrethub run -- vendor/bin/phpunit --coverage-clover=clover.xml
 
 after_success:
   - export CODECOV_TOKEN="ebd97fbb-5461-4c4a-8012-17cb92ceee69"
