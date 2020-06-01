@@ -113,7 +113,7 @@ class MySqlConnectorTest extends TestCase
      */
     public function testInsertUsingEnvironmentVariables () : void
     {
-        $username = array_key_exists( "UNIT_TEST_MYSQL_USERNAME", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_USERNAME"] : null;
+        $username = array_key_exists( "UNIT_TEST_MYSQL_USERNAME", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_USERNAME"] : getenv("UNIT_TEST_MYSQL_USERNAME");
         $password = array_key_exists( "UNIT_TEST_MYSQL_PASSWORD", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_PASSWORD"] : null;
         $host = array_key_exists( "UNIT_TEST_MYSQL_HOST", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_HOST"] : null;
         $port = array_key_exists( "UNIT_TEST_MYSQL_PORT", $_ENV ) ? intval( $_ENV["UNIT_TEST_MYSQL_PORT"] ) : 3306;
