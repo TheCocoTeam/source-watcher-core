@@ -113,11 +113,11 @@ class MySqlConnectorTest extends TestCase
      */
     public function testInsertUsingEnvironmentVariables () : void
     {
-        $username = array_key_exists( "UNIT_TEST_MYSQL_USERNAME", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_USERNAME"] : getenv("UNIT_TEST_MYSQL_USERNAME");
-        $password = array_key_exists( "UNIT_TEST_MYSQL_PASSWORD", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_PASSWORD"] : null;
-        $host = array_key_exists( "UNIT_TEST_MYSQL_HOST", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_HOST"] : null;
-        $port = array_key_exists( "UNIT_TEST_MYSQL_PORT", $_ENV ) ? intval( $_ENV["UNIT_TEST_MYSQL_PORT"] ) : 3306;
-        $database = array_key_exists( "UNIT_TEST_MYSQL_DATABASE", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_DATABASE"] : null;
+        $username = array_key_exists( "UNIT_TEST_MYSQL_USERNAME", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_USERNAME"] : getenv( "UNIT_TEST_MYSQL_USERNAME" );
+        $password = array_key_exists( "UNIT_TEST_MYSQL_PASSWORD", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_PASSWORD"] : getenv( "UNIT_TEST_MYSQL_PASSWORD" );
+        $host = array_key_exists( "UNIT_TEST_MYSQL_HOST", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_HOST"] : getenv( "UNIT_TEST_MYSQL_HOST" );
+        $port = array_key_exists( "UNIT_TEST_MYSQL_PORT", $_ENV ) ? intval( $_ENV["UNIT_TEST_MYSQL_PORT"] ) : intval( getenv( "UNIT_TEST_MYSQL_PORT" ) );
+        $database = array_key_exists( "UNIT_TEST_MYSQL_DATABASE", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_DATABASE"] : getenv( "UNIT_TEST_MYSQL_DATABASE" );
 
         $connector = new MySqlConnector();
         $connector->setUser( $username );
