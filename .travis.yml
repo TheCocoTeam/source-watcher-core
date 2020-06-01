@@ -5,9 +5,20 @@ dist: bionic
 php:
   - 7.4
 
+before_install:
+  - echo "deb [trusted=yes] https://apt.secrethub.io stable main" | sudo tee /etc/apt/sources.list.d/secrethub.sources.list
+  - sudo apt-get update && sudo apt-get install -y secrethub-cli
+
 before_script:
   - rm -f composer.lock
   - travis_retry composer install --no-interaction --prefer-source --dev
+
+env:
+  - UNIT_TEST_MYSQL_USERNAME="secrethub://coco/source-watcher/unit-test-mysql-username"
+  - UNIT_TEST_MYSQL_PASSWORD="secrethub://coco/source-watcher/unit-test-mysql-password"
+  - UNIT_TEST_MYSQL_HOST="secrethub://coco/source-watcher/unit-test-mysql-host"
+  - UNIT_TEST_MYSQL_PORT="secrethub://coco/source-watcher/unit-test-mysql-port"
+  - UNIT_TEST_MYSQL_DATABASE="secrethub://coco/source-watcher/unit-test-mysql-database"
 
 script:
   - vendor/bin/phpunit --coverage-clover=clover.xml
