@@ -2,11 +2,6 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
-use Coco\SourceWatcher\Core\SourceWatcherException;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
-
 /**
  * Class MySqlConnector
  * @package Coco\SourceWatcher\Core\Database\Connections
@@ -65,19 +60,6 @@ class MySqlConnector extends ClientServerDatabaseConnector
     public function setCharset ( string $charset ) : void
     {
         $this->charset = $charset;
-    }
-
-    /**
-     * @return Connection
-     * @throws SourceWatcherException
-     */
-    public function connect () : Connection
-    {
-        try {
-            return DriverManager::getConnection( $this->getConnectionParameters() );
-        } catch ( DBALException $dbalException ) {
-            throw new SourceWatcherException( "Something went wrong trying to get a connection: " . $dbalException->getMessage() );
-        }
     }
 
     /**

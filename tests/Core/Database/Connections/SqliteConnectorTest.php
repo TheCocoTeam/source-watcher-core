@@ -2,7 +2,11 @@
 
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
+use Coco\SourceWatcher\Core\Database\Connections\EmbeddedDatabaseConnector;
 use Coco\SourceWatcher\Core\Database\Connections\SqliteConnector;
+use Coco\SourceWatcher\Core\Row;
+use Coco\SourceWatcher\Core\SourceWatcherException;
+use Coco\SourceWatcher\Utils\i18n;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,8 +22,8 @@ class SqliteConnectorTest extends TestCase
     {
         $connector = new SqliteConnector();
 
-        $givenPath = __DIR__ . "/../../samples/data/sqlite/people-db.sqlite";
-        $expectedPath = __DIR__ . "/../../samples/data/sqlite/people-db.sqlite";
+        $givenPath = __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite";
+        $expectedPath = __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite";
 
         $connector->setPath( $givenPath );
 
@@ -33,11 +37,75 @@ class SqliteConnectorTest extends TestCase
     {
         $connector = new SqliteConnector();
 
-        $givenMemoryValue = true;
-        $expectedMemoryValue = true;
+        $givenMemoryValue = false;
+        $expectedMemoryValue = false;
 
         $connector->setMemory( $givenMemoryValue );
 
         $this->assertEquals( $expectedMemoryValue, $connector->isMemory() );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testGetConnection () : void
+    {
+        $connector = new SqliteConnector();
+        $connector->setPath( __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite" );
+        $connector->setMemory( false );
+
+        $this->assertNotNull( $connector->connect() );
+    }
+
+    /**
+     *
+     */
+    public function testInsertWithNoTableSpecified () : void
+    {
+        $this->expectException( SourceWatcherException::class );
+        $this->expectExceptionMessage( i18n::getInstance()->getText( EmbeddedDatabaseConnector::class, "No_Table_Name_Found" ) );
+
+        $connector = new SqliteConnector();
+        $connector->setPath( __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite" );
+        $connector->setMemory( false );
+
+        $row = new Row( [ "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+
+        $connector->insert( $row );
+    }
+
+    /**
+     *
+     */
+    public function testInsertUsingWrongConnectionParameters () : void
+    {
+        $this->expectException( SourceWatcherException::class );
+        $this->expectExceptionMessage( i18n::getInstance()->getText( EmbeddedDatabaseConnector::class, "Unexpected_Error" ) );
+
+        $connector = new SqliteConnector();
+        $connector->setPath( __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite" );
+        $connector->setMemory( false );
+
+        $connector->setTableName( "some_non_existing_table" );
+
+        $row = new Row( [ "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+
+        $connector->insert( $row );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testInsertUsingCorrectConnectionParameters () : void
+    {
+        $connector = new SqliteConnector();
+        $connector->setPath( __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite" );
+        $connector->setMemory( false );
+
+        $connector->setTableName( "people" );
+
+        $row = new Row( [ "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+
+        $this->assertEquals( 1, $connector->insert( $row ) );
     }
 }

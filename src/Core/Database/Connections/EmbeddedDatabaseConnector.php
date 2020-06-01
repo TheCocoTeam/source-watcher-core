@@ -33,8 +33,7 @@ abstract class EmbeddedDatabaseConnector extends Connector
 
             $connection->close();
         } catch ( DBALException $dbalException ) {
-            $errorMessage = sprintf( "Something went wrong while trying to insert the row: %s", $dbalException->getMessage() );
-            throw new SourceWatcherException( $errorMessage );
+            throw new SourceWatcherException( i18n::getInstance()->getText( EmbeddedDatabaseConnector::class, "Unexpected_Error" ), 0, $dbalException );
         }
 
         return $numberOfAffectedRows;

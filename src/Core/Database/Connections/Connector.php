@@ -3,7 +3,10 @@
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
 use Coco\SourceWatcher\Core\Row;
+use Coco\SourceWatcher\Core\SourceWatcherException;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
 
 /**
  * Class Connector
@@ -99,8 +102,16 @@ abstract class Connector
 
     /**
      * @return Connection
+     * @throws SourceWatcherException
      */
-    public abstract function connect () : Connection;
+    public function connect () : Connection
+    {
+        try {
+            return DriverManager::getConnection( $this->getConnectionParameters() );
+        } catch ( DBALException $dbalException ) {
+            throw new SourceWatcherException( "Something went wrong trying to get a connection: ", 0, $dbalException->getMessage() );
+        }
+    }
 
     /**
      * @param Row $row

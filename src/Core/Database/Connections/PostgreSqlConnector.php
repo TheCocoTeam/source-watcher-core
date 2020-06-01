@@ -2,11 +2,6 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
-use Coco\SourceWatcher\Core\SourceWatcherException;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
-
 /**
  * Class PostgreSqlConnector
  * @package Coco\SourceWatcher\Core\Database\Connections
@@ -82,16 +77,115 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
     }
 
     /**
-     * @return Connection
-     * @throws SourceWatcherException
+     * @return string
      */
-    public function connect () : Connection
+    public function getDefaultDatabaseName () : string
     {
-        try {
-            return DriverManager::getConnection( $this->getConnectionParameters() );
-        } catch ( DBALException $dbalException ) {
-            throw new SourceWatcherException( "Something went wrong trying to get a connection: " . $dbalException->getMessage() );
-        }
+        return $this->defaultDatabaseName;
+    }
+
+    /**
+     * @param string $defaultDatabaseName
+     */
+    public function setDefaultDatabaseName ( string $defaultDatabaseName ) : void
+    {
+        $this->defaultDatabaseName = $defaultDatabaseName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSslMode () : string
+    {
+        return $this->sslMode;
+    }
+
+    /**
+     * @param string $sslMode
+     */
+    public function setSslMode ( string $sslMode ) : void
+    {
+        $this->sslMode = $sslMode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSslRootCert () : string
+    {
+        return $this->sslRootCert;
+    }
+
+    /**
+     * @param string $sslRootCert
+     */
+    public function setSslRootCert ( string $sslRootCert ) : void
+    {
+        $this->sslRootCert = $sslRootCert;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSslCert () : string
+    {
+        return $this->sslCert;
+    }
+
+    /**
+     * @param string $sslCert
+     */
+    public function setSslCert ( string $sslCert ) : void
+    {
+        $this->sslCert = $sslCert;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSslKey () : string
+    {
+        return $this->sslKey;
+    }
+
+    /**
+     * @param string $sslKey
+     */
+    public function setSslKey ( string $sslKey ) : void
+    {
+        $this->sslKey = $sslKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSslCrl () : string
+    {
+        return $this->sslCrl;
+    }
+
+    /**
+     * @param string $sslCrl
+     */
+    public function setSslCrl ( string $sslCrl ) : void
+    {
+        $this->sslCrl = $sslCrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApplicationName () : string
+    {
+        return $this->applicationName;
+    }
+
+    /**
+     * @param string $applicationName
+     */
+    public function setApplicationName ( string $applicationName ) : void
+    {
+        $this->applicationName = $applicationName;
     }
 
     /**

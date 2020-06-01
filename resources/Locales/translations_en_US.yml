@@ -11,6 +11,7 @@ Coco:
             Connection_Object_Not_Connected_Cannot_Insert: The connection object is not connected. Can't insert into the table.
           EmbeddedDatabaseConnector:
             No_Table_Name_Found: No table name found.
+            Unexpected_Error: Something unexpected went wrong while trying to insert the row
       Extractors:
         JsonExtractor:
           No_Input_Provided: An input must be provided.
