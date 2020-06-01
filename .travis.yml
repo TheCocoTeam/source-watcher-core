@@ -8,20 +8,18 @@ php:
 before_install:
   - echo "deb [trusted=yes] https://apt.secrethub.io stable main" | sudo tee /etc/apt/sources.list.d/secrethub.sources.list
   - sudo apt-get update && sudo apt-get install -y secrethub-cli
+  - echo "UNIT_TEST_MYSQL_USERNAME=$(secrethub read coco/source-watcher/unit-test-mysql-username)" >> .env
+  - echo "UNIT_TEST_MYSQL_PASSWORD=$(secrethub read coco/source-watcher/unit-test-mysql-password)" >> .env
+  - echo "UNIT_TEST_MYSQL_HOST=$(secrethub read coco/source-watcher/unit-test-mysql-host)" >> .env
+  - echo "UNIT_TEST_MYSQL_PORT=$(secrethub read coco/source-watcher/unit-test-mysql-port)" >> .env
+  - echo "UNIT_TEST_MYSQL_DATABASE=$(secrethub read coco/source-watcher/unit-test-mysql-database)" >> .env
 
 before_script:
   - rm -f composer.lock
   - travis_retry composer install --no-interaction --prefer-source --dev
 
-env:
-  - UNIT_TEST_MYSQL_USERNAME="secrethub://coco/source-watcher/unit-test-mysql-username"
-  - UNIT_TEST_MYSQL_PASSWORD="secrethub://coco/source-watcher/unit-test-mysql-password"
-  - UNIT_TEST_MYSQL_HOST="secrethub://coco/source-watcher/unit-test-mysql-host"
-  - UNIT_TEST_MYSQL_PORT="secrethub://coco/source-watcher/unit-test-mysql-port"
-  - UNIT_TEST_MYSQL_DATABASE="secrethub://coco/source-watcher/unit-test-mysql-database"
-
 script:
-  - secrethub run -- vendor/bin/phpunit --coverage-clover=clover.xml
+  - vendor/bin/phpunit --coverage-clover=clover.xml
 
 after_success:
   - export CODECOV_TOKEN="ebd97fbb-5461-4c4a-8012-17cb92ceee69"
