@@ -2,7 +2,7 @@
 
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
-use Coco\SourceWatcher\Core\Database\Connections\ClientServerDatabaseConnector;
+use Coco\SourceWatcher\Core\Database\Connections\Connector;
 use Coco\SourceWatcher\Core\Database\Connections\MySqlConnector;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
@@ -57,9 +57,9 @@ class MySqlConnectorTest extends TestCase
         $connector->setPort( 3306 );;
         $connector->setDbName( "people" );
         $connector->setUnixSocket( "/var/run/mysqld/mysqld.sock" );
-        $connector->setCharset( "utf-8" );
+        $connector->setCharset( "utf8" );
 
-        $this->assertNotNull( $connector->connect() );
+        $this->assertNotNull( $connector->getConnection() );
     }
 
     /**
@@ -68,7 +68,7 @@ class MySqlConnectorTest extends TestCase
     public function testInsertWithNoTableSpecified () : void
     {
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( ClientServerDatabaseConnector::class, "No_Table_Name_Found" ) );
+        $this->expectExceptionMessage( i18n::getInstance()->getText( Connector::class, "No_Table_Name_Found" ) );
 
         $connector = new MySqlConnector();
         $connector->setUser( "admin" );
@@ -77,9 +77,9 @@ class MySqlConnectorTest extends TestCase
         $connector->setPort( 3306 );;
         $connector->setDbName( "people" );
         $connector->setUnixSocket( "/var/run/mysqld/mysqld.sock" );
-        $connector->setCharset( "utf-8" );
+        $connector->setCharset( "utf8" );
 
-        $row = new Row( [ "id" => "1", "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+        $row = new Row( [ "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
 
         $connector->insert( $row );
     }
@@ -90,7 +90,7 @@ class MySqlConnectorTest extends TestCase
     public function testInsertUsingWrongConnectionParameters () : void
     {
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( ClientServerDatabaseConnector::class, "Connection_Object_Not_Connected_Cannot_Insert" ) );
+        $this->expectExceptionMessage( i18n::getInstance()->getText( Connector::class, "Connection_Object_Not_Connected_Cannot_Insert" ) );
 
         $connector = new MySqlConnector();
         $connector->setUser( "admin" );
@@ -99,12 +99,37 @@ class MySqlConnectorTest extends TestCase
         $connector->setPort( 3306 );;
         $connector->setDbName( "people" );
         $connector->setUnixSocket( "/var/run/mysqld/mysqld.sock" );
-        $connector->setCharset( "utf-8" );
+        $connector->setCharset( "utf8" );
 
         $connector->setTableName( "people" );
 
-        $row = new Row( [ "id" => "1", "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+        $row = new Row( [ "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
 
         $connector->insert( $row );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testInsertUsingEnvironmentVariables () : void
+    {
+        $username = array_key_exists( "UNIT_TEST_MYSQL_USERNAME", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_USERNAME"] : null;
+        $password = array_key_exists( "UNIT_TEST_MYSQL_PASSWORD", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_PASSWORD"] : null;
+        $host = array_key_exists( "UNIT_TEST_MYSQL_HOST", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_HOST"] : null;
+        $port = array_key_exists( "UNIT_TEST_MYSQL_PORT", $_ENV ) ? intval( $_ENV["UNIT_TEST_MYSQL_PORT"] ) : 3306;
+        $database = array_key_exists( "UNIT_TEST_MYSQL_DATABASE", $_ENV ) ? $_ENV["UNIT_TEST_MYSQL_DATABASE"] : null;
+
+        $connector = new MySqlConnector();
+        $connector->setUser( $username );
+        $connector->setPassword( $password );
+        $connector->setHost( $host );
+        $connector->setPort( $port );
+        $connector->setDbName( $database );
+
+        $connector->setTableName( "people" );
+
+        $row = new Row( [ "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+
+        $this->assertEquals( 1, $connector->insert( $row ) );
     }
 }

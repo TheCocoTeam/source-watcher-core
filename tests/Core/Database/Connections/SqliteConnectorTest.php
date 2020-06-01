@@ -2,7 +2,7 @@
 
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
-use Coco\SourceWatcher\Core\Database\Connections\EmbeddedDatabaseConnector;
+use Coco\SourceWatcher\Core\Database\Connections\Connector;
 use Coco\SourceWatcher\Core\Database\Connections\SqliteConnector;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
@@ -54,7 +54,7 @@ class SqliteConnectorTest extends TestCase
         $connector->setPath( __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite" );
         $connector->setMemory( false );
 
-        $this->assertNotNull( $connector->connect() );
+        $this->assertNotNull( $connector->getConnection() );
     }
 
     /**
@@ -63,7 +63,7 @@ class SqliteConnectorTest extends TestCase
     public function testInsertWithNoTableSpecified () : void
     {
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( EmbeddedDatabaseConnector::class, "No_Table_Name_Found" ) );
+        $this->expectExceptionMessage( i18n::getInstance()->getText( Connector::class, "No_Table_Name_Found" ) );
 
         $connector = new SqliteConnector();
         $connector->setPath( __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite" );
@@ -80,7 +80,7 @@ class SqliteConnectorTest extends TestCase
     public function testInsertUsingWrongConnectionParameters () : void
     {
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( EmbeddedDatabaseConnector::class, "Unexpected_Error" ) );
+        $this->expectExceptionMessage( i18n::getInstance()->getText( Connector::class, "Unexpected_Error" ) );
 
         $connector = new SqliteConnector();
         $connector->setPath( __DIR__ . "/../../../../samples/data/sqlite/people-db.sqlite" );

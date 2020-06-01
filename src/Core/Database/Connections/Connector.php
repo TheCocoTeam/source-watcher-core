@@ -4,6 +4,7 @@ namespace Coco\SourceWatcher\Core\Database\Connections;
 
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
+use Coco\SourceWatcher\Utils\i18n;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
@@ -104,7 +105,7 @@ abstract class Connector
      * @return Connection
      * @throws SourceWatcherException
      */
-    public function connect () : Connection
+    public function getConnection () : Connection
     {
         try {
             return DriverManager::getConnection( $this->getConnectionParameters() );
@@ -116,6 +117,32 @@ abstract class Connector
     /**
      * @param Row $row
      * @return int
+     * @throws SourceWatcherException
      */
-    public abstract function insert ( Row $row ) : int;
+    public function insert ( Row $row ) : int
+    {
+        if ( $this->tableName == null || $this->tableName == "" ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( Connector::class, "No_Table_Name_Found" ) );
+        }
+
+        $connection = $this->getConnection();
+
+        try {
+            if ( !$connection->isConnected() ) {
+                $connection->connect();
+            }
+        } catch ( DBALException $dbalException ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( Connector::class, "Connection_Object_Not_Connected_Cannot_Insert" ), 0, $dbalException );
+        }
+
+        try {
+            $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
+
+            $connection->close();
+        } catch ( DBALException $dbalException ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( Connector::class, "Unexpected_Error" ), 0, $dbalException );
+        }
+
+        return $numberOfAffectedRows;
+    }
 }

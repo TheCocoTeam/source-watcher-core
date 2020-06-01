@@ -152,6 +152,6 @@ class PostgreSqlConnectorTest extends TestCase
         $connector->setSslCrl( "~/.postgresql/root.crl" );
         $connector->setApplicationName( "App Name for PG Stat Activity" );
 
-        $this->assertNotNull( $connector->connect() );
+        $this->assertNotNull( $connector->getConnection() );
     }
 }
