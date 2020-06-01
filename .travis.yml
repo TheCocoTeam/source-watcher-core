@@ -21,7 +21,6 @@ env:
   - UNIT_TEST_MYSQL_DATABASE="secrethub://coco/source-watcher/unit-test-mysql-database"
 
 script:
-  - secrethub read coco/source-watcher/unit-test-mysql-port
   - vendor/bin/phpunit --coverage-clover=clover.xml
 
 after_success:
