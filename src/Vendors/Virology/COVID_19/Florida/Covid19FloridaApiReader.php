@@ -31,7 +31,7 @@ class Covid19FloridaApiReader extends ApiReader
      */
     private array $statisticFields = [ "T_positive" => "Total Positive Cases",
 
-        "T_NegRes" => "Total Negative Florida Residents", "T_NegNotFLRes " => "Total Negative Non-Florida Residents",
+        "T_NegRes" => "Total Negative Florida Residents", "T_NegNotFLRes" => "Total Negative Non-Florida Residents",
 
         "T_total" => "Total Number Of Tests",
 
@@ -66,11 +66,8 @@ class Covid19FloridaApiReader extends ApiReader
             if ( $jsonResult != null ) {
                 $result = $jsonResult["features"][0]["attributes"]["value"];
             }
-        } catch ( SourceWatcherException $exception ) {
-            $errorMessage = sprintf( "Something went wrong while trying to get the result from the URL: %s", $exception->getMessage() );
-            throw new SourceWatcherException( $errorMessage );
         } catch ( Exception $exception ) {
-            $errorMessage = sprintf( "Something unexpected went wrong while trying to get the result from the URL: %s", $exception->getMessage() );
+            $errorMessage = sprintf( "Something unexpected went wrong while trying to get the result from the URL", 0, $exception->getMessage() );
             throw new SourceWatcherException( $errorMessage );
         }
 
