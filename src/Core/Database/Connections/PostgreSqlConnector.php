@@ -202,14 +202,37 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
         $this->connectionParameters["port"] = $this->port;
         $this->connectionParameters["dbname"] = $this->dbName;
 
-        $this->connectionParameters["charset"] = $this->charset;
-        $this->connectionParameters["default_dbname"] = $this->defaultDatabaseName;
-        $this->connectionParameters["sslmode"] = $this->sslMode;
-        $this->connectionParameters["sslrootcert"] = $this->sslRootCert;
-        $this->connectionParameters["sslcert"] = $this->sslCert;
-        $this->connectionParameters["sslkey"] = $this->sslKey;
-        $this->connectionParameters["sslcrl"] = $this->sslCrl;
-        $this->connectionParameters["application_name"] = $this->applicationName;
+        if ( isset( $this->charset ) && $this->charset !== "" ) {
+            $this->connectionParameters["charset"] = $this->charset;
+        }
+
+        if ( isset( $this->defaultDatabaseName ) && $this->defaultDatabaseName !== "" ) {
+            $this->connectionParameters["default_dbname"] = $this->defaultDatabaseName;
+        }
+
+        if ( isset( $this->sslMode ) && $this->sslMode !== "" ) {
+            $this->connectionParameters["sslmode"] = $this->sslMode;
+        }
+
+        if ( isset( $this->sslRootCert ) && $this->sslRootCert !== "" ) {
+            $this->connectionParameters["sslrootcert"] = $this->sslRootCert;
+        }
+
+        if ( isset( $this->sslCert ) && $this->sslCert !== "" ) {
+            $this->connectionParameters["sslcert"] = $this->sslCert;
+        }
+
+        if ( isset( $this->sslKey ) && $this->sslKey !== "" ) {
+            $this->connectionParameters["sslkey"] = $this->sslKey;
+        }
+
+        if ( isset( $this->sslCrl ) && $this->sslCrl !== "" ) {
+            $this->connectionParameters["sslcrl"] = $this->sslCrl;
+        }
+
+        if ( isset( $this->applicationName ) && $this->applicationName !== "" ) {
+            $this->connectionParameters["application_name"] = $this->applicationName;
+        }
 
         return $this->connectionParameters;
     }

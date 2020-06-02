@@ -3,6 +3,7 @@
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
 use Coco\SourceWatcher\Core\Database\Connections\PostgreSqlConnector;
+use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use PHPUnit\Framework\TestCase;
 
@@ -153,5 +154,32 @@ class PostgreSqlConnectorTest extends TestCase
         $connector->setApplicationName( "App Name for PG Stat Activity" );
 
         $this->assertNotNull( $connector->getConnection() );
+    }
+
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testInsertUsingEnvironmentVariables () : void
+    {
+        $user = array_key_exists( "UNIT_TEST_POSTGRESQL_USER", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_USER"] : null;
+        $password = array_key_exists( "UNIT_TEST_POSTGRESQL_PASSWORD", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_PASSWORD"] : null;
+        $host = array_key_exists( "UNIT_TEST_POSTGRESQL_HOST", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_HOST"] : null;
+        $port = array_key_exists( "UNIT_TEST_POSTGRESQL_PORT", $_ENV ) ? intval( $_ENV["UNIT_TEST_POSTGRESQL_PORT"] ) : 5432;
+        $dbName = array_key_exists( "UNIT_TEST_POSTGRESQL_DB_NAME", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_DB_NAME"] : null;
+        $defaultDatabaseName = array_key_exists( "UNIT_TEST_POSTGRESQL_DEFAULT_DATABASE_NAME", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_DEFAULT_DATABASE_NAME"] : null;
+
+        $connector = new PostgreSqlConnector();
+        $connector->setUser( $user );
+        $connector->setPassword( $password );
+        $connector->setHost( $host );
+        $connector->setPort( $port );;
+        $connector->setDbName( $dbName );
+        $connector->setDefaultDatabaseName( $defaultDatabaseName );
+
+        $connector->setTableName( "people" );
+
+        $row = new Row( [ "name" => "John Doe", "email_address" => "johndoe@email.com" ] );
+
+        $this->assertEquals( 1, $connector->insert( $row ) );
     }
 }

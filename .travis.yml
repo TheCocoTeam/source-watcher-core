@@ -13,6 +13,12 @@ before_install:
   - echo "UNIT_TEST_MYSQL_HOST=$(secrethub read coco/source-watcher/unit-test-mysql-host)" >> .env
   - echo "UNIT_TEST_MYSQL_PORT=$(secrethub read coco/source-watcher/unit-test-mysql-port)" >> .env
   - echo "UNIT_TEST_MYSQL_DATABASE=$(secrethub read coco/source-watcher/unit-test-mysql-database)" >> .env
+  - echo "UNIT_TEST_POSTGRESQL_USER=$(secrethub read coco/source-watcher/unit-test-pgsql-user)" >> .env
+  - echo "UNIT_TEST_POSTGRESQL_PASSWORD=$(secrethub read coco/source-watcher/unit-test-pgsql-password)" >> .env
+  - echo "UNIT_TEST_POSTGRESQL_HOST=$(secrethub read coco/source-watcher/unit-test-pgsql-host)" >> .env
+  - echo "UNIT_TEST_POSTGRESQL_PORT=$(secrethub read coco/source-watcher/unit-test-pgsql-port)" >> .env
+  - echo "UNIT_TEST_POSTGRESQL_DB_NAME=$(secrethub read coco/source-watcher/unit-test-pgsql-db-name)" >> .env
+  - echo "UNIT_TEST_POSTGRESQL_DEFAULT_DATABASE_NAME=$(secrethub read coco/source-watcher/unit-test-pgsql-default-db-name)" >> .env
 
 before_script:
   - rm -f composer.lock
