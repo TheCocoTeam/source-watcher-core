@@ -103,15 +103,11 @@ abstract class Connector
 
     /**
      * @return Connection
-     * @throws SourceWatcherException
+     * @throws DBALException
      */
     public function getConnection () : Connection
     {
-        try {
-            return DriverManager::getConnection( $this->getConnectionParameters() );
-        } catch ( DBALException $dbalException ) {
-            throw new SourceWatcherException( "Something went wrong trying to get a connection: ", 0, $dbalException->getMessage() );
-        }
+        return DriverManager::getConnection( $this->getConnectionParameters() );
     }
 
     /**
@@ -125,9 +121,9 @@ abstract class Connector
             throw new SourceWatcherException( i18n::getInstance()->getText( Connector::class, "No_Table_Name_Found" ) );
         }
 
-        $connection = $this->getConnection();
-
         try {
+            $connection = $this->getConnection();
+
             if ( !$connection->isConnected() ) {
                 $connection->connect();
             }

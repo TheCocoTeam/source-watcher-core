@@ -5,6 +5,7 @@ namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 use Coco\SourceWatcher\Core\Database\Connections\PostgreSqlConnector;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
+use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -134,7 +135,7 @@ class PostgreSqlConnectorTest extends TestCase
     }
 
     /**
-     * @throws SourceWatcherException
+     * @throws DBALException
      */
     public function testGetConnection () : void
     {

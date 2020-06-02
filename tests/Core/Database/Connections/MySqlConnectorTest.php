@@ -7,6 +7,7 @@ use Coco\SourceWatcher\Core\Database\Connections\MySqlConnector;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Utils\i18n;
+use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,7 +47,7 @@ class MySqlConnectorTest extends TestCase
     }
 
     /**
-     * @throws SourceWatcherException
+     * @throws DBALException
      */
     public function testGetConnection () : void
     {
@@ -60,6 +61,31 @@ class MySqlConnectorTest extends TestCase
         $connector->setCharset( "utf8" );
 
         $this->assertNotNull( $connector->getConnection() );
+    }
+
+    /**
+     *
+     */
+    public function testSetGetConnectionParameters () : void
+    {
+        $connector = new MySqlConnector();
+        $connector->setUser( "admin" );
+        $connector->setPassword( "secret" );
+        $connector->setHost( "localhost" );
+        $connector->setPort( 3306 );;
+        $connector->setDbName( "people" );
+        $connector->setUnixSocket( "/var/run/mysqld/mysqld.sock" );
+        $connector->setCharset( "utf8" );
+
+        $connectionParameters = $connector->getConnectionParameters();
+        $this->assertNotNull( $connectionParameters );
+
+        $connectionParametersKeys = [ "driver", "user", "password", "host", "port", "dbname", "unix_socket", "charset" ];
+
+        foreach ( $connectionParametersKeys as $key ) {
+            $this->assertArrayHasKey( $key, $connectionParameters );
+            $this->assertNotNull( $connectionParameters[$key] );
+        }
     }
 
     /**

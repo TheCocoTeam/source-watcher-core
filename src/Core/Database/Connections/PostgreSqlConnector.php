@@ -193,7 +193,7 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
      */
     protected function getConnectionParameters () : array
     {
-        $this->connectionParameters = array();
+        $this->connectionParameters = [];
 
         $this->connectionParameters["driver"] = $this->driver;
         $this->connectionParameters["user"] = $this->user;
@@ -202,36 +202,12 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
         $this->connectionParameters["port"] = $this->port;
         $this->connectionParameters["dbname"] = $this->dbName;
 
-        if ( isset( $this->charset ) && $this->charset !== "" ) {
-            $this->connectionParameters["charset"] = $this->charset;
-        }
+        $extraParameters = [ "charset" => $this->charset, "default_dbname" => $this->defaultDatabaseName, "sslmode" => $this->sslMode, "sslrootcert" => $this->sslRootCert, "sslcert" => $this->sslCert, "sslkey" => $this->sslKey, "sslcrl" => $this->sslCrl, "application_name" => $this->applicationName ];
 
-        if ( isset( $this->defaultDatabaseName ) && $this->defaultDatabaseName !== "" ) {
-            $this->connectionParameters["default_dbname"] = $this->defaultDatabaseName;
-        }
-
-        if ( isset( $this->sslMode ) && $this->sslMode !== "" ) {
-            $this->connectionParameters["sslmode"] = $this->sslMode;
-        }
-
-        if ( isset( $this->sslRootCert ) && $this->sslRootCert !== "" ) {
-            $this->connectionParameters["sslrootcert"] = $this->sslRootCert;
-        }
-
-        if ( isset( $this->sslCert ) && $this->sslCert !== "" ) {
-            $this->connectionParameters["sslcert"] = $this->sslCert;
-        }
-
-        if ( isset( $this->sslKey ) && $this->sslKey !== "" ) {
-            $this->connectionParameters["sslkey"] = $this->sslKey;
-        }
-
-        if ( isset( $this->sslCrl ) && $this->sslCrl !== "" ) {
-            $this->connectionParameters["sslcrl"] = $this->sslCrl;
-        }
-
-        if ( isset( $this->applicationName ) && $this->applicationName !== "" ) {
-            $this->connectionParameters["application_name"] = $this->applicationName;
+        foreach ( $extraParameters as $parameterName => $localVariable ) {
+            if ( isset( $localVariable ) && $localVariable !== "" ) {
+                $this->connectionParameters[$parameterName] = $localVariable;
+            }
         }
 
         return $this->connectionParameters;

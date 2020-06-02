@@ -65,9 +65,9 @@ class MySqlConnector extends ClientServerDatabaseConnector
     /**
      * @return array
      */
-    protected function getConnectionParameters () : array
+    public function getConnectionParameters () : array
     {
-        $this->connectionParameters = array();
+        $this->connectionParameters = [];
 
         $this->connectionParameters["driver"] = $this->driver;
         $this->connectionParameters["user"] = $this->user;
@@ -76,12 +76,12 @@ class MySqlConnector extends ClientServerDatabaseConnector
         $this->connectionParameters["port"] = $this->port;
         $this->connectionParameters["dbname"] = $this->dbName;
 
-        if ( isset( $this->unixSocket ) && $this->unixSocket !== "" ) {
-            $this->connectionParameters["unix_socket"] = $this->unixSocket;
-        }
+        $extraParameters = [ "unix_socket" => $this->unixSocket, "charset" => $this->charset ];
 
-        if ( isset( $this->charset ) && $this->charset !== "" ) {
-            $this->connectionParameters["charset"] = $this->charset;
+        foreach ( $extraParameters as $parameterName => $localVariable ) {
+            if ( isset( $localVariable ) && $localVariable !== "" ) {
+                $this->connectionParameters[$parameterName] = $localVariable;
+            }
         }
 
         return $this->connectionParameters;
