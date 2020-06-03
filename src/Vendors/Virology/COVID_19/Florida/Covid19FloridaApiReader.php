@@ -50,6 +50,54 @@ class Covid19FloridaApiReader extends ApiReader
     }
 
     /**
+     * @return string
+     */
+    public function getFloridaCOVID19CasesURL () : string
+    {
+        return $this->floridaCOVID19CasesURL;
+    }
+
+    /**
+     * @param string $floridaCOVID19CasesURL
+     */
+    public function setFloridaCOVID19CasesURL ( string $floridaCOVID19CasesURL ) : void
+    {
+        $this->floridaCOVID19CasesURL = $floridaCOVID19CasesURL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGenericQueryParameters () : string
+    {
+        return $this->genericQueryParameters;
+    }
+
+    /**
+     * @param string $genericQueryParameters
+     */
+    public function setGenericQueryParameters ( string $genericQueryParameters ) : void
+    {
+        $this->genericQueryParameters = $genericQueryParameters;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getStatisticFields ()
+    {
+        return $this->statisticFields;
+    }
+
+    /**
+     * @param array|string[] $statisticFields
+     */
+    public function setStatisticFields ( $statisticFields ) : void
+    {
+        $this->statisticFields = $statisticFields;
+    }
+
+    /**
      * @param string $url
      * @return string
      * @throws SourceWatcherException
