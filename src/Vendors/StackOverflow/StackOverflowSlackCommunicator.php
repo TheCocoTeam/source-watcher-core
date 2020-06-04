@@ -3,11 +3,23 @@
 namespace Coco\SourceWatcher\Vendors\StackOverflow;
 
 use Coco\SourceWatcher\Watcher\Communicator\SlackCommunicator;
+use Exception;
 
+/**
+ * Class StackOverflowSlackCommunicator
+ * @package Coco\SourceWatcher\Vendors\StackOverflow
+ */
 class StackOverflowSlackCommunicator extends SlackCommunicator
 {
+    /**
+     * @var array
+     */
     private array $dataArray;
 
+    /**
+     * StackOverflowSlackCommunicator constructor.
+     * @param array $listOfJobs
+     */
     public function __construct ( array $listOfJobs )
     {
         parent::__construct();
@@ -15,11 +27,9 @@ class StackOverflowSlackCommunicator extends SlackCommunicator
         $this->buildDataArray( $listOfJobs );
     }
 
-    public function setListOfJobs ( array $listOfJobs ) : void
-    {
-        $this->buildDataArray( $listOfJobs );
-    }
-
+    /**
+     * @param array $listOfJobs
+     */
     private function buildDataArray ( array $listOfJobs ) : void
     {
         $this->dataArray = array();
@@ -46,11 +56,10 @@ class StackOverflowSlackCommunicator extends SlackCommunicator
         }
     }
 
-    public function getDatArray () : array
-    {
-        return $this->dataArray;
-    }
-
+    /**
+     * @return bool|string|void
+     * @throws Exception
+     */
     public function send ()
     {
         foreach ( $this->dataArray as $currentSlackMessageBlock ) {

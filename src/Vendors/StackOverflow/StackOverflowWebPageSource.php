@@ -4,9 +4,17 @@ namespace Coco\SourceWatcher\Vendors\StackOverflow;
 
 use Coco\SourceWatcher\Watcher\Source\WebPageSource;
 
+/**
+ * Class StackOverflowWebPageSource
+ * @package Coco\SourceWatcher\Vendors\StackOverflow
+ */
 class StackOverflowWebPageSource extends WebPageSource
 {
-    public function __construct ( String $url )
+    /**
+     * StackOverflowWebPageSource constructor.
+     * @param string $url
+     */
+    public function __construct ( string $url )
     {
         parent::__construct( $url );
 

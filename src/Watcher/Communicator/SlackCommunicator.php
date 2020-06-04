@@ -4,13 +4,35 @@ namespace Coco\SourceWatcher\Watcher\Communicator;
 
 use Exception;
 
+/**
+ * Class SlackCommunicator
+ * @package Coco\SourceWatcher\Watcher\Communicator
+ */
 class SlackCommunicator implements Communicator
 {
+    /**
+     * @var string
+     */
     protected string $webHookUrl;
+
+    /**
+     * @var string
+     */
     protected string $method;
+
+    /**
+     * @var string
+     */
     protected string $contentType;
+
+    /**
+     * @var string
+     */
     protected string $data;
 
+    /**
+     * SlackCommunicator constructor.
+     */
     public function __construct ()
     {
         $this->method = "POST";

@@ -22,6 +22,16 @@ class i18nTest extends TestCase
     private bool $preExistingEnvFile = false;
 
     /**
+     * @var string
+     */
+    private string $temporaryNameForEnvFile = "";
+
+    /**
+     * @var bool
+     */
+    private bool $envFileRenamed = false;
+
+    /**
      * @var bool[][]
      */
     private array $envConditionsPerFunction = [ "testGetInstance" => [ "add_i18n_property" => true ], "testGetText" => [ "add_i18n_property" => true ], "testNoEnvFileDefaultToEnglish" => [ "add_i18n_property" => false ] ];
@@ -35,6 +45,14 @@ class i18nTest extends TestCase
 
         if ( file_exists( $this->envFileLocation ) ) {
             $this->preExistingEnvFile = true;
+
+            $this->temporaryNameForEnvFile = sprintf( "%s-%s", $this->envFileLocation, time() );
+
+            if ( rename( $this->envFileLocation, $this->temporaryNameForEnvFile ) ) {
+                $this->envFileRenamed = true;
+
+                unset( $_ENV["I18N_LANGUAGE"] );
+            }
         } else {
             $addi18nProperty = $this->envConditionsPerFunction[$nextFunctionToBeCalled]["add_i18n_property"];
 
@@ -56,6 +74,10 @@ class i18nTest extends TestCase
     {
         if ( !$this->preExistingEnvFile ) {
             unlink( $this->envFileLocation );
+        } else {
+            if ( $this->envFileRenamed ) {
+                rename( $this->temporaryNameForEnvFile, $this->envFileLocation );
+            }
         }
     }
 

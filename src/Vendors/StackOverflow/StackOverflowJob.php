@@ -131,6 +131,9 @@ class StackOverflowJob
         $this->location = $location;
     }
 
+    /**
+     * @return string
+     */
     public function getRefinedUrl () : string
     {
         $currentPreviewUrl = substr( $this->previewUrl, 0, strlen( $this->baseURL ) ) === $this->baseURL ? $this->previewUrl : $this->baseURL . $this->previewUrl;
@@ -148,39 +151,25 @@ class StackOverflowJob
         return $refinedUrl;
     }
 
+    /**
+     * @return bool
+     */
     public function allAttributesDefined () : bool
     {
-        if ( $this->jobId == null ) {
-            return false;
-        }
+        $variablesToValidate = [ $this->jobId, $this->resultId, $this->previewUrl, $this->logo, $this->title, $this->company, $this->location ];
 
-        if ( $this->resultId == null ) {
-            return false;
-        }
-
-        if ( $this->previewUrl == null ) {
-            return false;
-        }
-
-        if ( $this->logo == null ) {
-            return false;
-        }
-
-        if ( $this->title == null ) {
-            return false;
-        }
-
-        if ( $this->company == null ) {
-            return false;
-        }
-
-        if ( $this->location == null ) {
-            return false;
+        foreach ( $variablesToValidate as $currentVariable ) {
+            if ( $currentVariable == null ) {
+                return false;
+            }
         }
 
         return true;
     }
 
+    /**
+     * @return string
+     */
     public function __toString () : string
     {
         $result = "";
