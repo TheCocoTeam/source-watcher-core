@@ -2,7 +2,8 @@
 
 namespace Coco\SourceWatcher\Watcher\Communicator;
 
-use Exception;
+use Coco\SourceWatcher\Core\SourceWatcherException;
+use Coco\SourceWatcher\Utils\i18n;
 
 /**
  * Class SlackCommunicator
@@ -13,22 +14,22 @@ class SlackCommunicator implements Communicator
     /**
      * @var string
      */
-    protected string $webHookUrl;
+    protected string $webHookUrl = "";
 
     /**
      * @var string
      */
-    protected string $method;
+    protected string $method = "";
 
     /**
      * @var string
      */
-    protected string $contentType;
+    protected string $contentType = "";
 
     /**
      * @var string
      */
-    protected string $data;
+    protected string $data = "";
 
     /**
      * SlackCommunicator constructor.
@@ -105,29 +106,29 @@ class SlackCommunicator implements Communicator
 
     /**
      * @return bool|string
-     * @throws Exception
+     * @throws SourceWatcherException
      */
     public function send ()
     {
-        if ( $this->webHookUrl == null || $this->webHookUrl == "" ) {
-            throw new Exception( "A web hook url must be defined first." );
+        if ( empty( $this->webHookUrl ) ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( SlackCommunicator::class, "No_Web_Hook" ) );
         }
 
-        if ( $this->method == null || $this->method == "" ) {
-            throw new Exception( "A method must be defined first." );
+        if ( empty( $this->method ) ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( SlackCommunicator::class, "No_Method" ) );
         }
 
-        if ( $this->contentType == null || $this->contentType == "" ) {
-            throw new Exception( "A content type be defined first." );
+        if ( empty( $this->contentType ) ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( SlackCommunicator::class, "No_Content_Type" ) );
         }
 
-        if ( $this->data == null || $this->data == "" ) {
-            throw new Exception( "Data must be defined first." );
+        if ( empty( $this->data ) ) {
+            throw new SourceWatcherException( i18n::getInstance()->getText( SlackCommunicator::class, "No_Data" ) );
         }
 
         $ch = curl_init( $this->webHookUrl );
         curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, $this->method );
-        curl_setopt( $ch, CURLOPT_HTTPHEADER, array( $this->contentType, 'Content-Length: ' . strlen( $this->data ) ) );
+        curl_setopt( $ch, CURLOPT_HTTPHEADER, array( $this->contentType, "Content-Length: " . strlen( $this->data ) ) );
         curl_setopt( $ch, CURLOPT_POSTFIELDS, $this->data );
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 

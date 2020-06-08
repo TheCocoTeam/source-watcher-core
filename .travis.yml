@@ -23,6 +23,7 @@ before_install:
   - echo "UNIT_TEST_POSTGRESQL_PORT=$(secrethub read coco/source-watcher/unit-test-pgsql-port)" >> .env
   - echo "UNIT_TEST_POSTGRESQL_DB_NAME=$(secrethub read coco/source-watcher/unit-test-pgsql-db-name)" >> .env
   - echo "UNIT_TEST_POSTGRESQL_DEFAULT_DATABASE_NAME=$(secrethub read coco/source-watcher/unit-test-pgsql-default-db-name)" >> .env
+  - echo "UNIT_TEST_SLACK_WEB_HOOK=$(secrethub read coco/source-watcher/unit-test-slack-web-hook)" >> .env
 
 before_script:
   - rm -f composer.lock
