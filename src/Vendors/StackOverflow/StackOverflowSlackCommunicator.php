@@ -64,7 +64,7 @@ class StackOverflowSlackCommunicator extends SlackCommunicator
     {
         foreach ( $this->dataArray as $currentSlackMessageBlock ) {
             $this->data = json_encode( $currentSlackMessageBlock );
-            parent::send();
+            $result = parent::send();
         }
     }
 }

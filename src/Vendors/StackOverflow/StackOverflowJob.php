@@ -2,22 +2,51 @@
 
 namespace Coco\SourceWatcher\Vendors\StackOverflow;
 
+/**
+ * Class StackOverflowJob
+ * @package Coco\SourceWatcher\Vendors\StackOverflow
+ */
 class StackOverflowJob
 {
+    /**
+     * @var string
+     */
     private string $baseURL = "https://stackoverflow.com";
 
+    /**
+     * @var string|null
+     */
     private ?string $jobId = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $resultId = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $previewUrl = null;
-    private ?string $logo = "https://pbs.twimg.com/profile_images/425274582581264384/X3QXBN8C.jpeg"; // https://cdn.sstatic.net/careers/Img/ico-no-company-logo.svg
+
+    /**
+     * @var string|null
+     */
+    private ?string $logo = "https://pbs.twimg.com/profile_images/425274582581264384/X3QXBN8C.jpeg";
+
+    /**
+     * @var string|null
+     */
     private ?string $title = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $company = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $location = null;
-
-    public function __construct ()
-    {
-
-    }
 
     /**
      * @return string|null
@@ -159,27 +188,11 @@ class StackOverflowJob
         $variablesToValidate = [ $this->jobId, $this->resultId, $this->previewUrl, $this->logo, $this->title, $this->company, $this->location ];
 
         foreach ( $variablesToValidate as $currentVariable ) {
-            if ( $currentVariable == null ) {
+            if ( empty( $currentVariable ) ) {
                 return false;
             }
         }
 
         return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString () : string
-    {
-        $result = "";
-        $result .= "job id: " . $this->jobId . PHP_EOL;
-        $result .= "result id: " . $this->resultId . PHP_EOL;
-        $result .= "preview url: " . $this->previewUrl . PHP_EOL;
-        $result .= "logo: " . $this->logo . PHP_EOL;
-        $result .= "title: " . $this->title . PHP_EOL;
-        $result .= "company: " . $this->company . PHP_EOL;
-        $result .= "location: " . $this->location . PHP_EOL;
-        return $result;
     }
 }

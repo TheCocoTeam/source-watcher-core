@@ -44,7 +44,7 @@ class SlackCommunicatorTest extends TestCase
 
         $this->contentType = "Content-Type: application/json";
 
-        $this->mockResults = [ "blocks" => [ [ "type" => "section", "text" => [ "type" => "mrkdwn", "text" => "a" ] ], [ "type" => "section", "text" => [ "type" => "mrkdwn", "text" => "b" ] ], [ "type" => "section", "text" => [ "type" => "mrkdwn", "text" => "c" ] ] ] ];
+        $this->mockResults = [ "blocks" => [ [ "type" => "section", "text" => [ "type" => "mrkdwn", "text" => gmdate( "l jS \of F Y h:i:s A" ) ] ], [ "type" => "section", "text" => [ "type" => "mrkdwn", "text" => "Running unit test for Slack Communicator class" ] ] ] ];
     }
 
     /**
