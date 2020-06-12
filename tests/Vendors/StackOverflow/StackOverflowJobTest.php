@@ -184,4 +184,43 @@ class StackOverflowJobTest extends TestCase
         $this->assertNotNull( $stackOverflowJob->getRefinedUrl() );
         $this->assertEquals( $expectedPreviewUrl, $stackOverflowJob->getRefinedUrl() );
     }
+
+    /**
+     *
+     */
+    public function testAllAttributesDefinedNoAttributes () : void
+    {
+        $stackOverflowJob = new StackOverflowJob();
+
+        $this->assertFalse( $stackOverflowJob->allAttributesDefined() );
+    }
+
+    /**
+     *
+     */
+    public function testAllAttributesDefinedSomeAttributes () : void
+    {
+        $stackOverflowJob = new StackOverflowJob();
+        $stackOverflowJob->setJobId( "123456" );
+
+        $this->assertFalse( $stackOverflowJob->allAttributesDefined() );
+    }
+
+    /**
+     *
+     */
+    public function testAllAttributesDefinedAllAttributes () : void
+    {
+        $stackOverflowJob = new StackOverflowJob();
+        $stackOverflowJob->setJobId( "123456" );
+        $stackOverflowJob->setResultId( "123456" );
+        $stackOverflowJob->setPreviewUrl( "https://stackoverflow.com/jobs/123456/some-developer-role" );
+        $stackOverflowJob->setLogo( "https://some-website.com/assets/some-logo.svg" );
+        $stackOverflowJob->setTitle( "Some Developer Role" );
+        $stackOverflowJob->setCompany( "Acme Corporation" );
+        $stackOverflowJob->setLocation( "Saint Denis" );
+        $stackOverflowJob->setPreviewUrl( "https://stackoverflow.com/jobs/123456/some-developer-role" );
+
+        $this->assertTrue( $stackOverflowJob->allAttributesDefined() );
+    }
 }
