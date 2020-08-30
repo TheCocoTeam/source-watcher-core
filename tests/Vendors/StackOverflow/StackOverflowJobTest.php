@@ -219,7 +219,6 @@ class StackOverflowJobTest extends TestCase
         $stackOverflowJob->setTitle( "Some Developer Role" );
         $stackOverflowJob->setCompany( "Acme Corporation" );
         $stackOverflowJob->setLocation( "Saint Denis" );
-        $stackOverflowJob->setPreviewUrl( "https://stackoverflow.com/jobs/123456/some-developer-role" );
 
         $this->assertTrue( $stackOverflowJob->allAttributesDefined() );
     }

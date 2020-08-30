@@ -2,6 +2,7 @@
 
 namespace Coco\SourceWatcher\Vendors\StackOverflow;
 
+use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Watcher\Source\WebPageSource;
 
 /**
@@ -27,7 +28,11 @@ class StackOverflowWebPageSource extends WebPageSource
             $this->handler = new StackOverflowWebPageHandler( $this->url );
         }
 
-        $this->handler->read();
+        try {
+            $this->handler->read();
+        } catch ( SourceWatcherException $e ) {
+
+        }
 
         return $this->handler->getResults();
     }

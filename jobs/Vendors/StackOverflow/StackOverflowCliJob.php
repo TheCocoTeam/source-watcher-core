@@ -27,12 +27,16 @@ if ( $jobsUrl != null && $jobsUrl != "" && $slackWebHookUrl != null && $slackWeb
     $source = new StackOverflowWebPageSource( $jobsUrl );
     $results = $source->getResults();
 
-    $date_utc = new DateTime( "now", new DateTimeZone( "UTC" ) );
-    echo $date_utc->format( DateTime::RFC850 ) . ": Found " . sizeof( $results ) . " results from " . $jobsUrl . PHP_EOL;
+    try {
+        $date_utc = new DateTime( "now", new DateTimeZone( "UTC" ) );
+        echo $date_utc->format( DateTime::RFC850 ) . ": Found " . sizeof( $results ) . " results from " . $jobsUrl . PHP_EOL;
 
-    $communicator = new StackOverflowSlackCommunicator( $results );
-    $communicator->setWebHookUrl( $slackWebHookUrl );
-    $communicator->send();
+        $communicator = new StackOverflowSlackCommunicator( $results );
+        $communicator->setWebHookUrl( $slackWebHookUrl );
+        $communicator->send();
+    } catch ( Exception $e ) {
+
+    }
 } else {
     echo "check the jobs url and slack web hook url parameters" . PHP_EOL;
 }
