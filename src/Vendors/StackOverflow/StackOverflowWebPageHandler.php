@@ -75,8 +75,6 @@ class StackOverflowWebPageHandler extends WebPageHandler
                     }
                 }
             }
-
-
         }
 
         if ( $currentJob->allAttributesDefined() ) {
@@ -132,8 +130,8 @@ class StackOverflowWebPageHandler extends WebPageHandler
 
     private function processImageDivBlocks ( DOMElement $currentDeepNode, StackOverflowJob $stackOverflowJob ) : StackOverflowJob
     {
-        if ( $currentDeepNode->tagName == "img" ) {
-            $stackOverflowJob = $this->processImageBlock( $currentDeepNode->attributes, $stackOverflowJob );
+        if ( $currentDeepNode->childNodes->count() == 2 ) {
+            $stackOverflowJob = $this->processImageBlock( $currentDeepNode->childNodes->item( 1 )->attributes, $stackOverflowJob );
         }
 
         if ( $currentDeepNode->tagName == "div" && $currentDeepNode->hasChildNodes() ) {
@@ -149,9 +147,7 @@ class StackOverflowWebPageHandler extends WebPageHandler
             $attr1 = $currentDeepNodeAttributes[0]; // DOMAttr
             $attr2 = $currentDeepNodeAttributes[1]; // DOMAttr
 
-            if ( $attr1->name == "class" && $attr1->value == "grid--cell fl-shrink0 w48 h48 bar-sm mr12" && $attr2->name == "src" ) {
-                $stackOverflowJob->setLogo( $attr2->value );
-            }
+            $stackOverflowJob->setLogo( $attr1->name == "src" ? $attr1->value : ( $attr2->name == "src" ? $attr2->value : "" ) );
         }
 
         return $stackOverflowJob;
