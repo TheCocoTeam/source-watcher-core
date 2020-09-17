@@ -22,6 +22,11 @@ class StackOverflowWebPageSource extends WebPageSource
         $this->handler = new StackOverflowWebPageHandler( $url );
     }
 
+    /**
+     * Function that returns the results from the given StackOverflow URL.
+     * @return array
+     * @throws SourceWatcherException
+     */
     public function getResults () : array
     {
         if ( $this->url != $this->handler->getUrl() ) {
@@ -31,7 +36,7 @@ class StackOverflowWebPageSource extends WebPageSource
         try {
             $this->handler->read();
         } catch ( SourceWatcherException $e ) {
-
+            throw new SourceWatcherException( "Something went wrong trying to read the results", $e->getCode(), $e );
         }
 
         return $this->handler->getResults();

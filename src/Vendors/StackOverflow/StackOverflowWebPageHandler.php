@@ -15,7 +15,7 @@ class StackOverflowWebPageHandler extends WebPageHandler
         parent::__construct( $url );
     }
 
-    private array $results;
+    private array $results = [];
 
     public function getResults () : array
     {
