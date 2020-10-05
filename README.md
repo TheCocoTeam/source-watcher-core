@@ -1,4 +1,4 @@
-# SourceWatcher [![codecov](https://codecov.io/gh/TheCocoTeam/SourceWatcher/branch/master/graph/badge.svg)](https://codecov.io/gh/TheCocoTeam/SourceWatcher) [![SourceWatcher Travis CI](https://travis-ci.com/TheCocoTeam/SourceWatcher.svg?branch=master)](https://travis-ci.com/github/TheCocoTeam/SourceWatcher) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TheCocoTeam/SourceWatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TheCocoTeam/SourceWatcher/?branch=master)
+# SourceWatcher [![codecov](https://codecov.io/gh/TheCocoTeam/SourceWatcher/branch/master/graph/badge.svg)](https://codecov.io/gh/TheCocoTeam/SourceWatcher) [![SourceWatcher Travis CI](https://travis-ci.com/TheCocoTeam/source-watcher-core.svg?branch=master)](https://travis-ci.com/github/TheCocoTeam/source-watcher-core) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TheCocoTeam/SourceWatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TheCocoTeam/SourceWatcher/?branch=master)
 Project which allows to watch different sources of data
 
 ## Docker container
