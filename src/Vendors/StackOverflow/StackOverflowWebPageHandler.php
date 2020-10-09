@@ -89,18 +89,16 @@ class StackOverflowWebPageHandler extends WebPageHandler
     ) : StackOverflowJob {
         if ( $attributes != null ) {
             foreach ( $attributes as $currentAttribute ) {
-                if ( $currentAttribute->name != null ) {
-                    if ( $currentAttribute->name == "data-jobid" ) {
-                        $stackOverflowJob->setJobId( $currentAttribute->value );
-                    }
+                if ( $currentAttribute->name == "data-jobid" ) {
+                    $stackOverflowJob->setJobId( $currentAttribute->value );
+                }
 
-                    if ( $currentAttribute->name == "data-result-id" ) {
-                        $stackOverflowJob->setResultId( $currentAttribute->value );
-                    }
+                if ( $currentAttribute->name == "data-result-id" ) {
+                    $stackOverflowJob->setResultId( $currentAttribute->value );
+                }
 
-                    if ( $currentAttribute->name == "data-preview-url" ) {
-                        $stackOverflowJob->setPreviewUrl( $currentAttribute->value );
-                    }
+                if ( $currentAttribute->name == "data-preview-url" ) {
+                    $stackOverflowJob->setPreviewUrl( $currentAttribute->value );
                 }
             }
         }
@@ -182,6 +180,36 @@ class StackOverflowWebPageHandler extends WebPageHandler
         return $stackOverflowJob;
     }
 
+    private function refineCompanyName ( string $companyName ) : string
+    {
+        if ( strpos( $companyName, "\r\n" ) !== false ) {
+            $companyNameParts = explode( "\r\n", $companyName );
+
+            foreach ( $companyNameParts as $index => $currentCompanyNamePart ) {
+                $companyNameParts[$index] = trim( $currentCompanyNamePart );
+            }
+
+            return implode( " ", $companyNameParts );
+        } else {
+            return $companyName;
+        }
+    }
+
+    private function setCompanyAndLocation (
+        DOMElement $element,
+        StackOverflowJob $stackOverflowJob
+    ) : StackOverflowJob {
+        if ( $element->attributes->count() == 0 ) {
+            $stackOverflowJob->setCompany( $this->refineCompanyName( trim( $element->nodeValue ) ) );
+        }
+
+        if ( $element->attributes->count() == 1 && $element->getAttribute( "class" ) == "fc-black-500" ) {
+            $stackOverflowJob->setLocation( trim( $element->nodeValue ) );
+        }
+
+        return $stackOverflowJob;
+    }
+
     private function processH2AndH3Elements (
         DOMElement $currentDeepNodeChildrenElement,
         StackOverflowJob $stackOverflowJob
@@ -190,36 +218,14 @@ class StackOverflowWebPageHandler extends WebPageHandler
             $stackOverflowJob->setTitle( trim( $currentDeepNodeChildrenElement->nodeValue ) );
         }
 
-        if ( $currentDeepNodeChildrenElement->tagName == "h3" ) {
-            if ( $currentDeepNodeChildrenElement->hasChildNodes() ) {
-                $companyAndLocationDomNodeList = $currentDeepNodeChildrenElement->childNodes; // DOMNodeList
+        if ( $currentDeepNodeChildrenElement->tagName == "h3" && $currentDeepNodeChildrenElement->hasChildNodes() ) {
+            $companyAndLocationDomNodeList = $currentDeepNodeChildrenElement->childNodes; // DOMNodeList
 
-                for ( $i = 0; $i < $companyAndLocationDomNodeList->count(); $i++ ) {
-                    $currentCompanyAndLocationElement = $companyAndLocationDomNodeList->item( $i ); // DOMElement or DOMText
+            for ( $i = 0; $i < $companyAndLocationDomNodeList->count(); $i++ ) {
+                $currentCompanyAndLocationElement = $companyAndLocationDomNodeList->item( $i ); // DOMElement or DOMText
 
-                    if ( $currentCompanyAndLocationElement instanceof DOMElement ) {
-                        if ( $currentCompanyAndLocationElement->nodeName == "span" ) {
-                            if ( $currentCompanyAndLocationElement->attributes->count() == 0 ) {
-                                $companyName = trim( $currentCompanyAndLocationElement->nodeValue );
-
-                                if ( strpos( $companyName, "\r\n" ) !== false ) {
-                                    $companyNameParts = explode( "\r\n", $companyName );
-
-                                    foreach ( $companyNameParts as $index => $currentCompanyNamePart ) {
-                                        $companyNameParts[$index] = trim( $currentCompanyNamePart );
-                                    }
-
-                                    $stackOverflowJob->setCompany( implode( " ", $companyNameParts ) );
-                                } else {
-                                    $stackOverflowJob->setCompany( $companyName );
-                                }
-                            }
-
-                            if ( $currentCompanyAndLocationElement->attributes->count() == 1 && $currentCompanyAndLocationElement->getAttribute( "class" ) == "fc-black-500" ) {
-                                $stackOverflowJob->setLocation( trim( $currentCompanyAndLocationElement->nodeValue ) );
-                            }
-                        }
-                    }
+                if ( $currentCompanyAndLocationElement instanceof DOMElement && $currentCompanyAndLocationElement->nodeName == "span" ) {
+                    $this->setCompanyAndLocation( $currentCompanyAndLocationElement );
                 }
             }
         }
