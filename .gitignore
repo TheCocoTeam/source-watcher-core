@@ -1,6 +1,6 @@
 .idea
-vendor
-clover.xml
-.env
+.scannerwork
 coverage
-
+.env
+clover.xml
+vendor

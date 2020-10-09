@@ -1,7 +1,6 @@
 <?php
 
 $matrix = [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ];
-//print_r( $matrix ) . PHP_EOL;
 
 for ( $row = 0; $row < sizeof( $matrix ); $row++ ) {
     for ( $column = 0; $column < sizeof( $matrix[0] ); $column++ ) {
@@ -16,10 +15,9 @@ function findNeighbours ( array $matrix, int $row, int $column ) : array
 
     for ( $currentRow = $row - 1; $currentRow <= $row + 1; $currentRow++ ) {
         for ( $currentColumn = $column - 1; $currentColumn <= $column + 1; $currentColumn++ ) {
-            if ( isElementInRange( $currentRow, $currentColumn, $matrix ) ) {
-                if ( $currentRow != $row || $currentColumn != $column ) {
-                    $neighbours[] = [ "row" => $currentRow, "column" => $currentColumn ];
-                }
+            if ( isElementInRange( $currentRow, $currentColumn,
+                    $matrix ) && ( $currentRow != $row || $currentColumn != $column ) ) {
+                $neighbours[] = [ "row" => $currentRow, "column" => $currentColumn ];
             }
         }
     }
@@ -49,7 +47,6 @@ function isElementInRange ( $row, $column, $matrix ) : bool
 for ( $row = 0; $row < sizeof( $matrix ); $row++ ) {
     for ( $column = 0; $column < sizeof( $matrix[0] ); $column++ ) {
         $neighbours = findNeighbours( $matrix, $row, $column );
-        echo "neighbours for row $row, column $column are:" . PHP_EOL;
-        print_r( $neighbours ) . PHP_EOL;
+        echo "neighbours for row $row, column $column are:" . print_r( $neighbours, true ) . PHP_EOL;
     }
 }

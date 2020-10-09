@@ -8,6 +8,7 @@ use ReflectionException;
 
 /**
  * Class StepLoader
+ *
  * @package Coco\SourceWatcher\Core
  */
 class StepLoader
@@ -16,6 +17,8 @@ class StepLoader
      * @var StepLoader|null
      */
     private static ?StepLoader $instance = null;
+
+    public static string $stepNamePattern = "%s\\%s";
 
     /**
      * @return StepLoader
@@ -50,19 +53,25 @@ class StepLoader
 
             $parentClassShortName = $reflection->getShortName();
         } catch ( ReflectionException $reflectionException ) {
-            $errorMessage = sprintf( "Something went wrong while trying to get the short class name: %s", $reflectionException->getMessage() );
+            $errorMessage = sprintf( "Something went wrong while trying to get the short class name: %s",
+                $reflectionException->getMessage() );
             throw new SourceWatcherException( $errorMessage );
         }
 
         $baseNameSpace = "Coco\\SourceWatcher\\Core";
 
-        $packages = [ "Extractor" => sprintf( "%s\\%s", $baseNameSpace, "Extractors" ), "Transformer" => sprintf( "%s\\%s", $baseNameSpace, "Transformers" ), "Loader" => sprintf( "%s\\%s", $baseNameSpace, "Loaders" ) ];
+        $packages = [
+            "Extractor" => sprintf( StepLoader::$stepNamePattern, $baseNameSpace, "Extractors" ),
+            "Transformer" => sprintf( StepLoader::$stepNamePattern, $baseNameSpace, "Transformers" ),
+            "Loader" => sprintf( StepLoader::$stepNamePattern, $baseNameSpace, "Loaders" )
+        ];
 
         $step = null;
 
         $textUtils = new TextUtils();
 
-        $fullyQualifiedClassName = sprintf( "%s\\%s", $packages[$parentClassShortName], $textUtils->textToPascalCase( sprintf( "%s_%s", $stepName, $parentClassShortName ) ) );
+        $fullyQualifiedClassName = sprintf( StepLoader::$stepNamePattern, $packages[$parentClassShortName],
+            $textUtils->textToPascalCase( sprintf( "%s_%s", $stepName, $parentClassShortName ) ) );
 
         if ( class_exists( $fullyQualifiedClassName ) ) {
             $step = new $fullyQualifiedClassName();

@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Vendors\Virology\COVID_19\Florida;
 
@@ -9,58 +9,41 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class Covid19FloridaApiReaderTest
+ *
  * @package Coco\SourceWatcher\Tests\Vendors\Virology\COVID_19\Florida
  */
 class Covid19FloridaApiReaderTest extends TestCase
 {
-    /**
-     * @var string
-     */
     public string $floridaCOVID19CasesURL;
 
-    /**
-     * @var string
-     */
     public string $genericQueryParameters;
 
-    /**
-     * @var string[]
-     */
     public array $statisticFields = [];
 
-    /**
-     *
-     */
     public function setUp () : void
     {
         $this->floridaCOVID19CasesURL = "https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Cases/FeatureServer/0/query?";
 
         $this->genericQueryParameters = 'f=json&where=1=1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{"statisticType":"sum","onStatisticField":"%s","outStatisticFieldName":"value"}]&cacheHint=true';
 
-        $this->statisticFields = [ "T_positive" => "Total Positive Cases",
+        $this->statisticFields = [
+            "T_positive" => "Total Positive Cases",
 
-            "T_NegRes" => "Total Negative Florida Residents", "T_NegNotFLRes" => "Total Negative Non-Florida Residents",
+            "T_NegRes" => "Total Negative Florida Residents",
+            "T_NegNotFLRes" => "Total Negative Non-Florida Residents",
 
             "T_total" => "Total Number Of Tests",
 
             "Deaths" => "Deaths",
 
-            "C_FLRes" => "Positive Florida Residents", "C_FLResOut" => "Positive Non-Florida Residents",
+            "C_FLRes" => "Positive Florida Residents",
+            "C_FLResOut" => "Positive Non-Florida Residents",
 
-            "C_HospYes_Res" => "Hospitalizations Florida Residents", "C_HospYes_NonRes" => "Hospitalizations Non-Florida Residents" ];
+            "C_HospYes_Res" => "Hospitalizations Florida Residents",
+            "C_HospYes_NonRes" => "Hospitalizations Non-Florida Residents"
+        ];
     }
 
-    /**
-     *
-     */
-    public function tearDown () : void
-    {
-
-    }
-
-    /**
-     *
-     */
     public function testConstructor () : void
     {
         $reader = new Covid19FloridaApiReader();
@@ -69,9 +52,6 @@ class Covid19FloridaApiReaderTest extends TestCase
         $this->assertInstanceOf( ApiReader::class, $reader );
     }
 
-    /**
-     *
-     */
     public function testSetGetFloridaCOVID19CasesURL () : void
     {
         $reader = new Covid19FloridaApiReader();
@@ -85,9 +65,6 @@ class Covid19FloridaApiReaderTest extends TestCase
         $this->assertEquals( $expectedFloridaCOVID19CasesURL, $reader->getFloridaCOVID19CasesURL() );
     }
 
-    /**
-     *
-     */
     public function testSetGetGenericQueryParameters () : void
     {
         $reader = new Covid19FloridaApiReader();
@@ -101,9 +78,6 @@ class Covid19FloridaApiReaderTest extends TestCase
         $this->assertEquals( $expectedGenericQueryParameters, $reader->getGenericQueryParameters() );
     }
 
-    /**
-     *
-     */
     public function testSetGetStatisticFields () : void
     {
         $reader = new Covid19FloridaApiReader();
@@ -130,15 +104,12 @@ class Covid19FloridaApiReaderTest extends TestCase
         $reader->getResultFromURL( "https://api.github.com/emojis" );
     }
 
-    /**
-     *
-     */
     public function testGetNonExistentField () : void
     {
         $reader = new Covid19FloridaApiReader();
 
-        $statisticFields = [ "SomeFakeField" => "With some random description" ];
-        $reader->setStatisticFields( $statisticFields );
+        $otherStatisticFields = [ "SomeFakeField" => "With some random description" ];
+        $reader->setStatisticFields( $otherStatisticFields );
 
         $results = $reader->getResults();
         $this->assertNotNull( $results );
@@ -146,9 +117,6 @@ class Covid19FloridaApiReaderTest extends TestCase
         $this->assertArrayHasKey( "SomeFakeField", $results );
     }
 
-    /**
-     *
-     */
     public function testGetResults () : void
     {
         $reader = new Covid19FloridaApiReader();

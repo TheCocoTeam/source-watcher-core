@@ -1,22 +1,43 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
 use Coco\SourceWatcher\Core\Database\Connections\PostgreSqlConnector;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
+use Coco\SourceWatcher\Tests\Common\ParentTest;
 use Doctrine\DBAL\DBALException;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class PostgreSqlConnectorTest
+ *
  * @package Coco\SourceWatcher\Tests\Core\Database\Connections
  */
-class PostgreSqlConnectorTest extends TestCase
+class PostgreSqlConnectorTest extends ParentTest
 {
-    /**
-     *
-     */
+    private string $databaseName;
+
+    private string $sslAllowMode;
+    private string $sslRootCert;
+    private string $sslCert;
+    private string $sslKey;
+    private string $sslCrl;
+
+    private string $appName;
+
+    public function setUp () : void
+    {
+        $this->databaseName = "people";
+
+        $this->sslAllowMode = "allow";
+        $this->sslRootCert = "~/.postgresql/root.crt";
+        $this->sslCert = "~/.postgresql/postgresql.crt";
+        $this->sslKey = "~/.postgresql/postgresql.key";
+        $this->sslCrl = "~/.postgresql/root.crl";
+
+        $this->appName = "App Name for PG Stat Activity";
+    }
+
     public function testSetGetCharset () : void
     {
         $connector = new PostgreSqlConnector();
@@ -29,105 +50,84 @@ class PostgreSqlConnectorTest extends TestCase
         $this->assertEquals( $expectedCharset, $connector->getCharset() );
     }
 
-    /**
-     *
-     */
     public function testSetGetDefaultDatabaseName () : void
     {
         $connector = new PostgreSqlConnector();
 
-        $givenDefaultDatabaseName = "people";
-        $expectedDefaultDatabaseName = "people";
+        $givenDefaultDatabaseName = $this->databaseName;
+        $expectedDefaultDatabaseName = $this->databaseName;
 
         $connector->setDefaultDatabaseName( $givenDefaultDatabaseName );
 
         $this->assertEquals( $expectedDefaultDatabaseName, $connector->getDefaultDatabaseName() );
     }
 
-    /**
-     *
-     */
     public function testSetGetSslMode () : void
     {
         $connector = new PostgreSqlConnector();
 
-        $givenSslMode = "allow";
-        $expectedSslMode = "allow";
+        $givenSslMode = $this->sslAllowMode;
+        $expectedSslMode = $this->sslAllowMode;
 
         $connector->setSslMode( $givenSslMode );
 
         $this->assertEquals( $expectedSslMode, $connector->getSslMode() );
     }
 
-    /**
-     *
-     */
     public function testSetGetSslRootCert () : void
     {
         $connector = new PostgreSqlConnector();
 
-        $givenSslRootCert = "~/.postgresql/root.crt";
-        $expectedSslRootCert = "~/.postgresql/root.crt";
+        $givenSslRootCert = $this->sslRootCert;
+        $expectedSslRootCert = $this->sslRootCert;
 
         $connector->setSslRootCert( $givenSslRootCert );
 
         $this->assertEquals( $expectedSslRootCert, $connector->getSslRootCert() );
     }
 
-    /**
-     *
-     */
     public function testSetGetSslCert () : void
     {
         $connector = new PostgreSqlConnector();
 
-        $givenSslCert = "~/.postgresql/postgresql.crt";
-        $expectedSslCert = "~/.postgresql/postgresql.crt";
+        $givenSslCert = $this->sslCert;
+        $expectedSslCert = $this->sslCert;
 
         $connector->setSslCert( $givenSslCert );
 
         $this->assertEquals( $expectedSslCert, $connector->getSslCert() );
     }
 
-    /**
-     *
-     */
     public function testSetGetSslKey () : void
     {
         $connector = new PostgreSqlConnector();
 
-        $givenSslKey = "~/.postgresql/postgresql.key";
-        $expectedSslKey = "~/.postgresql/postgresql.key";
+        $givenSslKey = $this->sslKey;
+        $expectedSslKey = $this->sslKey;
 
         $connector->setSslKey( $givenSslKey );
 
         $this->assertEquals( $expectedSslKey, $connector->getSslKey() );
     }
 
-    /**
-     *
-     */
     public function testSetGetSslCrl () : void
     {
         $connector = new PostgreSqlConnector();
 
-        $givenSslCrl = "~/.postgresql/root.crl";
-        $expectedSslCrl = "~/.postgresql/root.crl";
+        $givenSslCrl = $this->sslCrl;
+        $expectedSslCrl = $this->sslCrl;
 
         $connector->setSslCrl( $givenSslCrl );
 
         $this->assertEquals( $expectedSslCrl, $connector->getSslCrl() );
     }
 
-    /**
-     *
-     */
     public function testSetGetApplicationName () : void
     {
         $connector = new PostgreSqlConnector();
 
-        $givenAppName = "App Name for PG Stat Activity";
-        $expectedAppName = "App Name for PG Stat Activity";
+        $givenAppName = $this->appName;
+        $expectedAppName = $this->appName;
 
         $connector->setApplicationName( $givenAppName );
 
@@ -143,16 +143,16 @@ class PostgreSqlConnectorTest extends TestCase
         $connector->setUser( "admin" );
         $connector->setPassword( "secret" );
         $connector->setHost( "localhost" );
-        $connector->setPort( 5432 );;
-        $connector->setDbName( "people" );
+        $connector->setPort( 5432 );
+        $connector->setDbName( $this->databaseName );
         $connector->setCharset( "utf8" );
-        $connector->setDefaultDatabaseName( "people" );
-        $connector->setSslMode( "allow" );
-        $connector->setSslRootCert( "~/.postgresql/root.crt" );
-        $connector->setSslCert( "~/.postgresql/postgresql.crt" );
-        $connector->setSslKey( "~/.postgresql/postgresql.key" );
-        $connector->setSslCrl( "~/.postgresql/root.crl" );
-        $connector->setApplicationName( "App Name for PG Stat Activity" );
+        $connector->setDefaultDatabaseName( $this->databaseName );
+        $connector->setSslMode( $this->sslAllowMode );
+        $connector->setSslRootCert( $this->sslRootCert );
+        $connector->setSslCert( $this->sslCert );
+        $connector->setSslKey( $this->sslKey );
+        $connector->setSslCrl( $this->sslCrl );
+        $connector->setApplicationName( $this->appName );
 
         $this->assertNotNull( $connector->getConnection() );
     }
@@ -162,18 +162,18 @@ class PostgreSqlConnectorTest extends TestCase
      */
     public function testInsertUsingEnvironmentVariables () : void
     {
-        $user = array_key_exists( "UNIT_TEST_POSTGRESQL_USER", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_USER"] : null;
-        $password = array_key_exists( "UNIT_TEST_POSTGRESQL_PASSWORD", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_PASSWORD"] : null;
-        $host = array_key_exists( "UNIT_TEST_POSTGRESQL_HOST", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_HOST"] : null;
-        $port = array_key_exists( "UNIT_TEST_POSTGRESQL_PORT", $_ENV ) ? intval( $_ENV["UNIT_TEST_POSTGRESQL_PORT"] ) : 5432;
-        $dbName = array_key_exists( "UNIT_TEST_POSTGRESQL_DB_NAME", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_DB_NAME"] : null;
-        $defaultDatabaseName = array_key_exists( "UNIT_TEST_POSTGRESQL_DEFAULT_DATABASE_NAME", $_ENV ) ? $_ENV["UNIT_TEST_POSTGRESQL_DEFAULT_DATABASE_NAME"] : null;
+        $user = $this->getEnvironmentVariable( "UNIT_TEST_POSTGRESQL_USER", null );
+        $password = $this->getEnvironmentVariable( "UNIT_TEST_POSTGRESQL_PASSWORD", null );
+        $host = $this->getEnvironmentVariable( "UNIT_TEST_POSTGRESQL_HOST", null );
+        $port = $this->getEnvironmentVariable( "UNIT_TEST_POSTGRESQL_PORT", 5432, "intval" );
+        $dbName = $this->getEnvironmentVariable( "UNIT_TEST_POSTGRESQL_DB_NAME", null );
+        $defaultDatabaseName = $this->getEnvironmentVariable( "UNIT_TEST_POSTGRESQL_DEFAULT_DATABASE_NAME", null );
 
         $connector = new PostgreSqlConnector();
         $connector->setUser( $user );
         $connector->setPassword( $password );
         $connector->setHost( $host );
-        $connector->setPort( $port );;
+        $connector->setPort( $port );
         $connector->setDbName( $dbName );
         $connector->setDefaultDatabaseName( $defaultDatabaseName );
 

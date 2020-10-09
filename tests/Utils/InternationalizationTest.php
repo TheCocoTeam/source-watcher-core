@@ -1,44 +1,31 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Utils;
 
-use Coco\SourceWatcher\Utils\i18n;
+use Coco\SourceWatcher\Utils\Internationalization;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class i18nTest
+ * Class InternationalizationTest
+ *
  * @package Coco\SourceWatcher\Tests\Utils
  */
-class i18nTest extends TestCase
+class InternationalizationTest extends TestCase
 {
-    /**
-     * @var string
-     */
     private string $envFileLocation = __DIR__ . "/../../" . ".env";
 
-    /**
-     * @var bool
-     */
     private bool $preExistingEnvFile = false;
 
-    /**
-     * @var string
-     */
     private string $temporaryNameForEnvFile = "";
 
-    /**
-     * @var bool
-     */
     private bool $envFileRenamed = false;
 
-    /**
-     * @var bool[][]
-     */
-    private array $envConditionsPerFunction = [ "testGetInstance" => [ "add_i18n_property" => true ], "testGetText" => [ "add_i18n_property" => true ], "testNoEnvFileDefaultToEnglish" => [ "add_i18n_property" => false ] ];
+    private array $envConditionsPerFunction = [
+        "testGetInstance" => [ "add_i18n_property" => true ], // #NOSONAR
+        "testGetText" => [ "add_i18n_property" => true ],
+        "testNoEnvFileDefaultToEnglish" => [ "add_i18n_property" => false ]
+    ];
 
-    /**
-     *
-     */
     public function setUp () : void
     {
         $nextFunctionToBeCalled = $this->getName();
@@ -67,9 +54,6 @@ class i18nTest extends TestCase
         }
     }
 
-    /**
-     *
-     */
     public function tearDown () : void
     {
         if ( !$this->preExistingEnvFile ) {
@@ -81,33 +65,26 @@ class i18nTest extends TestCase
         }
     }
 
-    /**
-     *
-     */
     public function testGetInstance () : void
     {
-        $this->assertEquals( new i18n(), i18n::getInstance() );
+        $this->assertEquals( new Internationalization(), Internationalization::getInstance() );
     }
 
-    /**
-     *
-     */
     public function testGetText () : void
     {
         $expectedString = "This is a test entry!";
-        $actualString = i18n::getInstance()->getText( i18nTest::class, "This_Is_A_Test_Entry" );
+        $actualString = Internationalization::getInstance()->getText( InternationalizationTest::class,
+            "This_Is_A_Test_Entry" );
 
         $this->assertNotNull( $actualString );
         $this->assertEquals( $expectedString, $actualString );
     }
 
-    /**
-     *
-     */
-    public function testNoEnvFileDefaultToEnglish () : void
+    public function testNoEnvFileDefaultToEnglish () : void // #NOSONAR
     {
         $expectedString = "This is a test entry!";
-        $actualString = i18n::getInstance()->getText( i18nTest::class, "This_Is_A_Test_Entry" );
+        $actualString = Internationalization::getInstance()->getText( InternationalizationTest::class,
+            "This_Is_A_Test_Entry" );
 
         $this->assertNotNull( $actualString );
         $this->assertEquals( $expectedString, $actualString );

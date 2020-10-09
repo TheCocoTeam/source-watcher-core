@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Watcher\Handler;
 
@@ -8,25 +8,32 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class WebPageHandlerTest
+ *
  * @package Coco\SourceWatcher\Tests\Watcher\Handler
  */
 class WebPageHandlerTest extends TestCase
 {
-    /**
-     *
-     */
+    public string $java_florida_jobs_url;
+    public string $php_florida_jobs_url;
+
+    public function setUp () : void
+    {
+        $this->java_florida_jobs_url = "https://stackoverflow.com/jobs?q=Java&l=Florida+USA&d=100&u=Miles";
+        $this->php_florida_jobs_url = "https://stackoverflow.com/jobs?q=PHP&l=Florida+USA&d=100&u=Miles";
+    }
+
     public function testSetGetURL () : void
     {
-        $givenURL = "https://stackoverflow.com/jobs?q=Java&l=Florida+USA&d=100&u=Miles";
-        $expectedURL = "https://stackoverflow.com/jobs?q=Java&l=Florida+USA&d=100&u=Miles";
+        $givenURL = $this->java_florida_jobs_url;
+        $expectedURL = $this->java_florida_jobs_url;
 
         $webPageHandler = new WebPageHandler( $givenURL );
 
         $this->assertNotNull( $webPageHandler->getUrl() );
         $this->assertEquals( $expectedURL, $webPageHandler->getUrl() );
 
-        $givenURL = "https://stackoverflow.com/jobs?q=PHP&l=Florida+USA&d=100&u=Miles";
-        $expectedURL = "https://stackoverflow.com/jobs?q=PHP&l=Florida+USA&d=100&u=Miles";
+        $givenURL = $this->php_florida_jobs_url;
+        $expectedURL = $this->php_florida_jobs_url;
 
         $webPageHandler->setUrl( $givenURL );
 

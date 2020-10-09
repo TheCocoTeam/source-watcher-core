@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core;
 
@@ -9,21 +9,16 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class StepLoaderTest
+ *
  * @package Coco\SourceWatcher\Tests\Core
  */
 class StepLoaderTest extends TestCase
 {
-    /**
-     *
-     */
     public function testGetInstanceViaStaticMethodNotNull () : void
     {
         $this->assertNotNull( StepLoader::getInstance() );
     }
 
-    /**
-     *
-     */
     public function testGetInstanceViaStaticMethodIsStepLoader () : void
     {
         $this->assertInstanceOf( StepLoader::class, StepLoader::getInstance() );

@@ -3,7 +3,7 @@
 namespace Coco\SourceWatcher\Core\Api;
 
 use Coco\SourceWatcher\Core\SourceWatcherException;
-use Coco\SourceWatcher\Utils\i18n;
+use Coco\SourceWatcher\Utils\Internationalization;
 
 /**
  * Class ApiReader
@@ -15,95 +15,60 @@ use Coco\SourceWatcher\Utils\i18n;
  */
 class ApiReader implements Reader
 {
-    /**
-     * @var string
-     */
     protected ?string $resourceURL = null;
 
-    /**
-     * @var int
-     */
     protected int $timeout = 5;
 
-    /**
-     * @var array
-     */
     protected array $headers = [];
 
-    /**
-     * @var int
-     */
     protected int $currentAttempt;
 
-    /**
-     * @var int
-     */
     protected int $attempts = 3;
 
-    /**
-     * ApiReader constructor.
-     */
     public function __construct ()
     {
         $this->currentAttempt = 1;
     }
 
-    /**
-     * @return string
-     */
     public function getResourceURL () : string
     {
         return $this->resourceURL;
     }
 
-    /**
-     * @param string $resourceURL
-     */
     public function setResourceURL ( string $resourceURL ) : void
     {
         $this->resourceURL = $resourceURL;
     }
 
-    /**
-     * @return int
-     */
     public function getTimeout () : int
     {
         return $this->timeout;
     }
 
-    /**
-     * @param int $timeout
-     */
     public function setTimeout ( int $timeout ) : void
     {
         $this->timeout = $timeout;
     }
 
-    /**
-     * @return array
-     */
     public function getHeaders () : array
     {
         return $this->headers;
     }
 
-    /**
-     * @param array $headers
-     */
     public function setHeaders ( array $headers ) : void
     {
         $this->headers = $headers;
     }
 
     /**
-     * @return bool|string
+     * @return bool|mixed|string
      * @throws SourceWatcherException
      */
     public function read ()
     {
         if ( $this->resourceURL == null || $this->resourceURL == "" ) {
-            throw new SourceWatcherException( i18n::getInstance()->getText( ApiReader::class, "No_Resource_URL_Found" ) );
+            throw new SourceWatcherException( Internationalization::getInstance()->getText( ApiReader::class,
+                "No_Resource_URL_Found" ) );
         }
 
         $curl = curl_init();
@@ -127,11 +92,10 @@ class ApiReader implements Reader
 
         curl_close( $curl );
 
-        if ( $response == false ) {
-            if ( $this->currentAttempt < $this->attempts ) {
-                $this->currentAttempt++;
-                return $this->read();
-            }
+        if ( !$response && $this->currentAttempt < $this->attempts ) {
+            $this->currentAttempt++;
+
+            return $this->read();
         }
 
         return $response;

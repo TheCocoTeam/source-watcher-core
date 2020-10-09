@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Utils;
 
@@ -7,13 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class TextUtilsTest
+ *
  * @package Coco\SourceWatcher\Tests\Utils
  */
 class TextUtilsTest extends TestCase
 {
-    /**
-     *
-     */
     public function testConvertToCamelCase () : void
     {
         $textUtils = new TextUtils();
@@ -24,9 +22,6 @@ class TextUtilsTest extends TestCase
         $this->assertEquals( $expected, $textUtils->textToCamelCase( $given ) );
     }
 
-    /**
-     *
-     */
     public function testConvertToPascalCase () : void
     {
         $textUtils = new TextUtils();

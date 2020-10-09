@@ -8,13 +8,13 @@ use DOMNamedNodeMap;
 use DOMNodeList;
 use DOMXPath;
 
+/**
+ * Class StackOverflowWebPageHandler
+ *
+ * @package Coco\SourceWatcher\Vendors\StackOverflow
+ */
 class StackOverflowWebPageHandler extends WebPageHandler
 {
-    public function __construct ( string $url )
-    {
-        parent::__construct( $url );
-    }
-
     private array $results = [];
 
     public function getResults () : array
@@ -26,7 +26,7 @@ class StackOverflowWebPageHandler extends WebPageHandler
     {
         parent::read();
 
-        $this->results = array();
+        $this->results = [];
 
         $finder = new DomXPath( $this->dom );
 
@@ -44,7 +44,6 @@ class StackOverflowWebPageHandler extends WebPageHandler
             $children = $currentDomNode->childNodes; // DOMNodeList
 
             for ( $i = 0; $i < $children->count(); $i++ ) {
-                // DOMElement or DOMText
                 $currentChildrenNode = $children->item( $i );
 
                 if ( $currentChildrenNode instanceof DOMElement ) {
@@ -84,8 +83,10 @@ class StackOverflowWebPageHandler extends WebPageHandler
         }
     }
 
-    private function setBasicAttributes ( DOMNamedNodeMap $attributes, StackOverflowJob $stackOverflowJob ) : StackOverflowJob
-    {
+    private function setBasicAttributes (
+        DOMNamedNodeMap $attributes,
+        StackOverflowJob $stackOverflowJob
+    ) : StackOverflowJob {
         if ( $attributes != null ) {
             foreach ( $attributes as $currentAttribute ) {
                 if ( $currentAttribute->name != null ) {
@@ -107,8 +108,10 @@ class StackOverflowWebPageHandler extends WebPageHandler
         return $stackOverflowJob;
     }
 
-    private function processExtraChildNodes ( DOMElement $currentExtraChildNode, StackOverflowJob $stackOverflowJob ) : StackOverflowJob
-    {
+    private function processExtraChildNodes (
+        DOMElement $currentExtraChildNode,
+        StackOverflowJob $stackOverflowJob
+    ) : StackOverflowJob {
         if ( $currentExtraChildNode->hasChildNodes() ) {
             $currentExtraChildNodeChildren = $currentExtraChildNode->childNodes; // DOMNodeList
 
@@ -128,10 +131,13 @@ class StackOverflowWebPageHandler extends WebPageHandler
         return $stackOverflowJob;
     }
 
-    private function processImageDivBlocks ( DOMElement $currentDeepNode, StackOverflowJob $stackOverflowJob ) : StackOverflowJob
-    {
+    private function processImageDivBlocks (
+        DOMElement $currentDeepNode,
+        StackOverflowJob $stackOverflowJob
+    ) : StackOverflowJob {
         if ( $currentDeepNode->childNodes->count() == 2 ) {
-            $stackOverflowJob = $this->processImageBlock( $currentDeepNode->childNodes->item( 1 )->attributes, $stackOverflowJob );
+            $stackOverflowJob = $this->processImageBlock( $currentDeepNode->childNodes->item( 1 )->attributes,
+                $stackOverflowJob );
         }
 
         if ( $currentDeepNode->tagName == "div" && $currentDeepNode->hasChildNodes() ) {
@@ -141,20 +147,30 @@ class StackOverflowWebPageHandler extends WebPageHandler
         return $stackOverflowJob;
     }
 
-    private function processImageBlock ( DOMNamedNodeMap $currentDeepNodeAttributes, StackOverflowJob $stackOverflowJob ) : StackOverflowJob
-    {
+    private function processImageBlock (
+        DOMNamedNodeMap $currentDeepNodeAttributes,
+        StackOverflowJob $stackOverflowJob
+    ) : StackOverflowJob {
         if ( $currentDeepNodeAttributes != null && sizeof( $currentDeepNodeAttributes ) == 2 ) {
             $attr1 = $currentDeepNodeAttributes[0]; // DOMAttr
             $attr2 = $currentDeepNodeAttributes[1]; // DOMAttr
 
-            $stackOverflowJob->setLogo( $attr1->name == "src" ? $attr1->value : ( $attr2->name == "src" ? $attr2->value : "" ) );
+            if ( $attr1->name == "src" ) {
+                $stackOverflowJob->setLogo( $attr1->value );
+            }
+
+            if ( $attr2->name == "src" ) {
+                $stackOverflowJob->setLogo( $attr2->value );
+            }
         }
 
         return $stackOverflowJob;
     }
 
-    private function processDivBlock ( DOMNodeList $currentDeepNodeChildren, StackOverflowJob $stackOverflowJob ) : StackOverflowJob
-    {
+    private function processDivBlock (
+        DOMNodeList $currentDeepNodeChildren,
+        StackOverflowJob $stackOverflowJob
+    ) : StackOverflowJob {
         for ( $i = 0; $i < $currentDeepNodeChildren->count(); $i++ ) {
             $currentDeepNodeChildrenElement = $currentDeepNodeChildren->item( $i ); // DOMElement or DOMText
 
@@ -166,8 +182,10 @@ class StackOverflowWebPageHandler extends WebPageHandler
         return $stackOverflowJob;
     }
 
-    private function processH2AndH3Elements ( DOMElement $currentDeepNodeChildrenElement, StackOverflowJob $stackOverflowJob ) : StackOverflowJob
-    {
+    private function processH2AndH3Elements (
+        DOMElement $currentDeepNodeChildrenElement,
+        StackOverflowJob $stackOverflowJob
+    ) : StackOverflowJob {
         if ( $currentDeepNodeChildrenElement->tagName == "h2" ) {
             $stackOverflowJob->setTitle( trim( $currentDeepNodeChildrenElement->nodeValue ) );
         }
@@ -197,10 +215,8 @@ class StackOverflowWebPageHandler extends WebPageHandler
                                 }
                             }
 
-                            if ( $currentCompanyAndLocationElement->attributes->count() == 1 ) {
-                                if ( $currentCompanyAndLocationElement->getAttribute( "class" ) == "fc-black-500" ) {
-                                    $stackOverflowJob->setLocation( trim( $currentCompanyAndLocationElement->nodeValue ) );
-                                }
+                            if ( $currentCompanyAndLocationElement->attributes->count() == 1 && $currentCompanyAndLocationElement->getAttribute( "class" ) == "fc-black-500" ) {
+                                $stackOverflowJob->setLocation( trim( $currentCompanyAndLocationElement->nodeValue ) );
                             }
                         }
                     }

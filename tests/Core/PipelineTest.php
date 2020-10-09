@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core;
 
@@ -12,49 +12,13 @@ use Coco\SourceWatcher\Core\Transformer;
 use Coco\SourceWatcher\Core\Transformers\RenameColumnsTransformer;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class PipelineTest
+ *
+ * @package Coco\SourceWatcher\Tests\Core
+ */
 class PipelineTest extends TestCase
 {
-    public function testSetGetExtractor () : void
-    {
-        $pipeline = new Pipeline();
-
-        $givenExtractor = $this->createMock( Extractor::class );
-        $expectedExtractor = $this->createMock( Extractor::class );
-
-        $pipeline->setExtractor( $givenExtractor );
-
-        $this->assertEquals( $expectedExtractor, $pipeline->getExtractor() );
-    }
-
-    public function testSetGetSteps () : void
-    {
-        $pipeline = new Pipeline();
-
-        $givenSteps = [];
-        $expectedSteps = [];
-
-        $transformer = $this->createMock( Transformer::class );
-        $givenSteps[] = $transformer;
-        $expectedSteps[] = $transformer;
-
-        $loader = $this->createMock( Loader::class );
-        $givenSteps[] = $loader;
-        $expectedSteps[] = $loader;
-
-        $pipeline->setSteps( $givenSteps );
-
-        $this->assertEquals( $expectedSteps, $pipeline->getSteps() );
-    }
-
-    public function testPipeStep () : void
-    {
-        $pipeline = new Pipeline();
-
-        $transformer = $this->createMock( Transformer::class );
-
-        $this->assertNull( $pipeline->pipe( $transformer ) );
-    }
-
     private Pipeline $pipeline;
 
     protected function setUp () : void
@@ -102,5 +66,46 @@ class PipelineTest extends TestCase
             $this->assertNotNull( $key );
             $this->assertNotNull( $value );
         }
+    }
+
+    public function testSetGetExtractor () : void
+    {
+        $this->pipeline = new Pipeline();
+
+        $givenExtractor = $this->createMock( Extractor::class );
+        $expectedExtractor = $this->createMock( Extractor::class );
+
+        $this->pipeline->setExtractor( $givenExtractor );
+
+        $this->assertEquals( $expectedExtractor, $this->pipeline->getExtractor() );
+    }
+
+    public function testSetGetSteps () : void
+    {
+        $this->pipeline = new Pipeline();
+
+        $givenSteps = [];
+        $expectedSteps = [];
+
+        $transformer = $this->createMock( Transformer::class );
+        $givenSteps[] = $transformer;
+        $expectedSteps[] = $transformer;
+
+        $loader = $this->createMock( Loader::class );
+        $givenSteps[] = $loader;
+        $expectedSteps[] = $loader;
+
+        $this->pipeline->setSteps( $givenSteps );
+
+        $this->assertEquals( $expectedSteps, $this->pipeline->getSteps() );
+    }
+
+    public function testPipeStep () : void
+    {
+        $this->pipeline = new Pipeline();
+
+        $transformer = $this->createMock( Transformer::class );
+
+        $this->assertNull( $this->pipeline->pipe( $transformer ) );
     }
 }

@@ -9,33 +9,19 @@ use Coco\SourceWatcher\Core\SourceWatcherException;
 
 /**
  * Class CsvExtractor
+ *
  * @package Coco\SourceWatcher\Core\Extractors
  */
 class CsvExtractor extends Extractor
 {
-    /**
-     * @var array
-     */
     protected array $columns;
 
-    /**
-     * @var string
-     */
     protected string $delimiter;
 
-    /**
-     * @var string
-     */
     protected string $enclosure;
 
-    /**
-     * @var array|string[]
-     */
     protected array $availableOptions = [ "columns", "delimiter", "enclosure" ];
 
-    /**
-     * CsvExtractor constructor.
-     */
     public function __construct ()
     {
         $this->columns = [];
@@ -43,49 +29,31 @@ class CsvExtractor extends Extractor
         $this->enclosure = "\"";
     }
 
-    /**
-     * @return array
-     */
     public function getColumns () : array
     {
         return $this->columns;
     }
 
-    /**
-     * @param array $columns
-     */
     public function setColumns ( array $columns ) : void
     {
         $this->columns = $columns;
     }
 
-    /**
-     * @return string
-     */
     public function getDelimiter () : string
     {
         return $this->delimiter;
     }
 
-    /**
-     * @param string $delimiter
-     */
     public function setDelimiter ( string $delimiter ) : void
     {
         $this->delimiter = $delimiter;
     }
 
-    /**
-     * @return string
-     */
     public function getEnclosure () : string
     {
         return $this->enclosure;
     }
 
-    /**
-     * @param string $enclosure
-     */
     public function setEnclosure ( string $enclosure ) : void
     {
         $this->enclosure = $enclosure;
@@ -107,14 +75,14 @@ class CsvExtractor extends Extractor
             throw new SourceWatcherException( sprintf( "The input must be an instance of %s", FileInput::class ) );
         }
 
-        $result = array();
+        $result = [];
 
         $fileHandler = fopen( $this->input->getInput(), "r" );
 
-        $columns = $this->generateColumns( $fileHandler );
+        $this->columns = $this->generateColumns( $fileHandler );
 
         while ( $currentFileLine = fgets( $fileHandler ) ) {
-            $currentRowArray = $this->generateRow( $currentFileLine, $columns );
+            $currentRowArray = $this->generateRow( $currentFileLine, $this->columns );
 
             array_push( $result, new Row( $currentRowArray ) );
         }
@@ -143,7 +111,7 @@ class CsvExtractor extends Extractor
             return array_intersect_key( $columnsArrayFlipped, array_flip( $this->columns ) );
         }
 
-        $result = array();
+        $result = [];
 
         foreach ( $this->columns as $key => $value ) {
             $result[$value] = $columnsArrayFlipped[$key];
@@ -154,7 +122,7 @@ class CsvExtractor extends Extractor
 
     private function generateRow ( string $rowString, array $columns ) : array
     {
-        $resultRow = array();
+        $resultRow = [];
 
         $rowArray = str_getcsv( $rowString, $this->delimiter, $this->enclosure );
 

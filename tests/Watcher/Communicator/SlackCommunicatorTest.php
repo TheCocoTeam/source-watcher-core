@@ -1,55 +1,50 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Watcher\Communicator;
 
 use Coco\SourceWatcher\Core\SourceWatcherException;
-use Coco\SourceWatcher\Utils\i18n;
+use Coco\SourceWatcher\Utils\Internationalization;
 use Coco\SourceWatcher\Watcher\Communicator\SlackCommunicator;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class SlackCommunicatorTest
+ *
  * @package Coco\SourceWatcher\Tests\Watcher\Communicator
  */
 class SlackCommunicatorTest extends TestCase
 {
-    /**
-     * @var mixed|string|null
-     */
     private string $slackWebHook;
 
-    /**
-     * @var string
-     */
     private string $method;
 
-    /**
-     * @var string
-     */
     private string $contentType;
 
-    /**
-     * @var array
-     */
     private array $mockResults;
 
-    /**
-     *
-     */
     public function setUp () : void
     {
-        $this->slackWebHook = array_key_exists( "UNIT_TEST_SLACK_WEB_HOOK", $_ENV ) ? $_ENV["UNIT_TEST_SLACK_WEB_HOOK"] : null;
+        $this->slackWebHook = array_key_exists( "UNIT_TEST_SLACK_WEB_HOOK",
+            $_ENV ) ? $_ENV["UNIT_TEST_SLACK_WEB_HOOK"] : null;
 
         $this->method = "POST";
 
         $this->contentType = "Content-Type: application/json";
 
-        $this->mockResults = [ "blocks" => [ [ "type" => "section", "text" => [ "type" => "mrkdwn", "text" => gmdate( "l jS \of F Y h:i:s A" ) ] ], [ "type" => "section", "text" => [ "type" => "mrkdwn", "text" => "Running unit test for Slack Communicator class" ] ] ] ];
+        $this->mockResults = [
+            "blocks" => [
+                [
+                    "type" => "section",
+                    "text" => [ "type" => "mrkdwn", "text" => gmdate( "l jS \of F Y h:i:s A" ) ]
+                ],
+                [
+                    "type" => "section",
+                    "text" => [ "type" => "mrkdwn", "text" => "Running unit test for Slack Communicator class" ]
+                ]
+            ]
+        ];
     }
 
-    /**
-     *
-     */
     public function tearDown () : void
     {
         unset( $this->slackWebHook );
@@ -58,9 +53,6 @@ class SlackCommunicatorTest extends TestCase
         unset( $this->mockResults );
     }
 
-    /**
-     *
-     */
     public function testSetGetWebHookUrl () : void
     {
         $communicator = new SlackCommunicator();
@@ -74,9 +66,6 @@ class SlackCommunicatorTest extends TestCase
         $this->assertEquals( $expectedSlackWebHook, $communicator->getWebHookUrl() );
     }
 
-    /**
-     *
-     */
     public function testSetGetMethod () : void
     {
         $communicator = new SlackCommunicator();
@@ -90,9 +79,6 @@ class SlackCommunicatorTest extends TestCase
         $this->assertEquals( $expectedMethod, $communicator->getMethod() );
     }
 
-    /**
-     *
-     */
     public function testSetGetContentType () : void
     {
         $communicator = new SlackCommunicator();
@@ -106,9 +92,6 @@ class SlackCommunicatorTest extends TestCase
         $this->assertEquals( $expectedContentType, $communicator->getContentType() );
     }
 
-    /**
-     *
-     */
     public function testSetGetData () : void
     {
         $communicator = new SlackCommunicator();
@@ -146,7 +129,8 @@ class SlackCommunicatorTest extends TestCase
         $communicator->setWebHookUrl( "" );
 
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( SlackCommunicator::class, "No_Web_Hook" ) );
+        $this->expectExceptionMessage( Internationalization::getInstance()->getText( SlackCommunicator::class,
+            "No_Web_Hook" ) );
 
         $communicator->send();
     }
@@ -161,7 +145,8 @@ class SlackCommunicatorTest extends TestCase
         $communicator->setMethod( "" );
 
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( SlackCommunicator::class, "No_Method" ) );
+        $this->expectExceptionMessage( Internationalization::getInstance()->getText( SlackCommunicator::class,
+            "No_Method" ) );
 
         $communicator->send();
     }
@@ -177,7 +162,8 @@ class SlackCommunicatorTest extends TestCase
         $communicator->setContentType( "" );
 
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( SlackCommunicator::class, "No_Content_Type" ) );
+        $this->expectExceptionMessage( Internationalization::getInstance()->getText( SlackCommunicator::class,
+            "No_Content_Type" ) );
 
         $communicator->send();
     }
@@ -193,7 +179,8 @@ class SlackCommunicatorTest extends TestCase
         $communicator->setContentType( $this->contentType );
 
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( SlackCommunicator::class, "No_Data" ) );
+        $this->expectExceptionMessage( Internationalization::getInstance()->getText( SlackCommunicator::class,
+            "No_Data" ) );
 
         $communicator->send();
     }

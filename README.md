@@ -1,13 +1,13 @@
 # Source Watcher Core [![codecov](https://codecov.io/gh/TheCocoTeam/source-watcher-core/branch/master/graph/badge.svg)](https://codecov.io/gh/TheCocoTeam/source-watcher-core) [![travis-ci](https://travis-ci.com/TheCocoTeam/source-watcher-core.svg?branch=master)](https://travis-ci.com/github/TheCocoTeam/source-watcher-core) [![scrutinizer-ci](https://scrutinizer-ci.com/g/TheCocoTeam/source-watcher-core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TheCocoTeam/source-watcher-core/?branch=master)
 
-Project which allows to watch different sources of data
+PHP project which allows extracting, transform and load data from different sources including databases, files and services.
 
 ## Docker container
 
 Build the Docker image:
 
 ```shell
-sudo docker-compose -f docker-compose.yaml build
+sudo docker-compose -f docker-compose.yml build
 ```
 
 Alternatively, you can simply build the Docker image with:

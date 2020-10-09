@@ -1,12 +1,24 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core;
 
 use Coco\SourceWatcher\Core\Row;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class RowTest
+ *
+ * @package Coco\SourceWatcher\Tests\Core
+ */
 class RowTest extends TestCase
 {
+    private string $janeDoe;
+
+    public function setUp () : void
+    {
+        $this->janeDoe = "Jane Doe";
+    }
+
     public function testGetAndSetAttributes () : void
     {
         $givenAttributes = [ "id", "name" ];
@@ -22,7 +34,7 @@ class RowTest extends TestCase
 
     public function testOffsetExistsViaEmpty () : void
     {
-        $row = new Row( [ "name" => "Jane Doe" ] );
+        $row = new Row( [ "name" => $this->janeDoe ] );
 
         // test the offsetExists method
         $this->assertTrue( empty( $row["id"] ) );
@@ -30,7 +42,7 @@ class RowTest extends TestCase
 
     public function testOffsetExistsViaIsSet () : void
     {
-        $row = new Row( [ "name" => "Jane Doe" ] );
+        $row = new Row( [ "name" => $this->janeDoe ] );
 
         // test the offsetExists method
         $this->assertNotTrue( isset( $row["id"] ) );
@@ -38,12 +50,12 @@ class RowTest extends TestCase
 
     public function testOffsetGetAndSetWithArrayNotation () : void
     {
-        $givenName = "Jane Doe";
+        $givenName = $this->janeDoe;
 
         $row = new Row( [ "id" => 1 ] );
         $row["name"] = $givenName;  // test the offsetSet method
 
-        $expectedName = "Jane Doe";
+        $expectedName = $this->janeDoe;
         $actualName = $row["name"]; // test the offsetGet method
 
         $this->assertEquals( $expectedName, $actualName );
@@ -51,24 +63,24 @@ class RowTest extends TestCase
 
     public function testOffsetUnset () : void
     {
-        $row = new Row( [ "id" => 1, "name" => "Jane Doe" ] );
+        $row = new Row( [ "id" => 1, "name" => $this->janeDoe ] );
 
         // test the offsetUnset method
         unset( $row["id"] );
 
-        $expectedRow = new Row( [ "name" => "Jane Doe" ] );
+        $expectedRow = new Row( [ "name" => $this->janeDoe ] );
 
         $this->assertEquals( $expectedRow, $row );
     }
 
     public function testGetAndSetAttribute () : void
     {
-        $givenName = "Jane Doe";
+        $givenName = $this->janeDoe;
 
         $row = new Row( [ "id" => 1 ] );
         $row->set( "name", $givenName );    // test the set method
 
-        $expectedName = "Jane Doe";
+        $expectedName = $this->janeDoe;
         $actualName = $row->get( "name" );  // test the get method
 
         $this->assertEquals( $expectedName, $actualName );
@@ -76,24 +88,24 @@ class RowTest extends TestCase
 
     public function testRemoveAttribute () : void
     {
-        $row = new Row( [ "id" => 1, "name" => "Jane Doe" ] );
+        $row = new Row( [ "id" => 1, "name" => $this->janeDoe ] );
 
         // test the remove method
         $row->remove( "id" );
 
-        $expectedRow = new Row( [ "name" => "Jane Doe" ] );
+        $expectedRow = new Row( [ "name" => $this->janeDoe ] );
 
         $this->assertEquals( $expectedRow, $row );
     }
 
     public function testGetAndSetWithObjectNotation () : void
     {
-        $givenName = "Jane Doe";
+        $givenName = $this->janeDoe;
 
         $row = new Row( [ "id" => 1 ] );
         $row->name = $givenName;    // test the __set method
 
-        $expectedName = "Jane Doe";
+        $expectedName = $this->janeDoe;
         $actualName = $row->name;   // test the __get method
 
         $this->assertEquals( $expectedName, $actualName );

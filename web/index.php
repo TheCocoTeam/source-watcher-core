@@ -1,2 +1,2 @@
 <?php
-echo "SourceWatcher index page";
+echo "source-watcher-core index page";

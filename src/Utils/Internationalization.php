@@ -5,17 +5,18 @@ namespace Coco\SourceWatcher\Utils;
 use Dotenv\Dotenv;
 use Symfony\Component\Yaml\Yaml;
 
-class i18n
+/**
+ * Class Internationalization
+ *
+ * @package Coco\SourceWatcher\Utils
+ */
+class Internationalization
 {
-    /**
-     * @var i18n|null
-     */
-    private static ?i18n $instance = null;
+    private static ?Internationalization $instance = null;
 
-    /**
-     * @return i18n
-     */
-    public static function getInstance () : i18n
+    public static string $I18N_LANGUAGE_INDEX = "I18N_LANGUAGE";
+
+    public static function getInstance () : Internationalization
     {
         if ( is_null( static::$instance ) ) {
             static::$instance = new static;
@@ -24,12 +25,10 @@ class i18n
         return static::$instance;
     }
 
-    /**
-     * @return string|null
-     */
     private function getLanguageFromEnvFile () : ?string
     {
-        $language = array_key_exists( "I18N_LANGUAGE", $_ENV ) ? $_ENV["I18N_LANGUAGE"] : null;
+        $language = array_key_exists( Internationalization::$I18N_LANGUAGE_INDEX,
+            $_ENV ) ? $_ENV[Internationalization::$I18N_LANGUAGE_INDEX] : null;
 
         if ( empty( $language ) ) {
             $envFileDirectory = __DIR__ . "/../../";
@@ -39,19 +38,14 @@ class i18n
                 $dotEnv = Dotenv::createImmutable( $envFileDirectory );
                 $dotEnv->load();
 
-                $language = array_key_exists( "I18N_LANGUAGE", $_ENV ) ? $_ENV["I18N_LANGUAGE"] : null;
+                $language = array_key_exists( Internationalization::$I18N_LANGUAGE_INDEX,
+                    $_ENV ) ? $_ENV[Internationalization::$I18N_LANGUAGE_INDEX] : null;
             }
         }
 
         return $language;
     }
 
-    /**
-     * @param string $className
-     * @param string $entry
-     * @param string|null $language
-     * @return string
-     */
     public function getText ( string $className, string $entry, string $language = null ) : string
     {
         if ( empty( $language ) ) {

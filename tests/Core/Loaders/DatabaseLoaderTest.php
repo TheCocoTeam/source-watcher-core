@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core\Loaders;
 
@@ -12,10 +12,18 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class DatabaseLoaderTest
+ *
  * @package Coco\SourceWatcher\Tests\Core\Loaders
  */
 class DatabaseLoaderTest extends TestCase
 {
+    private string $janeDoe;
+
+    public function setUp () : void
+    {
+        $this->janeDoe = "Jane Doe";
+    }
+
     /**
      * This unit test is testing the getOutput and setOutput methods of the Loader abstract class.
      */
@@ -37,7 +45,7 @@ class DatabaseLoaderTest extends TestCase
         $this->expectException( SourceWatcherException::class );
 
         $databaseLoader = new DatabaseLoader();
-        $databaseLoader->load( new Row( [ "name" => "Jane Doe" ] ) );
+        $databaseLoader->load( new Row( [ "name" => $this->janeDoe ] ) );
     }
 
     /**
@@ -49,7 +57,7 @@ class DatabaseLoaderTest extends TestCase
 
         $databaseLoader = new DatabaseLoader();
         $databaseLoader->setOutput( $this->createMock( Output::class ) );
-        $databaseLoader->load( new Row( [ "name" => "Jane Doe" ] ) );
+        $databaseLoader->load( new Row( [ "name" => $this->janeDoe ] ) );
     }
 
     /**
@@ -61,7 +69,7 @@ class DatabaseLoaderTest extends TestCase
 
         $databaseLoader = new DatabaseLoader();
         $databaseLoader->setOutput( new DatabaseOutput() );
-        $databaseLoader->load( new Row( [ "name" => "Jane Doe" ] ) );
+        $databaseLoader->load( new Row( [ "name" => $this->janeDoe ] ) );
     }
 
     /**
@@ -72,6 +80,6 @@ class DatabaseLoaderTest extends TestCase
         $databaseLoader = new DatabaseLoader();
         $databaseLoader->setOutput( new DatabaseOutput( $this->createMock( Connector::class ) ) );
 
-        $this->assertNull( $databaseLoader->load( new Row( [ "name" => "Jane Doe" ] ) ) );
+        $this->assertNull( $databaseLoader->load( new Row( [ "name" => $this->janeDoe ] ) ) );
     }
 }

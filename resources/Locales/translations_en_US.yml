@@ -22,7 +22,7 @@ Coco:
         Loader_Not_Found: The loader %s can't be found.
     Tests:
       Utils:
-        i18nTest:
+        InternationalizationTest:
           This_Is_A_Test_Entry: This is a test entry!
     Watcher:
       Communicator:

@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Watcher\Source;
 
@@ -8,17 +8,22 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class WebPageSourceTest
+ *
  * @package Coco\SourceWatcher\Tests\Watcher\Source
  */
 class WebPageSourceTest extends TestCase
 {
-    /**
-     *
-     */
+    public string $localhost_url;
+
+    public function setUp () : void
+    {
+        $this->localhost_url = "http://localhost/";
+    }
+
     public function testSetGetUrl () : void
     {
-        $givenURL = "http://localhost/";
-        $expectedURL = "http://localhost/";
+        $givenURL = $this->localhost_url;
+        $expectedURL = $this->localhost_url;
 
         $webPageSource = new WebPageSource( $givenURL );
 
@@ -34,12 +39,9 @@ class WebPageSourceTest extends TestCase
         $this->assertEquals( $expectedURL, $webPageSource->getUrl() );
     }
 
-    /**
-     *
-     */
     public function testSetGetHandler () : void
     {
-        $webPageSource = new WebPageSource( "http://localhost/" );
+        $webPageSource = new WebPageSource( $this->localhost_url );
 
         $givenHandler = $this->createMock( WebPageHandler::class );
         $expectedHandler = $this->createMock( WebPageHandler::class );

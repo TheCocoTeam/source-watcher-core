@@ -4,44 +4,30 @@ namespace Coco\SourceWatcher\Core;
 
 use Coco\SourceWatcher\Core\IO\Inputs\Input;
 use Coco\SourceWatcher\Core\IO\Outputs\Output;
-use Coco\SourceWatcher\Utils\i18n;
+use Coco\SourceWatcher\Utils\Internationalization;
 
 /**
  * Class SourceWatcher
+ *
  * @package Coco\SourceWatcher\Core
  */
 class SourceWatcher
 {
-    /**
-     * @var StepLoader
-     */
     private StepLoader $stepLoader;
 
-    /**
-     * @var Pipeline
-     */
     private Pipeline $pipeline;
 
-    /**
-     * SourceWatcher constructor.
-     */
     public function __construct ()
     {
         $this->stepLoader = new StepLoader();
         $this->pipeline = new Pipeline();
     }
 
-    /**
-     * @return StepLoader
-     */
     public function getStepLoader () : StepLoader
     {
         return $this->stepLoader;
     }
 
-    /**
-     * @return Pipeline
-     */
     public function getPipeline () : Pipeline
     {
         return $this->pipeline;
@@ -59,7 +45,8 @@ class SourceWatcher
         $extractor = $this->stepLoader->getStep( Extractor::class, $extractorName );
 
         if ( $extractor == null ) {
-            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( SourceWatcher::class, "Extractor_Not_Found" ), $extractorName ) );
+            throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( SourceWatcher::class,
+                "Extractor_Not_Found" ), $extractorName ) );
         }
 
         $extractor->setInput( $input );
@@ -81,7 +68,8 @@ class SourceWatcher
         $transformer = $this->stepLoader->getStep( Transformer::class, $transformerName );
 
         if ( $transformer == null ) {
-            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( SourceWatcher::class, "Transformer_Not_Found" ), $transformerName ) );
+            throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( SourceWatcher::class,
+                "Transformer_Not_Found" ), $transformerName ) );
         }
 
         $transformer->options( $options );
@@ -103,7 +91,8 @@ class SourceWatcher
         $loader = $this->stepLoader->getStep( Loader::class, $loaderName );
 
         if ( $loader == null ) {
-            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( SourceWatcher::class, "Loader_Not_Found" ), $loaderName ) );
+            throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( SourceWatcher::class,
+                "Loader_Not_Found" ), $loaderName ) );
         }
 
         $loader->setOutput( $output );

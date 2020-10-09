@@ -6,37 +6,26 @@ use Coco\SourceWatcher\Core\Extractor;
 use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
-use Coco\SourceWatcher\Utils\i18n;
+use Coco\SourceWatcher\Utils\Internationalization;
 use Flow\JSONPath\JSONPath;
 use Flow\JSONPath\JSONPathException;
 
 /**
  * Class JsonExtractor
+ *
  * @package Coco\SourceWatcher\Core\Extractors
  */
 class JsonExtractor extends Extractor
 {
-    /**
-     * @var array
-     */
     protected array $columns = [];
 
-    /**
-     * @var array|string[]
-     */
     protected array $availableOptions = [ "columns" ];
 
-    /**
-     * @return array
-     */
     public function getColumns () : array
     {
         return $this->columns;
     }
 
-    /**
-     * @param array $columns
-     */
     public function setColumns ( array $columns ) : void
     {
         $this->columns = $columns;
@@ -46,22 +35,25 @@ class JsonExtractor extends Extractor
      * @return array
      * @throws SourceWatcherException
      */
-    public function extract ()
+    public function extract () : array
     {
         if ( $this->input == null ) {
-            throw new SourceWatcherException( i18n::getInstance()->getText( JsonExtractor::class, "No_Input_Provided" ) );
+            throw new SourceWatcherException( Internationalization::getInstance()->getText( JsonExtractor::class,
+                "No_Input_Provided" ) );
         }
 
         $inputIsFileInput = $this->input instanceof FileInput;
 
         if ( !$inputIsFileInput ) {
-            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( JsonExtractor::class, "Input_Not_Instance_Of_File_Input" ), FileInput::class ) );
+            throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( JsonExtractor::class,
+                "Input_Not_Instance_Of_File_Input" ), FileInput::class ) );
         }
 
-        $result = array();
+        $result = [];
 
         if ( !file_exists( $this->input->getInput() ) ) {
-            throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( JsonExtractor::class, "File_Input_File_Not_Found" ), $this->input->getInput() ) );
+            throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( JsonExtractor::class,
+                "File_Input_File_Not_Found" ), $this->input->getInput() ) );
         }
 
         $data = json_decode( file_get_contents( $this->input->getInput() ), true );
@@ -74,7 +66,8 @@ class JsonExtractor extends Extractor
                     $this->columns[$key] = $jsonPath->find( $path )->data();
                 }
             } catch ( JSONPathException $jsonPathException ) {
-                throw new SourceWatcherException( sprintf( i18n::getInstance()->getText( JsonExtractor::class, "JSON_Path_Exception" ), $jsonPathException->getMessage() ) );
+                throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( JsonExtractor::class,
+                    "JSON_Path_Exception" ), $jsonPathException->getMessage() ) );
             }
 
             $data = $this->transpose( $this->columns );
@@ -87,11 +80,7 @@ class JsonExtractor extends Extractor
         return $result;
     }
 
-    /**
-     * @param $columns
-     * @return array
-     */
-    private function transpose ( $columns )
+    private function transpose ( $columns ) : array
     {
         $data = [];
 

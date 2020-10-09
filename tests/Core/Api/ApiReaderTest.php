@@ -1,36 +1,38 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core\Api;
 
 use Coco\SourceWatcher\Core\Api\ApiReader;
 use Coco\SourceWatcher\Core\SourceWatcherException;
-use Coco\SourceWatcher\Utils\i18n;
+use Coco\SourceWatcher\Utils\Internationalization;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class ApiReaderTest
+ *
  * @package Coco\SourceWatcher\Tests\Core\Api
  */
 class ApiReaderTest extends TestCase
 {
-    /**
-     *
-     */
+    private string $github_emojis_api;
+
+    protected function setUp () : void
+    {
+        $this->github_emojis_api = "https://api.github.com/emojis";
+    }
+
     public function testSetGetResourceURL () : void
     {
         $apiReader = new ApiReader();
 
-        $givenResourceURL = "https://api.github.com/emojis";
-        $expectedResourceURL = "https://api.github.com/emojis";
+        $givenResourceURL = $this->github_emojis_api;
+        $expectedResourceURL = $this->github_emojis_api;
 
         $apiReader->setResourceURL( $givenResourceURL );
 
         $this->assertEquals( $expectedResourceURL, $apiReader->getResourceURL() );
     }
 
-    /**
-     *
-     */
     public function testSetGetTimeout () : void
     {
         $apiReader = new ApiReader();
@@ -43,15 +45,20 @@ class ApiReaderTest extends TestCase
         $this->assertEquals( $expectedTimeout, $apiReader->getTimeout() );
     }
 
-    /**
-     *
-     */
     public function testSetGetHeaders () : void
     {
         $apiReader = new ApiReader();
 
-        $givenHeaders = [ "Cache-Control: no-cache", "Content-Type: application/x-www-form-urlencoded; charset=utf-8", "Host: www.example.com" ];
-        $expectedHeaders = [ "Cache-Control: no-cache", "Content-Type: application/x-www-form-urlencoded; charset=utf-8", "Host: www.example.com" ];
+        $givenHeaders = [
+            "Cache-Control: no-cache",
+            "Content-Type: application/x-www-form-urlencoded; charset=utf-8",
+            "Host: www.example.com"
+        ];
+        $expectedHeaders = [
+            "Cache-Control: no-cache",
+            "Content-Type: application/x-www-form-urlencoded; charset=utf-8",
+            "Host: www.example.com"
+        ];
 
         $apiReader->setHeaders( $givenHeaders );
 
@@ -66,7 +73,8 @@ class ApiReaderTest extends TestCase
         $apiReader = new ApiReader();
 
         $this->expectException( SourceWatcherException::class );
-        $this->expectExceptionMessage( i18n::getInstance()->getText( ApiReader::class, "No_Resource_URL_Found" ) );
+        $this->expectExceptionMessage( Internationalization::getInstance()->getText( ApiReader::class,
+            "No_Resource_URL_Found" ) );
 
         $apiReader->read();
     }

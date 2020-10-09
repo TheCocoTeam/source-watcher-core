@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
@@ -7,13 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class ClientServerDatabaseConnectorTest
+ *
  * @package Coco\SourceWatcher\Tests\Core\Database\Connections
  */
 class ClientServerDatabaseConnectorTest extends TestCase
 {
-    /**
-     *
-     */
     public function testSetGetHost () : void
     {
         $connector = new MySqlConnector();
@@ -26,9 +24,6 @@ class ClientServerDatabaseConnectorTest extends TestCase
         $this->assertEquals( $expected, $connector->getHost() );
     }
 
-    /**
-     *
-     */
     public function testSetGetPort () : void
     {
         $connector = new MySqlConnector();
@@ -41,9 +36,6 @@ class ClientServerDatabaseConnectorTest extends TestCase
         $this->assertEquals( $expected, $connector->getPort() );
     }
 
-    /**
-     *
-     */
     public function testSetGetDbName () : void
     {
         $connector = new MySqlConnector();

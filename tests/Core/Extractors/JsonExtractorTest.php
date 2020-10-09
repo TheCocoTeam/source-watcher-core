@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core\Extractors;
 
@@ -11,28 +11,32 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class JsonExtractorTest
+ *
  * @package Coco\SourceWatcher\Tests\Core\Extractors
  */
 class JsonExtractorTest extends TestCase
 {
-    /**
-     *
-     */
+    private string $colorIndex;
+    private string $allColorsSelector;
+
+    public function setUp () : void
+    {
+        $this->colorIndex = "color";
+        $this->allColorsSelector = "colors.*.color";
+    }
+
     public function testSetGetColumns () : void
     {
         $jsonExtractor = new JsonExtractor();
 
-        $givenColumns = array( "color" => "colors.*.color" );
-        $expectedColumns = array( "color" => "colors.*.color" );
+        $givenColumns = [ $this->colorIndex => $this->allColorsSelector ];
+        $expectedColumns = [ $this->colorIndex => $this->allColorsSelector ];
 
         $jsonExtractor->setColumns( $givenColumns );
 
         $this->assertEquals( $expectedColumns, $jsonExtractor->getColumns() );
     }
 
-    /**
-     *
-     */
     public function testSetGetInput () : void
     {
         $jsonExtractor = new JsonExtractor();
@@ -63,10 +67,17 @@ class JsonExtractorTest extends TestCase
     public function testExtractColors () : void
     {
         $jsonExtractor = new JsonExtractor();
-        $jsonExtractor->setColumns( array( "color" => "colors.*.color" ) );
+        $jsonExtractor->setColumns( [ $this->colorIndex => $this->allColorsSelector ] );
         $jsonExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/json/colors.json" ) );
 
-        $expected = [ new Row( [ "color" => "black" ] ), new Row( [ "color" => "white" ] ), new Row( [ "color" => "red" ] ), new Row( [ "color" => "blue" ] ), new Row( [ "color" => "yellow" ] ), new Row( [ "color" => "green" ] ) ];
+        $expected = [
+            new Row( [ $this->colorIndex => "black" ] ),
+            new Row( [ $this->colorIndex => "white" ] ),
+            new Row( [ $this->colorIndex => "red" ] ),
+            new Row( [ $this->colorIndex => "blue" ] ),
+            new Row( [ $this->colorIndex => "yellow" ] ),
+            new Row( [ $this->colorIndex => "green" ] )
+        ];
 
         $this->assertEquals( $expected, $jsonExtractor->extract() );
     }
@@ -91,7 +102,7 @@ class JsonExtractorTest extends TestCase
         $this->expectException( SourceWatcherException::class );
 
         $jsonExtractor = new JsonExtractor();
-        $jsonExtractor->setColumns( array( "color" => "$.bad-!-selector" ) );
+        $jsonExtractor->setColumns( [ $this->colorIndex => "$.bad-!-selector" ] );
         $jsonExtractor->setInput( new FileInput( __DIR__ . "/../../../samples/data/json/colors.json" ) );
         $jsonExtractor->extract();
     }
@@ -104,7 +115,7 @@ class JsonExtractorTest extends TestCase
         $this->expectException( SourceWatcherException::class );
 
         $jsonExtractor = new JsonExtractor();
-        $jsonExtractor->setColumns( array( "color" => "some.selector" ) );
+        $jsonExtractor->setColumns( [ $this->colorIndex => "some.selector" ] );
         $jsonExtractor->setInput( $this->createMock( Input::class ) );
         $jsonExtractor->extract();
     }

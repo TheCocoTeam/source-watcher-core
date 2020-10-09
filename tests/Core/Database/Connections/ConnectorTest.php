@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core\Database\Connections;
 
@@ -7,13 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class ConnectorTest
+ *
  * @package Coco\SourceWatcher\Tests\Core\Database\Connections
  */
 class ConnectorTest extends TestCase
 {
-    /**
-     *
-     */
     public function testGetDriver () : void
     {
         $connector = new MySqlConnector();
@@ -23,9 +21,6 @@ class ConnectorTest extends TestCase
         $this->assertEquals( $expected, $connector->getDriver() );
     }
 
-    /**
-     *
-     */
     public function testSetGetUser () : void
     {
         $connector = new MySqlConnector();
@@ -38,9 +33,6 @@ class ConnectorTest extends TestCase
         $this->assertEquals( $expected, $connector->getUser() );
     }
 
-    /**
-     *
-     */
     public function testSetGetPassword () : void
     {
         $connector = new MySqlConnector();
@@ -53,9 +45,6 @@ class ConnectorTest extends TestCase
         $this->assertEquals( $expected, $connector->getPassword() );
     }
 
-    /**
-     *
-     */
     public function testSetGetTableName () : void
     {
         $connector = new MySqlConnector();
