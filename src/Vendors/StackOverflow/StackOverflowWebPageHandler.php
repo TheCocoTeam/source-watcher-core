@@ -225,7 +225,8 @@ class StackOverflowWebPageHandler extends WebPageHandler
                 $currentCompanyAndLocationElement = $companyAndLocationDomNodeList->item( $i ); // DOMElement or DOMText
 
                 if ( $currentCompanyAndLocationElement instanceof DOMElement && $currentCompanyAndLocationElement->nodeName == "span" ) {
-                    $this->setCompanyAndLocation( $currentCompanyAndLocationElement );
+                    $stackOverflowJob = $this->setCompanyAndLocation( $currentCompanyAndLocationElement,
+                        $stackOverflowJob );
                 }
             }
         }
