@@ -30,7 +30,7 @@ before_script:
   - travis_retry composer install --no-interaction --prefer-source --dev
 
 script:
-  - vendor/bin/phpunit --coverage-clover=clover.xml
+  - vendor/bin/phpunit --coverage-clover=./phpunit-report/coverage-report.xml
 
 after_success:
   - export CODECOV_TOKEN="ebd97fbb-5461-4c4a-8012-17cb92ceee69"

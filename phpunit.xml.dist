@@ -7,7 +7,8 @@
     </filter>
 
     <logging>
-        <log type="coverage-clover" target="./clover.xml"/>
+        <log type="coverage-clover" target="./phpunit-report/coverage-report.xml"/>
+        <log type="junit" target="./phpunit-report/tests-report.xml"/>
     </logging>
 
     <testsuites>

@@ -1,6 +1,6 @@
 .idea
 .scannerwork
-coverage
-.env
-clover.xml
+phpunit-report
 vendor
+.env
+.phpunit.result.cache
