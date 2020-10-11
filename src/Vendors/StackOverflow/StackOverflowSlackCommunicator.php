@@ -2,7 +2,6 @@
 
 namespace Coco\SourceWatcher\Vendors\StackOverflow;
 
-use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Watcher\Communicator\SlackCommunicator;
 
 /**
@@ -53,16 +52,18 @@ class StackOverflowSlackCommunicator extends SlackCommunicator
         }
     }
 
-    /**
-     * @return bool|string
-     * @throws SourceWatcherException
-     */
     public function send ()
     {
-        foreach ( $this->dataArray as $currentSlackMessageBlock ) {
-            $this->data = json_encode( $currentSlackMessageBlock );
+        try {
+            foreach ( $this->dataArray as $currentSlackMessageBlock ) {
+                $this->data = json_encode( $currentSlackMessageBlock );
 
-            return parent::send();
+                parent::send();
+            }
+
+            return true;
+        } catch ( Exception $e ) {
+            return false;
         }
     }
 }
