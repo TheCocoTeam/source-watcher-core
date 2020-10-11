@@ -3,6 +3,7 @@
 namespace Coco\SourceWatcher\Vendors\StackOverflow;
 
 use Coco\SourceWatcher\Watcher\Communicator\SlackCommunicator;
+use Exception;
 
 /**
  * Class StackOverflowSlackCommunicator
@@ -52,6 +53,9 @@ class StackOverflowSlackCommunicator extends SlackCommunicator
         }
     }
 
+    /**
+     * @return bool|string
+     */
     public function send ()
     {
         try {
