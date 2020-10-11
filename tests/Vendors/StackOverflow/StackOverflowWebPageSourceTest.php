@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Vendors\StackOverflow;
 
@@ -6,8 +6,16 @@ use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Vendors\StackOverflow\StackOverflowWebPageSource;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class StackOverflowWebPageSourceTest
+ *
+ * @package Coco\SourceWatcher\Tests\Vendors\StackOverflow
+ */
 class StackOverflowWebPageSourceTest extends TestCase
 {
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetResults () : void
     {
         $url = "https://stackoverflow.com/jobs?q=PHP&l=Florida+USA&d=100&u=Miles";
@@ -19,6 +27,9 @@ class StackOverflowWebPageSourceTest extends TestCase
         $this->assertNotEmpty( $results );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetResultsChangeUrlAfterInstance () : void
     {
         $url = "https://stackoverflow.com/jobs?q=PHP&l=Florida+USA&d=100&u=Miles";
@@ -32,6 +43,9 @@ class StackOverflowWebPageSourceTest extends TestCase
         $this->assertNotEmpty( $results );
     }
 
+    /**
+     * @throws SourceWatcherException
+     */
     public function testGetResultsOnEmptyUrl () : void
     {
         $this->expectException( SourceWatcherException::class );

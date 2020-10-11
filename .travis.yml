@@ -24,6 +24,10 @@ before_install:
   - echo "UNIT_TEST_POSTGRESQL_DB_NAME=$(secrethub read coco/source-watcher/unit-test-pgsql-db-name)" >> .env
   - echo "UNIT_TEST_POSTGRESQL_DEFAULT_DATABASE_NAME=$(secrethub read coco/source-watcher/unit-test-pgsql-default-db-name)" >> .env
   - echo "UNIT_TEST_SLACK_WEB_HOOK=$(secrethub read coco/source-watcher/unit-test-slack-web-hook)" >> .env
+  - echo "SLACK_WEB_HOOK_JAVA=$(secrethub read coco/source-watcher/unit-test-slack-web-hook-java)" >> .env
+  - echo "STACKOVERFLOW_FL_JOBS_JAVA=$(secrethub read coco/source-watcher/unit-test-so-fl-jobs-java)" >> .env
+  - echo "SLACK_WEB_HOOK_PHP=$(secrethub read coco/source-watcher/unit-test-slack-web-hook-php)" >> .env
+  - echo "STACKOVERFLOW_FL_JOBS_PHP=$(secrethub read coco/source-watcher/unit-test-so-fl-jobs-php)" >> .env
 
 before_script:
   - rm -f composer.lock

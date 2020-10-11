@@ -20,4 +20,14 @@ class ParentTest extends TestCase
 
         return array_key_exists( $variableName, $_ENV ) ? $_ENV[$variableName] : $default;
     }
+
+    public function testCanGetDefaultValueForEnvVar () : void
+    {
+        $variableName = "SOMETHING_NOT_SETUP_IN_ENV";
+        $default = "a default value";
+        $result = $this->getEnvironmentVariable( $variableName, $default );
+        $expected = "a default value";
+
+        $this->assertEquals( $expected, $result );
+    }
 }

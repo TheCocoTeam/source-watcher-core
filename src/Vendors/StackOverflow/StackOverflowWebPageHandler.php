@@ -53,6 +53,8 @@ class StackOverflowWebPageHandler extends WebPageHandler
         }
     }
 
+    public static string $JOB_SEPARATOR = "You might be interested in these jobs:";
+
     private function processChildNodes ( DOMElement $currentChildrenNode ) : void
     {
         $currentJob = new StackOverflowJob();
@@ -60,14 +62,11 @@ class StackOverflowWebPageHandler extends WebPageHandler
         $currentJob = $this->setBasicAttributes( $currentChildrenNode->attributes, $currentJob );
 
         if ( $currentChildrenNode->hasChildNodes() ) {
-            if ( trim( $currentChildrenNode->nodeValue ) == "You might be interested in these jobs:" ) {
-                echo "Found job separator" . PHP_EOL;
-            } else {
+            if ( trim( $currentChildrenNode->nodeValue ) != StackOverflowWebPageHandler::$JOB_SEPARATOR ) {
                 $extraChildNodes = $currentChildrenNode->childNodes; // DOMNodeList
 
                 for ( $i = 0; $i < $extraChildNodes->count(); $i++ ) {
-                    // DOMElement or DOMText
-                    $currentExtraChildNode = $extraChildNodes->item( $i );
+                    $currentExtraChildNode = $extraChildNodes->item( $i ); // DOMElement or DOMText
 
                     if ( $currentExtraChildNode instanceof DOMElement ) {
                         $currentJob = $this->processExtraChildNodes( $currentExtraChildNode, $currentJob );
@@ -78,8 +77,6 @@ class StackOverflowWebPageHandler extends WebPageHandler
 
         if ( $currentJob->allAttributesDefined() ) {
             array_push( $this->results, $currentJob );
-        } else {
-            echo "Ignoring job because of missing attributes" . PHP_EOL;
         }
     }
 
@@ -153,13 +150,7 @@ class StackOverflowWebPageHandler extends WebPageHandler
             $attr1 = $currentDeepNodeAttributes[0]; // DOMAttr
             $attr2 = $currentDeepNodeAttributes[1]; // DOMAttr
 
-            if ( $attr1->name == "src" ) {
-                $stackOverflowJob->setLogo( $attr1->value );
-            }
-
-            if ( $attr2->name == "src" ) {
-                $stackOverflowJob->setLogo( $attr2->value );
-            }
+            $stackOverflowJob->setLogo( $attr1->name == "src" ? $attr1->value : $attr2->value );
         }
 
         return $stackOverflowJob;

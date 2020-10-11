@@ -7,12 +7,14 @@ use Coco\SourceWatcher\Watcher\Source\WebPageSource;
 
 /**
  * Class StackOverflowWebPageSource
+ *
  * @package Coco\SourceWatcher\Vendors\StackOverflow
  */
 class StackOverflowWebPageSource extends WebPageSource
 {
     /**
      * StackOverflowWebPageSource constructor.
+     *
      * @param string $url
      */
     public function __construct ( string $url )
@@ -24,6 +26,7 @@ class StackOverflowWebPageSource extends WebPageSource
 
     /**
      * Function that returns the results from the given StackOverflow URL.
+     *
      * @return array
      * @throws SourceWatcherException
      */
