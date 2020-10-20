@@ -2,6 +2,7 @@
 
 namespace Coco\SourceWatcher\Tests\Common;
 
+use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,12 +14,27 @@ class ParentTest extends TestCase
 {
     protected function getEnvironmentVariable ( string $variableName, $default, $castingFunctionName = null )
     {
-        if ( !empty( $castingFunctionName ) ) {
-            return array_key_exists( $variableName, $_ENV ) ? call_user_func( $castingFunctionName,
-                $_ENV[$variableName] ) : $default;
+        $keyExists = array_key_exists( $variableName, $_ENV );
+        $value = null;
+
+        if ( $keyExists ) {
+            $value = $_ENV[$variableName];
+        } else {
+            $dotenv = Dotenv::createImmutable( __DIR__ . "/../../" );
+            $dotenv->load();
+
+            $value = getenv( $variableName );
+
+            if ( empty( $value ) ) {
+                $value = $default;
+            }
         }
 
-        return array_key_exists( $variableName, $_ENV ) ? $_ENV[$variableName] : $default;
+        if ( !empty( $castingFunctionName ) ) {
+            return call_user_func( $castingFunctionName, $value );
+        }
+
+        return $value;
     }
 
     public function testCanGetDefaultValueForEnvVar () : void

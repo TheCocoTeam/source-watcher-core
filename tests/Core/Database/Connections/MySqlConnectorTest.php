@@ -8,7 +8,7 @@ use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Tests\Common\ParentTest;
 use Coco\SourceWatcher\Utils\Internationalization;
-use Doctrine\DBAL\DBALException;
+use Exception;
 
 /**
  * Class MySqlConnectorTest
@@ -80,7 +80,7 @@ class MySqlConnectorTest extends ParentTest
     }
 
     /**
-     * @throws DBALException
+     * @throws Exception
      */
     public function testGetConnection () : void
     {

@@ -8,6 +8,11 @@ use Coco\SourceWatcher\Core\Loader;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 
+/**
+ * Class DatabaseLoader
+ *
+ * @package Coco\SourceWatcher\Core\Loaders
+ */
 class DatabaseLoader extends Loader
 {
     /**

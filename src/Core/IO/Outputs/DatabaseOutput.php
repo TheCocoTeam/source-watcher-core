@@ -6,6 +6,7 @@ use Coco\SourceWatcher\Core\Database\Connections\Connector;
 
 /**
  * Class DatabaseOutput
+ *
  * @package Coco\SourceWatcher\Core\IO\Outputs
  */
 class DatabaseOutput extends Output

@@ -6,18 +6,13 @@ use Coco\SourceWatcher\Utils\TextUtils;
 
 /**
  * Class Step
+ *
  * @package Coco\SourceWatcher\Core
  */
 class Step
 {
-    /**
-     * @var array
-     */
-    protected array $availableOptions = array();
+    protected array $availableOptions = [];
 
-    /**
-     * @param array $options
-     */
     public function options ( array $options )
     {
         foreach ( $options as $optionName => $optionValue ) {
@@ -29,13 +24,10 @@ class Step
         }
     }
 
-    /**
-     * @param string $word
-     * @return string
-     */
     protected function textToCamelCase ( string $word ) : string
     {
         $textUtils = new TextUtils();
+
         return $textUtils->textToCamelCase( $word );
     }
 }

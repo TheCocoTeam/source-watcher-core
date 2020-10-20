@@ -4,6 +4,11 @@ namespace Coco\SourceWatcher\Core;
 
 use Coco\SourceWatcher\Core\IO\Inputs\Input;
 
+/**
+ * Class Extractor
+ *
+ * @package Coco\SourceWatcher\Core
+ */
 abstract class Extractor extends Step
 {
     protected ?Input $input = null;

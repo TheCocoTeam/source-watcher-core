@@ -15,9 +15,7 @@ use Coco\SourceWatcher\Core\SourceWatcherException;
 class CsvExtractor extends Extractor
 {
     protected array $columns;
-
     protected string $delimiter;
-
     protected string $enclosure;
 
     protected array $availableOptions = [ "columns", "delimiter", "enclosure" ];

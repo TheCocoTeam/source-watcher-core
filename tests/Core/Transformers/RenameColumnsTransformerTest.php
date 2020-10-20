@@ -6,6 +6,11 @@ use PHPUnit\Framework\TestCase;
 use Coco\SourceWatcher\Core\Transformers\RenameColumnsTransformer;
 use Coco\SourceWatcher\Core\Row;
 
+/**
+ * Class RenameColumnsTransformerTest
+ *
+ * @package Coco\SourceWatcher\Tests\Core\Transformers
+ */
 class RenameColumnsTransformerTest extends TestCase
 {
     public function testRenameColumns () : void

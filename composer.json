@@ -26,6 +26,12 @@
       "Coco\\SourceWatcher\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Coco\\SourceWatcher\\": "src/",
+      "Coco\\SourceWatcher\\Tests\\": "tests/"
+    }
+  },
   "require-dev": {
     "phpunit/phpunit": "^9"
   }

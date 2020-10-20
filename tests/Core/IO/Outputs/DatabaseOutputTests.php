@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php declare( strict_types=1 );
 
 namespace Coco\SourceWatcher\Tests\Core\IO\Outputs;
 
@@ -6,6 +6,11 @@ use Coco\SourceWatcher\Core\Database\Connections\Connector;
 use Coco\SourceWatcher\Core\IO\Outputs\DatabaseOutput;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class DatabaseOutputTests
+ *
+ * @package Coco\SourceWatcher\Tests\Core\IO\Outputs
+ */
 class DatabaseOutputTests extends TestCase
 {
     public function testSetGetOutput () : void

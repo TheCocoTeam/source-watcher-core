@@ -6,8 +6,8 @@ use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Utils\Internationalization;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Exception;
 
 /**
  * Class Connector
@@ -65,7 +65,7 @@ abstract class Connector
 
     /**
      * @return Connection
-     * @throws DBALException
+     * @throws Exception
      */
     public function getConnection () : Connection
     {
@@ -90,20 +90,44 @@ abstract class Connector
             if ( !$connection->isConnected() ) {
                 $connection->connect();
             }
-        } catch ( DBALException $dbalException ) {
+        } catch ( Exception $exception ) {
             throw new SourceWatcherException( Internationalization::getInstance()->getText( Connector::class,
-                "Connection_Object_Not_Connected_Cannot_Insert" ), 0, $dbalException );
+                "Connection_Object_Not_Connected_Cannot_Insert" ), 0, $exception );
         }
 
         try {
             $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
 
             $connection->close();
-        } catch ( DBALException $dbalException ) {
+        } catch ( Exception $exception ) {
             throw new SourceWatcherException( Internationalization::getInstance()->getText( Connector::class,
-                "Unexpected_Error" ), 0, $dbalException );
+                "Unexpected_Error" ), 0, $exception );
         }
 
         return $numberOfAffectedRows;
+    }
+
+    /**
+     * @param string $query
+     * @return array
+     * @throws SourceWatcherException
+     */
+    public function executePlainQuery ( string $query ) : array
+    {
+        try {
+            $connection = $this->getConnection();
+
+            if ( !$connection->isConnected() ) {
+                $connection->connect();
+            }
+
+            $statement = $connection->executeQuery( $query );
+
+            return $statement->fetchAllAssociative();
+        } catch ( \Doctrine\DBAL\Driver\Exception $e ) {
+            throw new SourceWatcherException( "Something went wrong: " . $e->getMessage(), 0, $e );
+        } catch ( Exception $e ) {
+            throw new SourceWatcherException( "Something unexpected went wrong: " . $e->getMessage(), 0, $e );
+        }
     }
 }

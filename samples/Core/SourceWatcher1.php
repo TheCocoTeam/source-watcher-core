@@ -9,21 +9,25 @@ use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
 use Coco\SourceWatcher\Core\IO\Outputs\DatabaseOutput;
 use Coco\SourceWatcher\Core\SourceWatcher;
 use Coco\SourceWatcher\Core\SourceWatcherException;
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable( __DIR__ . "/../../" );
+$dotenv->load();
 
 $mysqlConnector = new MySqlConnector();
-$mysqlConnector->setUser( "user" );
-$mysqlConnector->setPassword( "password" );
-$mysqlConnector->setHost( "host" );
-$mysqlConnector->setPort( 3306 );
-$mysqlConnector->setDbName( "tests" );
+$mysqlConnector->setUser( getenv( "UNIT_TEST_MYSQL_USERNAME" ) );
+$mysqlConnector->setPassword( getenv( "UNIT_TEST_MYSQL_PASSWORD" ) );
+$mysqlConnector->setHost( getenv( "UNIT_TEST_MYSQL_HOST" ) );
+$mysqlConnector->setPort( getenv( "UNIT_TEST_MYSQL_PORT" ) );
+$mysqlConnector->setDbName( getenv( "UNIT_TEST_MYSQL_DATABASE" ) );
 $mysqlConnector->setTableName( "people" );
 
 $sourceWatcher = new SourceWatcher();
 
 try {
     $sourceWatcher
-        ->extract( "Csv", new FileInput( __DIR__ . "/../data/csv/csv1.csv" ), [ "columns" => array( "name", "email" ) ] )
-        ->transform( "RenameColumns", [ "columns" => array( "email" => "email_address" ) ] )
+        ->extract( "Csv", new FileInput( __DIR__ . "/../data/csv/csv1.csv" ), [ "columns" => [ "name", "email" ] ] )
+        ->transform( "RenameColumns", [ "columns" => [ "email" => "email_address" ] ] )
         ->load( "Database", new DatabaseOutput( $mysqlConnector ) )
         ->run();
 } catch ( SourceWatcherException $exception ) {
