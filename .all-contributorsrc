@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ivanljutyj",
+      "name": "ivan",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/26074267?v=4",
+      "profile": "https://ivanon.io",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "source-watcher-core",
+  "projectOwner": "TheCocoTeam",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
