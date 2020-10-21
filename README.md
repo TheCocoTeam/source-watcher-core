@@ -86,11 +86,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://ivanon.io"><img src="https://avatars3.githubusercontent.com/u/26074267?v=4" width="100px;" alt=""/><br /><sub><b>ivan</b></sub></a><br /><a href="https://github.com/TheCocoTeam/source-watcher-core/commits?author=ivanljutyj" title="Code">💻</a></td>
-
     <td align="center"><a href="http://bit.ly/jprv-linkedin"><img src="https://avatars0.githubusercontent.com/u/4614970?v=4" width="100px;" alt=""/><br /><sub><b>Jean Paul Ruiz</b></sub></a><br /><a href="https://github.com/TheCocoTeam/source-watcher-core/commits?author=jpruiz114" title="Code">💻</a></td>
   </tr>
 </table>
-
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
