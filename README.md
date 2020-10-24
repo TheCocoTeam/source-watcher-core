@@ -5,6 +5,18 @@
 
 PHP project which allows extracting, transform and load data from different sources including databases, files and services.
 
+## What is ETL?
+
+ETL is an abbreviation that stands: for extract, transform, and load. It's a software process used to fill data warehouses with information in three steps:
+
+- Extract: The process extracts or pulls data from multiple sources.
+
+- Transform: The incoming data passes through a transformation step.
+
+- Load: The ETL process will send the data to its final destination.
+
+The foundations of ETL come from data warehousing methodologies dating back to the 1960s. ETL is the process of gathering raw data, like the one from production systems. Once collected, the data transforms into a more readable, understandable format. The transformed and cleaned data is then loaded into a data repository, usually a relational database but not limited to other types of databases, files, and even REST services among others.
+
 ## ETL example
 
 Assume that you have some information in a CSV file, and you want to import the content of the file to a MySQL database.
