@@ -15,7 +15,7 @@ ETL is an abbreviation that stands: for extract, transform, and load. It's a sof
 
 - Load: The ETL process will send the data to its final destination.
 
-The foundations of ETL come from data warehousing methodologies dating back to the 1960s. ETL is the process of gathering raw data, like the one from production systems. Once collected, the data transforms into a more readable, understandable format. The transformed and cleaned data is then loaded into a data repository, usually a relational database but not limited to other types of databases, files, and even REST services among others.
+The foundations of ETL come from data warehousing methodologies dating back to the 1960s. ETL is the process of gathering raw data, like the one from production systems. Once collected, the data is transformed into a more readable, understandable format. The transformed and cleaned data is then loaded into a data repository, usually a relational database but not limited to other types of databases, files, and even REST services among others.
 
 ## ETL example
 
@@ -88,9 +88,11 @@ sudo docker-compose up
 
 You should be able to access http://localhost:8080/
 
-## Contributors ✨
+## Feedback
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Please submit issues, and send your feedback and suggestions as often as you have them.
+
+## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
