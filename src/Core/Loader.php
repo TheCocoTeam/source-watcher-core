@@ -4,6 +4,11 @@ namespace Coco\SourceWatcher\Core;
 
 use Coco\SourceWatcher\Core\IO\Outputs\Output;
 
+/**
+ * Class Loader
+ *
+ * @package Coco\SourceWatcher\Core
+ */
 abstract class Loader extends Step
 {
     protected ?Output $output = null;

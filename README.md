@@ -3,7 +3,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-PHP project which allows extracting, transform and load data from different sources including databases, files and services.
+This is a PHP project that allows extracting, transforming, and loading data from and to different sources including databases, files, and services, while at the same time facilitating the transformation of the data in multiple ways.
 
 ## What is ETL?
 
@@ -59,6 +59,8 @@ try {
     echo sprintf( "Something unexpected went wrong: %s", $exception->getMessage() );
 }
 ```
+
+A functional version of the code above can be found [here](source-watcher-core/blob/master/samples/Core/SourceWatcher1.php)
 
 ## Docker container
 

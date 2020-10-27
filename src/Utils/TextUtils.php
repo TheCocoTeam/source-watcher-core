@@ -8,10 +8,6 @@ namespace Coco\SourceWatcher\Utils;
  */
 class TextUtils
 {
-    /**
-     * @param string $word
-     * @return string
-     */
     public function textToCamelCase ( string $word ) : string
     {
         // Make an array of word parts exploding the word by "_"
@@ -30,10 +26,6 @@ class TextUtils
         return lcfirst( $newWord );
     }
 
-    /**
-     * @param string $word
-     * @return string
-     */
     public function textToPascalCase ( string $word ) : string
     {
         // Make an array of word parts exploding the word by "_"

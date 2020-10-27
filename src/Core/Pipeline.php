@@ -10,56 +10,32 @@ use Iterator;
  */
 class Pipeline implements Iterator
 {
-    /**
-     * @var Extractor
-     */
     private ?Extractor $extractor = null;
 
-    /**
-     * @var array
-     */
     private array $steps = [];
 
-    /**
-     * @var array
-     */
     private array $results = [];
 
-    /**
-     * @return Extractor
-     */
     public function getExtractor () : Extractor
     {
         return $this->extractor;
     }
 
-    /**
-     * @param Extractor $extractor
-     */
     public function setExtractor ( Extractor $extractor ) : void
     {
         $this->extractor = $extractor;
     }
 
-    /**
-     * @return array
-     */
     public function getSteps () : array
     {
         return $this->steps;
     }
 
-    /**
-     * @param array $steps
-     */
     public function setSteps ( array $steps ) : void
     {
         $this->steps = $steps;
     }
 
-    /**
-     * @param Step $step
-     */
     public function pipe ( Step $step ) : void
     {
         $this->steps[] = $step;
@@ -84,17 +60,11 @@ class Pipeline implements Iterator
         }
     }
 
-    /**
-     * @return array
-     */
     public function getResults () : array
     {
         return $this->results;
     }
 
-    /**
-     * @var int
-     */
     private int $index = 0;
 
     public function current ()

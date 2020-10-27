@@ -13,16 +13,10 @@ use ReflectionException;
  */
 class StepLoader
 {
-    /**
-     * @var StepLoader|null
-     */
     private static ?StepLoader $instance = null;
 
     public static string $stepNamePattern = "%s\\%s";
 
-    /**
-     * @return StepLoader
-     */
     public static function getInstance () : StepLoader
     {
         if ( is_null( static::$instance ) ) {

@@ -11,25 +11,12 @@ use DOMDocument;
  */
 class WebPageHandler implements Handler
 {
-    /**
-     * @var string
-     */
     protected string $url;
 
-    /**
-     * @var string
-     */
     protected string $html;
 
-    /**
-     * @var DOMDocument
-     */
     protected DOMDocument $dom;
 
-    /**
-     * WebPageHandler constructor.
-     * @param string $url
-     */
     public function __construct ( string $url )
     {
         $this->url = $url;
@@ -37,17 +24,11 @@ class WebPageHandler implements Handler
         $this->dom = new DOMDocument();
     }
 
-    /**
-     * @return string
-     */
     public function getUrl () : string
     {
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     */
     public function setUrl ( string $url ) : void
     {
         $this->url = $url;
@@ -83,17 +64,11 @@ class WebPageHandler implements Handler
         }
     }
 
-    /**
-     * @return string
-     */
     public function getHtml () : string
     {
         return $this->html;
     }
 
-    /**
-     * @return DOMDocument
-     */
     public function getDom () : DOMDocument
     {
         return $this->dom;

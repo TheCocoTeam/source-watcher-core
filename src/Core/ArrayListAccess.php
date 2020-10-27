@@ -2,6 +2,11 @@
 
 namespace Coco\SourceWatcher\Core;
 
+/**
+ * Interface ArrayListAccess
+ *
+ * @package Coco\SourceWatcher\Core
+ */
 interface ArrayListAccess
 {
     public function get ( string $key );

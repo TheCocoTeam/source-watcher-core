@@ -11,19 +11,10 @@ use Coco\SourceWatcher\Core\Transformer;
  */
 class RenameColumnsTransformer extends Transformer
 {
-    /**
-     * @var array
-     */
     protected array $columns = [];
 
-    /**
-     * @var array
-     */
     protected array $availableOptions = [ "columns" ];
 
-    /**
-     * @param Row $row
-     */
     public function transform ( Row $row )
     {
         foreach ( $this->columns as $oldColumnName => $newColumnName ) {

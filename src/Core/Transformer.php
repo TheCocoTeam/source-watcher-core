@@ -8,9 +8,5 @@ namespace Coco\SourceWatcher\Core;
  */
 abstract class Transformer extends Step
 {
-    /**
-     * @param Row $row
-     * @return mixed
-     */
     abstract public function transform ( Row $row );
 }

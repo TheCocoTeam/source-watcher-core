@@ -12,11 +12,6 @@ use Coco\SourceWatcher\Watcher\Source\WebPageSource;
  */
 class StackOverflowWebPageSource extends WebPageSource
 {
-    /**
-     * StackOverflowWebPageSource constructor.
-     *
-     * @param string $url
-     */
     public function __construct ( string $url )
     {
         parent::__construct( $url );
