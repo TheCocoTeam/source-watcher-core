@@ -60,7 +60,7 @@ try {
 }
 ```
 
-A functional version of the code above can be found [here](source-watcher-core/blob/master/samples/Core/SourceWatcher1.php)
+A functional version of the code above can be found [here](samples/Core/SourceWatcher1.php)
 
 ## Docker container
 
