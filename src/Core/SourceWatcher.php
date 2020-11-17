@@ -5,6 +5,8 @@ namespace Coco\SourceWatcher\Core;
 use Coco\SourceWatcher\Core\IO\Inputs\Input;
 use Coco\SourceWatcher\Core\IO\Outputs\Output;
 use Coco\SourceWatcher\Utils\Internationalization;
+use Ramsey\Uuid\Uuid;
+
 
 /**
  * Class SourceWatcher
@@ -106,5 +108,50 @@ class SourceWatcher
     public function run () : void
     {
         $this->pipeline->execute();
+    }
+
+    public function flush () : void
+    {
+        $this->pipeline = new Pipeline();
+    }
+
+    public function save ( string $name = null ) : string
+    {
+        $arrayRepresentation = [];
+
+        $steps = $this->pipeline->getSteps();
+
+        // Add the extractor to be on top of the array which by default is not returned in the list of steps
+        array_unshift( $steps, $this->pipeline->getExtractor() );
+
+        foreach ( $steps as $currentStep ) {
+            $arrayRepresentation[] = $currentStep->getArrayRepresentation();
+        }
+
+        $jsonRepresentation = json_encode( $arrayRepresentation, JSON_PRETTY_PRINT );
+
+        $mainDirectory = $_SERVER["HOME"] . DIRECTORY_SEPARATOR . ".source-watcher";
+
+        if ( !file_exists( $mainDirectory ) ) {
+            mkdir( $mainDirectory, 0777, true );
+        }
+
+        $transformationsDirectory = $mainDirectory . DIRECTORY_SEPARATOR . "transformations";
+
+        if ( !file_exists( $transformationsDirectory ) ) {
+            mkdir( $transformationsDirectory, 0777, true );
+        }
+
+        if ( empty( $name ) ) {
+            $uuid = Uuid::uuid4();
+
+            $name = $uuid->toString();
+        }
+
+        $transformationFile = $transformationsDirectory . DIRECTORY_SEPARATOR . $name . ".swt";
+
+        file_put_contents( $transformationFile, $jsonRepresentation );
+
+        return $transformationFile;
     }
 }

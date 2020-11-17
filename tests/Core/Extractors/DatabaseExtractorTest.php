@@ -4,6 +4,7 @@ namespace Coco\SourceWatcher\Tests\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Database\Connections\MySqlConnector;
 use Coco\SourceWatcher\Core\Extractors\DatabaseExtractor;
+use Coco\SourceWatcher\Core\IO\Inputs\DatabaseInput;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Tests\Common\ParentTest;
 
@@ -38,7 +39,9 @@ class DatabaseExtractorTest extends ParentTest
     {
         $query = "SELECT * FROM " . $this->tableName;
 
-        $databaseExtractor = new DatabaseExtractor( $this->mysqlConnector, $query );
+        $databaseExtractor = new DatabaseExtractor();
+        $databaseExtractor->setInput( new DatabaseInput( $this->mysqlConnector ) );
+        $databaseExtractor->setQuery( $query );
 
         $result = $databaseExtractor->extract();
 

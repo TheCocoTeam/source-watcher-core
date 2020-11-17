@@ -2,6 +2,8 @@
 
 namespace Coco\SourceWatcher\Core;
 
+use Coco\SourceWatcher\Core\Extractors\CsvExtractor;
+use Coco\SourceWatcher\Core\Extractors\JsonExtractor;
 use Coco\SourceWatcher\Core\IO\Inputs\Input;
 
 /**
@@ -24,4 +26,17 @@ abstract class Extractor extends Step
     }
 
     public abstract function extract ();
+
+    public function getArrayRepresentation () : array
+    {
+        $result = parent::getArrayRepresentation();
+
+        if ( $this instanceof CsvExtractor || $this instanceof JsonExtractor ) {
+            $fileInput = $this->getInput();
+
+            $result["input"] = [ "class" => get_class( $fileInput ), "location" => $fileInput->getInput() ];
+        }
+
+        return $result;
+    }
 }

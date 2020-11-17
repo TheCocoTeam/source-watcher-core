@@ -10,16 +10,17 @@
     }
   ],
   "require": {
-    "doctrine/dbal": "^2.10",
+    "doctrine/dbal": "*",
     "ext-curl": "*",
     "ext-dom": "*",
     "ext-json": "*",
     "ext-pgsql": "*",
-    "flow/jsonpath": "^0.5.0",
-    "php": "~7.4",
-    "vlucas/phpdotenv": "^4.1",
-    "symfony/yaml": "^5.0",
-    "monolog/monolog": "^2.1"
+    "flow/jsonpath": "*",
+    "monolog/monolog": "*",
+    "php": "*",
+    "ramsey/uuid": "*",
+    "symfony/yaml": "*",
+    "vlucas/phpdotenv": "*"
   },
   "autoload": {
     "psr-4": {

@@ -3,7 +3,9 @@
 namespace Coco\SourceWatcher\Tests\Core;
 
 use Coco\SourceWatcher\Core\Database\Connections\Connector;
+use Coco\SourceWatcher\Core\Database\Connections\MySqlConnector;
 use Coco\SourceWatcher\Core\Database\Connections\SqliteConnector;
+use Coco\SourceWatcher\Core\IO\Inputs\DatabaseInput;
 use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
 use Coco\SourceWatcher\Core\IO\Outputs\DatabaseOutput;
 use Coco\SourceWatcher\Core\Pipeline;
@@ -22,12 +24,25 @@ class SourceWatcherTest extends TestCase
     private string $columnsIndex;
     private SourceWatcher $sourceWatcher;
     private string $nonExistentArtifactName;
+    private SqliteConnector $sqliteConnector;
+    private MySqlConnector $mysqlConnector;
 
     protected function setUp () : void
     {
         $this->columnsIndex = "columns";
         $this->sourceWatcher = new SourceWatcher();
         $this->nonExistentArtifactName = "NonExistent";
+
+        $this->sqliteConnector = new SqliteConnector();
+        $this->sqliteConnector->setPath( __DIR__ . "/../../samples/data/sqlite/people-db.sqlite" );
+        $this->sqliteConnector->setTableName( "people" );
+
+        $this->mysqlConnector = new MySqlConnector();
+        $this->mysqlConnector->setUser( "admin" );
+        $this->mysqlConnector->setPassword( "secret" );
+        $this->mysqlConnector->setHost( "localhost" );
+        $this->mysqlConnector->setPort( 3306 );
+        $this->mysqlConnector->setDbName( "people" );
     }
 
     protected function tearDown () : void
@@ -118,14 +133,57 @@ class SourceWatcherTest extends TestCase
      */
     public function testRun () : void
     {
-        $connector = new SqliteConnector();
-        $connector->setPath( __DIR__ . "/../../samples/data/sqlite/people-db.sqlite" );
-        $connector->setTableName( "people" );
+        $this->assertNull( $this->sourceWatcher
+            ->extract( "Csv", new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ),
+                [ $this->columnsIndex => [ "name", "email" ] ] )
+            ->transform( "RenameColumns", [ $this->columnsIndex => [ "email" => "email_address" ] ] )
+            ->load( "Database", new DatabaseOutput( $this->sqliteConnector ) )
+            ->run()
+        );
+    }
 
-        $this->assertNull( $this->sourceWatcher->extract( "Csv",
-            new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ),
-            [ $this->columnsIndex => [ "name", "email" ] ] )->transform( "RenameColumns",
-            [ $this->columnsIndex => [ "email" => "email_address" ] ] )->load( "Database",
-            new DatabaseOutput( $connector ) )->run() );
+    /**
+     * @throws SourceWatcherException
+     */
+    public function testSaveWithoutName () : void
+    {
+        $this->sourceWatcher
+            ->extract( "Csv", new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ),
+                [ $this->columnsIndex => [ "name", "email" ] ] )
+            ->transform( "RenameColumns", [ $this->columnsIndex => [ "email" => "email_address" ] ] )
+            ->load( "Database", new DatabaseOutput( $this->sqliteConnector ) );
+
+        $transformationFile = $this->sourceWatcher->save();
+        $this->assertNotNull( $transformationFile );
+        $this->assertFileExists( $transformationFile );
+        $this->assertStringNotEqualsFile( $transformationFile, "" );
+
+        $this->sourceWatcher->flush();
+
+        $this->sourceWatcher
+            ->extract( "Json", new FileInput( __DIR__ . "/../../samples/data/json/colors.json" ),
+                [ $this->columnsIndex => [ "color" => "colors.*.color" ] ] )
+            ->transform( "RenameColumns", [ $this->columnsIndex => [ "color" => "colour" ] ] )
+            ->load( "Database", new DatabaseOutput( $this->sqliteConnector ) );
+
+        $transformationFile = $this->sourceWatcher->save();
+        $this->assertNotNull( $transformationFile );
+        $this->assertFileExists( $transformationFile );
+        $this->assertStringNotEqualsFile( $transformationFile, "" );
+
+        $this->sourceWatcher->flush();
+
+        $this->sourceWatcher
+            ->extract( "Database", new DatabaseInput( $this->mysqlConnector ),
+                [ "query" => "SELECT * FROM people ORDER BY last_name, first_name" ] )
+            ->transform( "RenameColumns", [ $this->columnsIndex => [ "email" => "email_address" ] ] )
+            ->load( "Database", new DatabaseOutput( $this->sqliteConnector ) );
+
+        $transformationFile = $this->sourceWatcher->save();
+        $this->assertNotNull( $transformationFile );
+        $this->assertFileExists( $transformationFile );
+        $this->assertStringNotEqualsFile( $transformationFile, "" );
+
+        $this->sourceWatcher->flush();
     }
 }

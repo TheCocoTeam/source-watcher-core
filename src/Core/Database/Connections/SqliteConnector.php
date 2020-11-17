@@ -43,16 +43,20 @@ class SqliteConnector extends EmbeddedDatabaseConnector
         $this->memory = $memory;
     }
 
-    protected function getConnectionParameters () : array
+    public function getConnectionParameters () : array
     {
-        $this->connectionParameters = [];
-
-        $this->connectionParameters["driver"] = $this->driver;
-        $this->connectionParameters["user"] = $this->user;
-        $this->connectionParameters["password"] = $this->password;
+        $this->connectionParameters = [
+            "driver" => $this->driver,
+            "user" => $this->user,
+            "password" => $this->password
+        ];
 
         if ( isset( $this->path ) && $this->path !== "" ) {
             $this->connectionParameters["path"] = $this->path;
+        }
+
+        if ( isset( $this->tableName ) && $this->tableName !== "" ) {
+            $this->connectionParameters["tableName"] = $this->tableName;
         }
 
         $this->connectionParameters["memory"] = $this->memory;

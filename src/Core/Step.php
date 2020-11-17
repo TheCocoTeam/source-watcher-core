@@ -13,7 +13,7 @@ class Step
 {
     protected array $availableOptions = [];
 
-    public function options ( array $options )
+    public function options ( array $options ) : void
     {
         foreach ( $options as $optionName => $optionValue ) {
             $camelCaseOptionName = $this->textToCamelCase( $optionName );
@@ -29,5 +29,31 @@ class Step
         $textUtils = new TextUtils();
 
         return $textUtils->textToCamelCase( $word );
+    }
+
+    public function getType () : string
+    {
+        if ( $this instanceof Extractor ) {
+            return "Extractor";
+        }
+
+        if ( $this instanceof Transformer ) {
+            return "Transformer";
+        }
+
+        if ( $this instanceof Loader ) {
+            return "Loader";
+        }
+    }
+
+    public function getArrayRepresentation () : array
+    {
+        $result = [ "type" => $this->getType(), "class" => get_class( $this ), "options" => [] ];
+
+        foreach ( $this->availableOptions as $currentOption ) {
+            $result["options"][$currentOption] = $this->$currentOption;
+        }
+
+        return $result;
     }
 }
