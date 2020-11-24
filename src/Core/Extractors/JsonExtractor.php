@@ -49,7 +49,7 @@ class JsonExtractor extends Extractor
                 "Input_Not_Instance_Of_File_Input" ), FileInput::class ) );
         }
 
-        $result = [];
+        $this->result = [];
 
         if ( !file_exists( $this->input->getInput() ) ) {
             throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( JsonExtractor::class,
@@ -74,10 +74,10 @@ class JsonExtractor extends Extractor
         }
 
         foreach ( $data as $row ) {
-            array_push( $result, new Row( $row ) );
+            array_push( $this->result, new Row( $row ) );
         }
 
-        return $result;
+        return $this->result;
     }
 
     private function transpose ( $columns ) : array

@@ -12,14 +12,14 @@ use Coco\SourceWatcher\Core\Pipeline;
 use Coco\SourceWatcher\Core\SourceWatcher;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Core\StepLoader;
-use PHPUnit\Framework\TestCase;
+use Coco\SourceWatcher\Tests\Common\ParentTest;
 
 /**
  * Class SourceWatcherTest
  *
  * @package Coco\SourceWatcher\Tests\Core
  */
-class SourceWatcherTest extends TestCase
+class SourceWatcherTest extends ParentTest
 {
     private string $columnsIndex;
     private SourceWatcher $sourceWatcher;
@@ -38,11 +38,12 @@ class SourceWatcherTest extends TestCase
         $this->sqliteConnector->setTableName( "people" );
 
         $this->mysqlConnector = new MySqlConnector();
-        $this->mysqlConnector->setUser( "admin" );
-        $this->mysqlConnector->setPassword( "secret" );
-        $this->mysqlConnector->setHost( "localhost" );
-        $this->mysqlConnector->setPort( 3306 );
-        $this->mysqlConnector->setDbName( "people" );
+        $this->mysqlConnector->setUser( $this->getEnvironmentVariable( "UNIT_TEST_MYSQL_USERNAME", null ) );
+        $this->mysqlConnector->setPassword( $this->getEnvironmentVariable( "UNIT_TEST_MYSQL_PASSWORD", null ) );
+        $this->mysqlConnector->setHost( $this->getEnvironmentVariable( "UNIT_TEST_MYSQL_HOST", null ) );
+        $this->mysqlConnector->setPort( $this->getEnvironmentVariable( "UNIT_TEST_MYSQL_PORT", 5432, "intval" ) );
+        $this->mysqlConnector->setDbName( $this->getEnvironmentVariable( "UNIT_TEST_MYSQL_DATABASE", null ) );
+        $this->mysqlConnector->setTableName( "people" );
     }
 
     protected function tearDown () : void
@@ -129,20 +130,26 @@ class SourceWatcherTest extends TestCase
     }
 
     /**
+     * Integration test
+     *
      * @throws SourceWatcherException
      */
     public function testRun () : void
     {
-        $this->assertNull( $this->sourceWatcher
+        $this->sourceWatcher
             ->extract( "Csv", new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ),
                 [ $this->columnsIndex => [ "name", "email" ] ] )
             ->transform( "RenameColumns", [ $this->columnsIndex => [ "email" => "email_address" ] ] )
             ->load( "Database", new DatabaseOutput( $this->sqliteConnector ) )
-            ->run()
-        );
+            ->run();
+
+        $this->assertNotNull( $this->sourceWatcher->getPipeline()->getResults() );
+        $this->assertNotEmpty( $this->sourceWatcher->getPipeline()->getResults() );
     }
 
     /**
+     * Unit test creating several swt files
+     *
      * @throws SourceWatcherException
      */
     public function testSaveWithoutName () : void
@@ -175,7 +182,7 @@ class SourceWatcherTest extends TestCase
 
         $this->sourceWatcher
             ->extract( "Database", new DatabaseInput( $this->mysqlConnector ),
-                [ "query" => "SELECT * FROM people ORDER BY last_name, first_name" ] )
+                [ "query" => "SELECT * FROM people ORDER BY name" ] )
             ->transform( "RenameColumns", [ $this->columnsIndex => [ "email" => "email_address" ] ] )
             ->load( "Database", new DatabaseOutput( $this->sqliteConnector ) );
 
@@ -185,5 +192,22 @@ class SourceWatcherTest extends TestCase
         $this->assertStringNotEqualsFile( $transformationFile, "" );
 
         $this->sourceWatcher->flush();
+    }
+
+    /**
+     * Acting as an integration test to verify how two extractors work together.
+     *
+     * @throws SourceWatcherException
+     */
+    public function testMultipleExtractors () : void
+    {
+        $this->sourceWatcher
+            ->extract( "Database", new DatabaseInput( $this->mysqlConnector ),
+                [ "query" => "SELECT * FROM people ORDER BY name" ] )
+            ->extract( "FindMissingFromSequence", null, [ "filterField" => "id" ] )
+            ->run();
+
+        $this->assertNotNull( $this->sourceWatcher->getPipeline()->getResults() );
+        $this->assertNotEmpty( $this->sourceWatcher->getPipeline()->getResults() );
     }
 }

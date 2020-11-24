@@ -2,29 +2,20 @@
 
 namespace Coco\SourceWatcher\Core;
 
+use Coco\SourceWatcher\Core\Extractors\ExecutionExtractor;
+use Coco\SourceWatcher\Core\IO\Inputs\ExtractorResultInput;
 use Iterator;
 
 /**
  * Class Pipeline
+ *
  * @package Coco\SourceWatcher\Core
  */
 class Pipeline implements Iterator
 {
-    private ?Extractor $extractor = null;
-
     private array $steps = [];
 
     private array $results = [];
-
-    public function getExtractor () : Extractor
-    {
-        return $this->extractor;
-    }
-
-    public function setExtractor ( Extractor $extractor ) : void
-    {
-        $this->extractor = $extractor;
-    }
 
     public function getSteps () : array
     {
@@ -38,14 +29,20 @@ class Pipeline implements Iterator
 
     public function pipe ( Step $step ) : void
     {
+        if ( $step instanceof ExecutionExtractor ) {
+            $step->setInput( new ExtractorResultInput( end( $this->steps ) ) );
+        }
+
         $this->steps[] = $step;
     }
 
     public function execute () : void
     {
-        $this->results = $this->extractor->extract();
+        foreach ( $this->steps as $index => $currentStep ) {
+            if ( $currentStep instanceof Extractor ) {
+                $this->results = $currentStep->extract();
+            }
 
-        foreach ( $this->steps as $currentStep ) {
             if ( $currentStep instanceof Transformer ) {
                 foreach ( $this->results as $currentIndex => $currentItem ) {
                     $currentStep->transform( $this->results[$currentIndex] );

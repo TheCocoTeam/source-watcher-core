@@ -27,6 +27,27 @@ abstract class Extractor extends Step
 
     public abstract function extract ();
 
+    /**
+     * @var array
+     */
+    protected array $result;
+
+    /**
+     * @return array
+     */
+    public function getResult () : array
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param array $result
+     */
+    public function setResult ( array $result ) : void
+    {
+        $this->result = $result;
+    }
+
     public function getArrayRepresentation () : array
     {
         $result = parent::getArrayRepresentation();

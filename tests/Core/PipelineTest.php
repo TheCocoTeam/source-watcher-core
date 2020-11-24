@@ -28,8 +28,8 @@ class PipelineTest extends TestCase
         $csvExtractor = new CsvExtractor();
         $csvExtractor->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
 
-        // set the extractor
-        $this->pipeline->setExtractor( $csvExtractor );
+        // pipe the extractor
+        $this->pipeline->pipe( $csvExtractor );
 
         $transformer = new RenameColumnsTransformer();
         $transformer->options( [ "columns" => [ "email" => "email_address" ] ] );
@@ -66,18 +66,6 @@ class PipelineTest extends TestCase
             $this->assertNotNull( $key );
             $this->assertNotNull( $value );
         }
-    }
-
-    public function testSetGetExtractor () : void
-    {
-        $this->pipeline = new Pipeline();
-
-        $givenExtractor = $this->createMock( Extractor::class );
-        $expectedExtractor = $this->createMock( Extractor::class );
-
-        $this->pipeline->setExtractor( $givenExtractor );
-
-        $this->assertEquals( $expectedExtractor, $this->pipeline->getExtractor() );
     }
 
     public function testSetGetSteps () : void

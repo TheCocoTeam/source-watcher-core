@@ -37,24 +37,28 @@ class SourceWatcher
 
     /**
      * @param string $extractorName
-     * @param Input $input
+     * @param Input|null $input
      * @param array $options
      * @return $this
      * @throws SourceWatcherException
      */
-    public function extract ( string $extractorName, Input $input, array $options = [] ) : SourceWatcher
+    public function extract ( string $extractorName, ?Input $input, array $options = [] ) : SourceWatcher
     {
         $extractor = $this->stepLoader->getStep( Extractor::class, $extractorName );
 
         if ( $extractor == null ) {
-            throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( SourceWatcher::class,
-                "Extractor_Not_Found" ), $extractorName ) );
+            throw new SourceWatcherException(
+                sprintf(
+                    Internationalization::getInstance()->getText( SourceWatcher::class, "Extractor_Not_Found" ),
+                    $extractorName
+                )
+            );
         }
 
         $extractor->setInput( $input );
         $extractor->options( $options );
 
-        $this->pipeline->setExtractor( $extractor );
+        $this->pipeline->pipe( $extractor );
 
         return $this;
     }
@@ -70,8 +74,12 @@ class SourceWatcher
         $transformer = $this->stepLoader->getStep( Transformer::class, $transformerName );
 
         if ( $transformer == null ) {
-            throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( SourceWatcher::class,
-                "Transformer_Not_Found" ), $transformerName ) );
+            throw new SourceWatcherException(
+                sprintf(
+                    Internationalization::getInstance()->getText( SourceWatcher::class, "Transformer_Not_Found" ),
+                    $transformerName
+                )
+            );
         }
 
         $transformer->options( $options );
@@ -93,8 +101,12 @@ class SourceWatcher
         $loader = $this->stepLoader->getStep( Loader::class, $loaderName );
 
         if ( $loader == null ) {
-            throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( SourceWatcher::class,
-                "Loader_Not_Found" ), $loaderName ) );
+            throw new SourceWatcherException(
+                sprintf(
+                    Internationalization::getInstance()->getText( SourceWatcher::class, "Loader_Not_Found" ),
+                    $loaderName
+                )
+            );
         }
 
         $loader->setOutput( $output );
@@ -120,9 +132,6 @@ class SourceWatcher
         $arrayRepresentation = [];
 
         $steps = $this->pipeline->getSteps();
-
-        // Add the extractor to be on top of the array which by default is not returned in the list of steps
-        array_unshift( $steps, $this->pipeline->getExtractor() );
 
         foreach ( $steps as $currentStep ) {
             $arrayRepresentation[] = $currentStep->getArrayRepresentation();

@@ -55,15 +55,15 @@ class DatabaseExtractor extends Extractor
             throw new SourceWatcherException( "Query missing" );
         }
 
-        $result = [];
+        $this->result = [];
 
         $arrayResults = $this->input->getInput()->executePlainQuery( $this->query );
 
         foreach ( $arrayResults as $currentRecord ) {
-            array_push( $result, new Row( $currentRecord ) );
+            array_push( $this->result, new Row( $currentRecord ) );
         }
 
-        return $result;
+        return $this->result;
     }
 
     public function getArrayRepresentation () : array

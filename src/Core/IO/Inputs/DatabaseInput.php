@@ -11,19 +11,19 @@ use Coco\SourceWatcher\Core\Database\Connections\Connector;
  */
 class DatabaseInput extends Input
 {
-    private ?Connector $databaseConnector = null;
+    private ?Connector $databaseConnector;
 
     public function __construct ( Connector $databaseConnector = null )
     {
         $this->databaseConnector = $databaseConnector;
     }
 
-    public function getInput ()
+    public function getInput () : Connector
     {
         return $this->databaseConnector;
     }
 
-    public function setInput ( $input )
+    public function setInput ( $input ) : void
     {
         $this->databaseConnector = $input;
     }

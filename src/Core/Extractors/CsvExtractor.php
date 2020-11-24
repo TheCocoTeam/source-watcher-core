@@ -73,7 +73,7 @@ class CsvExtractor extends Extractor
             throw new SourceWatcherException( sprintf( "The input must be an instance of %s", FileInput::class ) );
         }
 
-        $result = [];
+        $this->result = [];
 
         $fileHandler = fopen( $this->input->getInput(), "r" );
 
@@ -82,12 +82,12 @@ class CsvExtractor extends Extractor
         while ( $currentFileLine = fgets( $fileHandler ) ) {
             $currentRowArray = $this->generateRow( $currentFileLine, $this->columns );
 
-            array_push( $result, new Row( $currentRowArray ) );
+            array_push( $this->result, new Row( $currentRowArray ) );
         }
 
         fclose( $fileHandler );
 
-        return $result;
+        return $this->result;
     }
 
     private function generateColumns ( $fileHandler ) : array
@@ -109,13 +109,13 @@ class CsvExtractor extends Extractor
             return array_intersect_key( $columnsArrayFlipped, array_flip( $this->columns ) );
         }
 
-        $result = [];
+        $resultColumns = [];
 
         foreach ( $this->columns as $key => $value ) {
-            $result[$value] = $columnsArrayFlipped[$key];
+            $resultColumns[$value] = $columnsArrayFlipped[$key];
         }
 
-        return $result;
+        return $resultColumns;
     }
 
     private function generateRow ( string $rowString, array $columns ) : array

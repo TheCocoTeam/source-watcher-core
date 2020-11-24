@@ -4,3 +4,6 @@ phpunit-report
 vendor
 .env
 .phpunit.result.cache
+
+workspace/*.env
+workspace/*.php
