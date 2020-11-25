@@ -15,11 +15,11 @@ $dotenv = Dotenv::createImmutable( __DIR__ . "/../../" );
 $dotenv->load();
 
 $mysqlConnector = new MySqlConnector();
-$mysqlConnector->setUser( getenv( "UNIT_TEST_MYSQL_USERNAME" ) );
-$mysqlConnector->setPassword( getenv( "UNIT_TEST_MYSQL_PASSWORD" ) );
-$mysqlConnector->setHost( getenv( "UNIT_TEST_MYSQL_HOST" ) );
-$mysqlConnector->setPort( getenv( "UNIT_TEST_MYSQL_PORT" ) );
-$mysqlConnector->setDbName( getenv( "UNIT_TEST_MYSQL_DATABASE" ) );
+$mysqlConnector->setUser( $_ENV["UNIT_TEST_MYSQL_USERNAME"] );
+$mysqlConnector->setPassword( $_ENV["UNIT_TEST_MYSQL_PASSWORD"] );
+$mysqlConnector->setHost( $_ENV["UNIT_TEST_MYSQL_HOST"] );
+$mysqlConnector->setPort( $_ENV["UNIT_TEST_MYSQL_PORT"] );
+$mysqlConnector->setDbName( $_ENV["UNIT_TEST_MYSQL_DATABASE"] );
 $mysqlConnector->setTableName( "people" );
 
 $sourceWatcher = new SourceWatcher();
