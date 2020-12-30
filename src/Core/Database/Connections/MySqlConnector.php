@@ -18,6 +18,8 @@ class MySqlConnector extends ClientServerDatabaseConnector
 
     public function __construct ()
     {
+        parent::__construct();
+
         $this->driver = "pdo_mysql";
 
         $this->port = 3306;

@@ -18,6 +18,8 @@ class SqliteConnector extends EmbeddedDatabaseConnector
 
     public function __construct ()
     {
+        parent::__construct();
+
         $this->driver = "pdo_sqlite";
 
         $this->memory = false;

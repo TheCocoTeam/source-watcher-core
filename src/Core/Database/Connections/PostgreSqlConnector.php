@@ -30,6 +30,8 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
 
     public function __construct ()
     {
+        parent::__construct();
+
         $this->driver = "pdo_pgsql";
 
         $this->port = 5432;
