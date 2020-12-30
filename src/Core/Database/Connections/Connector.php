@@ -4,10 +4,13 @@ namespace Coco\SourceWatcher\Core\Database\Connections;
 
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
+use Coco\SourceWatcher\Utils\FileUtils;
 use Coco\SourceWatcher\Utils\Internationalization;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Exception;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 /**
  * Class Connector
@@ -16,6 +19,18 @@ use Exception;
  */
 abstract class Connector
 {
+    private Logger $logger;
+
+    public function __construct ()
+    {
+        $this->logger = new Logger( "Connector" );
+
+        $streamPath = FileUtils::file_build_path( __DIR__, "..", "..", "..", "..", "logs",
+            "Connector" . "-" . gmdate( "Y-m-d-H-i-s", time() ) . "-" . getmypid() . ".txt" );
+
+        $this->logger->pushHandler( new StreamHandler( $streamPath ), Logger::DEBUG );
+    }
+
     protected string $driver = "";
 
     protected array $connectionParameters = [];
@@ -100,6 +115,8 @@ abstract class Connector
 
             $connection->close();
         } catch ( Exception $exception ) {
+            $this->logger->debug( $exception->getMessage() );
+
             throw new SourceWatcherException( Internationalization::getInstance()->getText( Connector::class,
                 "Unexpected_Error" ), 0, $exception );
         }

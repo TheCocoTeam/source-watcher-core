@@ -4,6 +4,7 @@ namespace Coco\SourceWatcher\Utils;
 
 /**
  * Class TextUtils
+ *
  * @package Coco\SourceWatcher\Utils
  */
 class TextUtils
@@ -39,5 +40,20 @@ class TextUtils
 
         // Make the new word the combination of the given word parts
         return implode( "", $wordParts );
+    }
+
+    public function fromCamelToSnakeCase ( string $word ) : string
+    {
+        $pattern = '!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!';
+        preg_match_all( $pattern, $word, $matches );
+        $ret = $matches[0];
+
+        foreach ( $ret as &$match ) {
+            $match = $match == strtoupper( $match ) ?
+                strtolower( $match ) :
+                lcfirst( $match );
+        }
+
+        return implode( '_', $ret );
     }
 }

@@ -6,6 +6,7 @@ use Coco\SourceWatcher\Core\IO\Outputs\DatabaseOutput;
 use Coco\SourceWatcher\Core\Loader;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
+use Exception;
 
 /**
  * Class DatabaseLoader
@@ -16,11 +17,14 @@ class DatabaseLoader extends Loader
 {
     /**
      * @param Row $row
-     * @throws SourceWatcherException
      */
     public function load ( Row $row )
     {
-        $this->insert( $row );
+        try {
+            $this->insert( $row );
+        } catch ( Exception $exception ) {
+            echo $exception->getMessage() . PHP_EOL;
+        }
     }
 
     /**
@@ -34,7 +38,8 @@ class DatabaseLoader extends Loader
         }
 
         if ( !( $this->output instanceof DatabaseOutput ) ) {
-            throw new SourceWatcherException( sprintf( "The output must be an instance of %s", DatabaseOutput::class ) );
+            throw new SourceWatcherException( sprintf( "The output must be an instance of %s",
+                DatabaseOutput::class ) );
         }
 
         if ( $this->output->getOutput() == null ) {
