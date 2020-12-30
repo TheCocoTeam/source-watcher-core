@@ -17,14 +17,11 @@ class DatabaseLoader extends Loader
 {
     /**
      * @param Row $row
+     * @throws SourceWatcherException
      */
     public function load ( Row $row )
     {
-        try {
-            $this->insert( $row );
-        } catch ( Exception $exception ) {
-            echo $exception->getMessage() . PHP_EOL;
-        }
+        $this->insert( $row );
     }
 
     /**
