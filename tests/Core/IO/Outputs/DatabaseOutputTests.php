@@ -22,6 +22,6 @@ class DatabaseOutputTests extends TestCase
 
         $databaseOutput->setOutput( $givenOutput );
 
-        $this->assertEquals( $expectedOutput, $databaseOutput->getOutput() );
+        $this->assertEquals( [ $expectedOutput ], $databaseOutput->getOutput() );
     }
 }

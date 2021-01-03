@@ -38,11 +38,13 @@ class DatabaseLoader extends Loader
                 DatabaseOutput::class ) );
         }
 
-        if ( $this->output->getOutput() == null ) {
+        $output = $this->output->getOutput();
+
+        if ( $output == null || empty( $output ) || ( sizeof( $output ) == 1 && $output[0] == null ) ) {
             throw new SourceWatcherException( "No database connector found. Set a connector before trying to insert a row" );
         }
 
-        foreach ( $this->output->getOutput() as $currentConnector ) {
+        foreach ( $output as $currentConnector ) {
             if ( $currentConnector != null ) {
                 $currentConnector->insert( $row );
             }
@@ -53,13 +55,18 @@ class DatabaseLoader extends Loader
     {
         $result = parent::getArrayRepresentation();
 
-        $dbOutput = $this->getOutput();
-        $dbConnector = $dbOutput->getOutput();
+        $result["output"] = [];
 
-        $result["output"] = [
-            "class" => get_class( $dbConnector ),
-            "parameters" => $dbConnector->getConnectionParameters()
-        ];
+        $output = $this->output->getOutput();
+
+        foreach ( $output as $currentConnector ) {
+            if ( $currentConnector != null ) {
+                $result["output"][] = [
+                    "class" => get_class( $currentConnector ),
+                    "parameters" => $currentConnector->getConnectionParameters()
+                ];
+            }
+        }
 
         return $result;
     }

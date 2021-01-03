@@ -11,7 +11,7 @@ use Coco\SourceWatcher\Core\Database\Connections\Connector;
  */
 class DatabaseOutput extends Output
 {
-    private ?Connector $databaseConnector = null;
+    private ?Connector $databaseConnector;
 
     private array $extraConnectors = [];
 
