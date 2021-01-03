@@ -76,12 +76,11 @@ class JavaTransformer extends Transformer
 
         exec( $command, $output, $returnValue );
 
+        $this->logger->debug( print_r( $output, true ) );
         $this->logger->debug( $returnValue );
 
         if ( $returnValue == 0 ) {
             if ( $this->resultType == JavaTransformerResultType::RESULT_TYPE_JSON ) {
-                $this->logger->debug( $output[0] );
-
                 $array = json_decode( $output[0], true );
 
                 if ( !empty( $array ) && is_array( $array ) ) {

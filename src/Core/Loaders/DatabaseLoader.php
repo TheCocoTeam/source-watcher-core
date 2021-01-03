@@ -6,7 +6,6 @@ use Coco\SourceWatcher\Core\IO\Outputs\DatabaseOutput;
 use Coco\SourceWatcher\Core\Loader;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
-use Exception;
 
 /**
  * Class DatabaseLoader
@@ -43,7 +42,11 @@ class DatabaseLoader extends Loader
             throw new SourceWatcherException( "No database connector found. Set a connector before trying to insert a row" );
         }
 
-        $this->output->getOutput()->insert( $row );
+        foreach ( $this->output->getOutput() as $currentConnector ) {
+            if ( $currentConnector != null ) {
+                $currentConnector->insert( $row );
+            }
+        }
     }
 
     public function getArrayRepresentation () : array
