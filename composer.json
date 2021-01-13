@@ -16,8 +16,10 @@
     "ext-json": "*",
     "ext-pgsql": "*",
     "flow/jsonpath": "*",
+    "guzzlehttp/guzzle": "^7.2",
     "monolog/monolog": "*",
     "php": "*",
+    "php-snippets/circular-array": "^1.0",
     "ramsey/uuid": "*",
     "symfony/yaml": "*",
     "vlucas/phpdotenv": "*"
