@@ -63,7 +63,7 @@ class JsonExtractor extends Extractor
 
             try {
                 foreach ( $this->columns as $key => $path ) {
-                    $this->columns[$key] = $jsonPath->find( $path )->data();
+                    $this->columns[$key] = $jsonPath->find( $path )->getData();
                 }
             } catch ( JSONPathException $jsonPathException ) {
                 throw new SourceWatcherException( sprintf( Internationalization::getInstance()->getText( JsonExtractor::class,
