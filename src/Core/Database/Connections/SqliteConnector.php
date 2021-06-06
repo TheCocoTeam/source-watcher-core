@@ -2,6 +2,8 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
+use Doctrine\DBAL\Connection;
+
 /**
  * Class SqliteConnector
  *
@@ -64,5 +66,10 @@ class SqliteConnector extends EmbeddedDatabaseConnector
         $this->connectionParameters["memory"] = $this->memory;
 
         return $this->connectionParameters;
+    }
+
+    protected function executeExtraStatements ( Connection $connection ) : void
+    {
+        // TODO: Implement executeExtraStatements() method.
     }
 }

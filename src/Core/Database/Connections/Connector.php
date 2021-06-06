@@ -32,14 +32,12 @@ abstract class Connector
     }
 
     protected string $driver = "";
-
     protected array $connectionParameters = [];
-
     protected string $user = "";
-
     protected string $password = "";
-
     protected string $tableName = "";
+    public bool $bulkInsert = false;
+    public Connection $connection;
 
     public function getDriver () : string
     {
@@ -79,13 +77,42 @@ abstract class Connector
     }
 
     /**
+     * @return bool
+     */
+    public function isBulkInsert () : bool
+    {
+        return $this->bulkInsert;
+    }
+
+    /**
+     * @param bool $bulkInsert
+     */
+    public function setBulkInsert ( bool $bulkInsert ) : void
+    {
+        $this->bulkInsert = $bulkInsert;
+    }
+
+    /**
      * @return Connection
-     * @throws Exception
      */
     public function getConnection () : Connection
     {
+        return $this->connection;
+    }
+
+    /**
+     * @return Connection
+     * @throws Exception
+     */
+    public function getNewConnection () : Connection
+    {
         return DriverManager::getConnection( $this->getConnectionParameters() );
     }
+
+    /**
+     * @param Connection $connection
+     */
+    protected abstract function executeExtraStatements ( Connection $connection ) : void;
 
     /**
      * @param Row $row
@@ -100,22 +127,28 @@ abstract class Connector
         }
 
         try {
-            $connection = $this->getConnection();
+            $this->connection = $this->bulkInsert ? ( $this->connection ?? $this->getNewConnection() ) : $this->getNewConnection();
 
-            if ( !$connection->isConnected() ) {
-                $connection->connect();
+            if ( !$this->connection->isConnected() ) {
+                $this->connection->connect();
             }
         } catch ( Exception $exception ) {
+            $this->logger->debug( $exception->getMessage(), $exception->getTrace() );
+
             throw new SourceWatcherException( Internationalization::getInstance()->getText( Connector::class,
                 "Connection_Object_Not_Connected_Cannot_Insert" ), 0, $exception );
         }
 
         try {
-            $numberOfAffectedRows = $connection->insert( $this->tableName, $row->getAttributes() );
+            $this->executeExtraStatements( $this->connection );
 
-            $connection->close();
+            $numberOfAffectedRows = $this->connection->insert( $this->tableName, $row->getAttributes() );
+
+            if ( !$this->bulkInsert ) {
+                $this->connection->close();
+            }
         } catch ( Exception $exception ) {
-            $this->logger->debug( $exception->getMessage() );
+            $this->logger->debug( $exception->getMessage(), $exception->getTrace() );
 
             throw new SourceWatcherException( Internationalization::getInstance()->getText( Connector::class,
                 "Unexpected_Error" ), 0, $exception );
@@ -132,7 +165,7 @@ abstract class Connector
     public function executePlainQuery ( string $query ) : array
     {
         try {
-            $connection = $this->getConnection();
+            $connection = $this->getNewConnection();
 
             if ( !$connection->isConnected() ) {
                 $connection->connect();

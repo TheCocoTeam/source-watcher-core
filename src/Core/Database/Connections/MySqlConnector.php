@@ -2,6 +2,9 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
+
 /**
  * Class MySqlConnector
  *
@@ -50,5 +53,12 @@ class MySqlConnector extends ClientServerDatabaseConnector
         $this->extraParameters = [ "unix_socket" => $this->unixSocket, "charset" => $this->charset ];
 
         return parent::getConnectionParameters();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function executeExtraStatements (Connection $connection) : void {
+        $connection->executeStatement( "SET SESSION wait_timeout = 3600;" );
     }
 }

@@ -17,14 +17,30 @@ class CsvExtractor extends Extractor
     protected array $columns;
     protected string $delimiter;
     protected string $enclosure;
+    protected string $overrideHeaders;
+    protected array $regexChange;
+    protected ?Row $resumeRow;
+    protected string $resumeRowByField;
 
-    protected array $availableOptions = [ "columns", "delimiter", "enclosure" ];
+    protected array $availableOptions = [
+        "columns",
+        "delimiter",
+        "enclosure",
+        "overrideHeaders",
+        "regexChange",
+        "resumeRow",
+        "resumeRowByField"
+    ];
 
     public function __construct ()
     {
         $this->columns = [];
         $this->delimiter = ",";
         $this->enclosure = "\"";
+        $this->overrideHeaders = false;
+        $this->regexChange = [];
+        $this->resumeRow = null;
+        $this->resumeRowByField = "";
     }
 
     public function getColumns () : array
@@ -57,6 +73,58 @@ class CsvExtractor extends Extractor
         $this->enclosure = $enclosure;
     }
 
+    public function getOverrideHeaders () : string
+    {
+        return $this->overrideHeaders;
+    }
+
+    public function setOverrideHeaders ( string $overrideHeaders ) : void
+    {
+        $this->overrideHeaders = $overrideHeaders;
+    }
+
+    public function getRegexChange () : array
+    {
+        return $this->regexChange;
+    }
+
+    public function setRegexChange ( array $regexChange ) : void
+    {
+        $this->regexChange = $regexChange;
+    }
+
+    /**
+     * @return Row|null
+     */
+    public function getResumeRow () : ?Row
+    {
+        return $this->resumeRow;
+    }
+
+    /**
+     * @param Row|null $resumeRow
+     */
+    public function setResumeRow ( ?Row $resumeRow ) : void
+    {
+        $this->resumeRow = $resumeRow;
+    }
+
+    /**
+     * @return String
+     */
+    public function getResumeRowByField () : string
+    {
+        return $this->resumeRowByField;
+    }
+
+    /**
+     * @param String $resumeRowByField
+     */
+    public function setResumeRowByField ( string $resumeRowByField ) : void
+    {
+        $this->resumeRowByField = $resumeRowByField;
+    }
+
     /**
      * @return array
      * @throws SourceWatcherException
@@ -77,12 +145,41 @@ class CsvExtractor extends Extractor
 
         $fileHandler = fopen( $this->input->getInput(), "r" );
 
-        $this->columns = $this->generateColumns( $fileHandler );
+        if ( !$this->overrideHeaders ) {
+            $this->columns = $this->generateColumns( $fileHandler );
+        }
+
+        $pushRow = true;
 
         while ( $currentFileLine = fgets( $fileHandler ) ) {
+            if ( !empty( $this->regexChange ) ) {
+                $regex = $this->regexChange["regex"];
+                $callback = $this->regexChange["callback"];
+
+                preg_match( $regex, $currentFileLine, $matches );
+
+                $currentFileLine = $callback( $currentFileLine, $matches );
+            }
+
             $currentRowArray = $this->generateRow( $currentFileLine, $this->columns );
 
-            array_push( $this->result, new Row( $currentRowArray ) );
+            if ( !empty( $this->resumeRow ) && !empty( $this->resumeRowByField ) ) {
+                $pushRow = false;
+
+                if ( $currentRowArray[$this->resumeRowByField] == $this->resumeRow[$this->resumeRowByField] ) {
+                    $pushRow = true;
+
+                    // change this, it's an ugly hack!
+                    $this->resumeRow = null;
+                    $this->resumeRowByField = "";
+
+                    continue;
+                }
+            }
+
+            if ( $pushRow ) {
+                array_push( $this->result, new Row( $currentRowArray ) );
+            }
         }
 
         fclose( $fileHandler );
@@ -125,7 +222,11 @@ class CsvExtractor extends Extractor
         $rowArray = str_getcsv( $rowString, $this->delimiter, $this->enclosure );
 
         foreach ( $columns as $column => $index ) {
-            $resultRow[$column] = $rowArray[$index - 1];
+            if ( !array_key_exists( $index - 1, $rowArray ) ) {
+                $resultRow[$column] = "";
+            } else {
+                $resultRow[$column] = $rowArray[$index - 1];
+            }
         }
 
         return $resultRow;

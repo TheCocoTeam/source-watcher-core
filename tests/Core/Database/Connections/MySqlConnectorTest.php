@@ -84,7 +84,7 @@ class MySqlConnectorTest extends ParentTest
      */
     public function testGetConnection () : void
     {
-        $this->assertNotNull( $this->mysqlConnector->getConnection() );
+        $this->assertNotNull( $this->mysqlConnector->getNewConnection() );
     }
 
     public function testSetGetConnectionParameters () : void

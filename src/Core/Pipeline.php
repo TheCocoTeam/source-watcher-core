@@ -4,7 +4,11 @@ namespace Coco\SourceWatcher\Core;
 
 use Coco\SourceWatcher\Core\Extractors\ExecutionExtractor;
 use Coco\SourceWatcher\Core\IO\Inputs\ExtractorResultInput;
+use Coco\SourceWatcher\Utils\FileUtils;
+use Exception;
 use Iterator;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 /**
  * Class Pipeline
@@ -16,6 +20,18 @@ class Pipeline implements Iterator
     private array $steps = [];
 
     private array $results = [];
+
+    private Logger $logger;
+
+    public function __construct ()
+    {
+        $this->logger = new Logger( "Connector" );
+
+        $streamPath = FileUtils::file_build_path( __DIR__, "..", "..", "..", "..", "logs",
+            "Connector" . "-" . gmdate( "Y-m-d-H-i-s", time() ) . "-" . getmypid() . ".txt" );
+
+        $this->logger->pushHandler( new StreamHandler( $streamPath ), Logger::DEBUG );
+    }
 
     public function getSteps () : array
     {
@@ -51,7 +67,11 @@ class Pipeline implements Iterator
 
             if ( $currentStep instanceof Loader ) {
                 foreach ( $this->results as $currentIndex => $currentItem ) {
-                    $currentStep->load( $currentItem );
+                    try {
+                        $currentStep->load( $currentItem );
+                    } catch ( Exception $exception ) {
+                        $this->logger->debug( $exception->getMessage() );
+                    }
                 }
             }
         }

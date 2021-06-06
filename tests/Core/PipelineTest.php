@@ -2,7 +2,6 @@
 
 namespace Coco\SourceWatcher\Tests\Core;
 
-use Coco\SourceWatcher\Core\Extractor;
 use Coco\SourceWatcher\Core\Extractors\CsvExtractor;
 use Coco\SourceWatcher\Core\IO\Inputs\FileInput;
 use Coco\SourceWatcher\Core\Loader;

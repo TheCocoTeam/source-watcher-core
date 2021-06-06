@@ -2,6 +2,8 @@
 
 namespace Coco\SourceWatcher\Core\Database\Connections;
 
+use Doctrine\DBAL\Connection;
+
 /**
  * Class PostgreSqlConnector
  *
@@ -131,5 +133,10 @@ class PostgreSqlConnector extends ClientServerDatabaseConnector
         ];
 
         return parent::getConnectionParameters();
+    }
+
+    protected function executeExtraStatements ( Connection $connection ) : void
+    {
+        // TODO: Implement executeExtraStatements() method.
     }
 }

@@ -8,6 +8,7 @@ use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Utils\Internationalization;
 use Doctrine\DBAL\DBALException;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -61,7 +62,7 @@ class SqliteConnectorTest extends TestCase
     }
 
     /**
-     * @throws DBALException
+     * @throws Exception
      */
     public function testGetConnection () : void
     {
@@ -69,7 +70,7 @@ class SqliteConnectorTest extends TestCase
         $connector->setPath( $this->sqliteDbLocation );
         $connector->setMemory( false );
 
-        $this->assertNotNull( $connector->getConnection() );
+        $this->assertNotNull( $connector->getNewConnection() );
     }
 
     /**

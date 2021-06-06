@@ -7,6 +7,7 @@ use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\SourceWatcherException;
 use Coco\SourceWatcher\Tests\Common\ParentTest;
 use Doctrine\DBAL\DBALException;
+use Exception;
 
 /**
  * Class PostgreSqlConnectorTest
@@ -135,7 +136,7 @@ class PostgreSqlConnectorTest extends ParentTest
     }
 
     /**
-     * @throws DBALException
+     * @throws Exception
      */
     public function testGetConnection () : void
     {
@@ -154,7 +155,7 @@ class PostgreSqlConnectorTest extends ParentTest
         $connector->setSslCrl( $this->sslCrl );
         $connector->setApplicationName( $this->appName );
 
-        $this->assertNotNull( $connector->getConnection() );
+        $this->assertNotNull( $connector->getNewConnection() );
     }
 
     /**
