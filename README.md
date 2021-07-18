@@ -62,34 +62,6 @@ try {
 
 A functional version of the code above can be found [here](samples/Core/SourceWatcher1.php)
 
-## Docker container
-
-Build the Docker image:
-
-```shell
-sudo docker-compose -f docker-compose.yml build
-```
-
-Alternatively, you can simply build the Docker image with:
-
-```shell
-sudo docker-compose build
-```
-
-An optional step, list the Docker images to confirm it's there:
-
-```shell
-sudo docker image ls
-```
-
-Start your Docker container:
-
-```shell
-sudo docker-compose up
-```
-
-You should be able to access http://localhost:8080/
-
 ## Feedback
 
 Please submit issues, and send your feedback and suggestions as often as you have them.
