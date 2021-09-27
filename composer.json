@@ -23,6 +23,7 @@
     "ramsey/uuid": "*",
     "softcreatr/jsonpath": "*",
     "symfony/yaml": "*",
+    "tuqqu/gender-detector": "^0.3.0",
     "vlucas/phpdotenv": "*"
   },
   "autoload": {
