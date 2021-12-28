@@ -5,6 +5,8 @@ namespace Coco\SourceWatcher\Core\Transformers;
 use Coco\SourceWatcher\Core\Row;
 use Coco\SourceWatcher\Core\Transformer;
 
+use GenderDetector\Country;
+use GenderDetector\Gender;
 use GenderDetector\GenderDetector;
 
 /**
@@ -28,6 +30,16 @@ class GuessGenderTransformer extends Transformer
     protected string $genderField;
 
     /**
+     * GuessGenderTransformer constructor.
+     */
+    public function __construct ()
+    {
+        $this->country = Country::USA;
+        $this->firstNameField = 'first_name';
+        $this->genderField = 'gender';
+    }
+
+    /**
      * @var array|string[]
      */
     protected array $availableOptions = [ "country", "firstNameField", "genderField" ];
@@ -37,19 +49,21 @@ class GuessGenderTransformer extends Transformer
      */
     public function transform ( Row $row )
     {
-        $firstName = $row->get($this->firstNameField);
-        echo "firstName = " . $firstName . PHP_EOL;
+        $currentGender = $row->get( $this->genderField );
 
-        $currentGender = $row->get($this->genderField);
-        echo "currentGender = " . $currentGender . PHP_EOL;
+        if ( empty( $currentGender ) ) {
+            $dictionaryPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'names-dictionary.txt';
 
-        if (empty($currentGender)) {
-            $genderDetector = new GenderDetector();
+            $genderDetector = new GenderDetector( $dictionaryPath );
+            $genderDetector->setUnknownGender( Gender::UNISEX );
 
-            $gender = $genderDetector->detect($firstName, $this->country);
-            echo "gender = " . $gender . PHP_EOL;
+            $firstName = $row->get( $this->firstNameField );
 
-            $row->set( $this->genderField, $gender );
+            if ( !empty( $firstName ) ) {
+                $gender = $genderDetector->detect( $firstName, $this->country );
+
+                $row->set( $this->genderField, $gender );
+            }
         }
     }
 }
