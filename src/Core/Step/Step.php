@@ -21,7 +21,9 @@ class Step
                 continue;
             }
 
-            $camelCaseOptionName = $this->textToCamelCase( $optionName );
+            $camelCaseOptionName = in_array( $optionName, $this->availableOptions, true )
+                ? $optionName
+                : $this->textToCamelCase( $optionName );
 
             if ( in_array( $camelCaseOptionName, $this->availableOptions ) ) {
                 $this->$camelCaseOptionName = $optionValue;

@@ -5,6 +5,7 @@ namespace Coco\SourceWatcher\Core\Pipeline;
 use Coco\SourceWatcher\Core\Extractors\ExecutionExtractor;
 use Coco\SourceWatcher\Core\IO\Inputs\ExtractorResultInput;
 use Coco\SourceWatcher\Core\Step\Extractor;
+use Coco\SourceWatcher\Core\Step\ExecutionTransformer;
 use Coco\SourceWatcher\Core\Step\Loader;
 use Coco\SourceWatcher\Core\Step\Step;
 use Coco\SourceWatcher\Core\Step\Transformer;
@@ -74,10 +75,23 @@ class Pipeline implements Iterator
                 $this->results = $currentStep->extract();
             }
 
+            if ( $currentStep instanceof ExecutionTransformer ) {
+                $this->results = $currentStep->transformRows( $this->results );
+                continue;
+            }
+
             if ( $currentStep instanceof Transformer ) {
+                $transformedResults = [];
+
                 foreach ( $this->results as $currentItem ) {
-                    $currentStep->transform( $currentItem );
+                    $keepRow = $currentStep->transform( $currentItem );
+
+                    if ( $keepRow !== false ) {
+                        $transformedResults[] = $currentItem;
+                    }
                 }
+
+                $this->results = $transformedResults;
             }
 
             if ( $currentStep instanceof Loader ) {

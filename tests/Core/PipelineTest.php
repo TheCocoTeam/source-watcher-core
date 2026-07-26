@@ -10,6 +10,9 @@ use Coco\SourceWatcher\Core\Pipeline\Pipeline;
 use Coco\SourceWatcher\Core\Step\Loader;
 use Coco\SourceWatcher\Core\Step\Transformer;
 use Coco\SourceWatcher\Core\Transformers\RenameColumnsTransformer;
+use Coco\SourceWatcher\Core\Transformers\FilterRowsTransformer;
+use Coco\SourceWatcher\Core\Transformers\SortRowsTransformer;
+use Coco\SourceWatcher\Core\Transformers\DeduplicateRowsTransformer;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 
@@ -58,6 +61,77 @@ class PipelineTest extends TestCase
         $this->pipeline->execute();
 
         $this->assertNotNull( $this->pipeline->getResults() );
+    }
+
+    public function testFilterRowsTransformerRemovesNonMatchingRows () : void
+    {
+        $pipeline = new Pipeline();
+
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
+        $pipeline->pipe( $csvExtractor );
+
+        $filter = new FilterRowsTransformer();
+        $filter->options( [
+            "conditions" => [
+                [ "field" => "id", "operator" => "greaterThan", "value" => 6 ],
+            ],
+        ] );
+        $pipeline->pipe( $filter );
+
+        $pipeline->execute();
+
+        $results = $pipeline->getResults();
+        $this->assertCount( 3, $results );
+        $this->assertSame( [ "9", "7", "8" ], array_map( fn( $row ) => $row["id"], $results ) );
+    }
+
+    public function testSortRowsTransformerReordersCompleteResult () : void
+    {
+        $pipeline = new Pipeline();
+
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
+        $pipeline->pipe( $csvExtractor );
+
+        $sort = new SortRowsTransformer();
+        $sort->options( [
+            "fields" => [
+                [ "field" => "id", "direction" => "asc", "type" => "numeric" ],
+            ],
+        ] );
+        $pipeline->pipe( $sort );
+
+        $pipeline->execute();
+
+        $this->assertSame(
+            [ "3", "4", "5", "6", "7", "8", "9" ],
+            array_map( fn( $row ) => $row["id"], $pipeline->getResults() )
+        );
+    }
+
+    public function testDeduplicateRowsTransformerRemovesDuplicateKeys () : void
+    {
+        $pipeline = new Pipeline();
+
+        $extractor = $this->createMock( CsvExtractor::class );
+        $extractor->method( "extract" )->willReturn( [
+            new \Coco\SourceWatcher\Core\Data\Row( [ "id" => 1, "name" => "first" ] ),
+            new \Coco\SourceWatcher\Core\Data\Row( [ "id" => 1, "name" => "duplicate" ] ),
+            new \Coco\SourceWatcher\Core\Data\Row( [ "id" => 2, "name" => "other" ] ),
+        ] );
+        $pipeline->pipe( $extractor );
+
+        $deduplicate = new DeduplicateRowsTransformer();
+        $deduplicate->options( [ "keyFields" => [ "id" ], "keep" => "first" ] );
+        $pipeline->pipe( $deduplicate );
+
+        $pipeline->execute();
+
+        $this->assertSame(
+            [ "first", "other" ],
+            array_map( fn( $row ) => $row["name"], $pipeline->getResults() )
+        );
     }
 
     public function testIterator () : void

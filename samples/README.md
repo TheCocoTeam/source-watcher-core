@@ -26,6 +26,12 @@ Read CSV, rename columns, guess gender from first name, load into SQLite.
 docker run --rm -v "$(pwd)":/app -w /app/source-watcher-core composer:2 sh -c "php samples/CsvGuessGenderToSqlite.php"
 ```
 
+**CsvFilterRowsToSqlite**
+Read CSV, keep rows matching multiple filter conditions, and load them into SQLite.
+```bash
+docker run --rm -v "$(pwd)":/app -w /app/source-watcher-core composer:2 sh -c "php samples/CsvFilterRowsToSqlite.php"
+```
+
 **JsonToSqlite**
 Extract from a JSON file and load into SQLite.
 ```bash
