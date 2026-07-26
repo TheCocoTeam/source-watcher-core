@@ -13,6 +13,7 @@ use Coco\SourceWatcher\Core\Transformers\RenameColumnsTransformer;
 use Coco\SourceWatcher\Core\Transformers\FilterRowsTransformer;
 use Coco\SourceWatcher\Core\Transformers\SortRowsTransformer;
 use Coco\SourceWatcher\Core\Transformers\DeduplicateRowsTransformer;
+use Coco\SourceWatcher\Core\Transformers\ChooseColumnsTransformer;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 
@@ -131,6 +132,26 @@ class PipelineTest extends TestCase
         $this->assertSame(
             [ "first", "other" ],
             array_map( fn( $row ) => $row["name"], $pipeline->getResults() )
+        );
+    }
+
+    public function testChooseColumnsTransformerShapesPipelineRows () : void
+    {
+        $pipeline = new Pipeline();
+
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
+        $pipeline->pipe( $csvExtractor );
+
+        $chooseColumns = new ChooseColumnsTransformer();
+        $chooseColumns->options( [ "mode" => "include", "columns" => [ "name", "id" ] ] );
+        $pipeline->pipe( $chooseColumns );
+
+        $pipeline->execute();
+
+        $this->assertSame(
+            [ "name" => "Avery", "id" => "9" ],
+            $pipeline->getResults()[0]->getAttributes()
         );
     }
 
