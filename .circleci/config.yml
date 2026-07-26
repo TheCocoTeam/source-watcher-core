@@ -5,9 +5,9 @@ orbs:
   php: circleci/php@1
 jobs:
   test-php:
-    # Install php packages and run tests (PHP 8.4 matches composer.lock / doctrine-instantiator)
+    # PHP 8.5 line — keep in sync with source-watcher-dev-env/docker-compose.dev.yml (build.args.PHP_IMAGE).
     docker:
-      - image: cimg/php:8.4-node
+      - image: cimg/php:8.5-node
     steps:
       - checkout
       - php/install-packages
