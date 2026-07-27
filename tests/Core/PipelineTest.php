@@ -15,6 +15,8 @@ use Coco\SourceWatcher\Core\Transformers\SortRowsTransformer;
 use Coco\SourceWatcher\Core\Transformers\DeduplicateRowsTransformer;
 use Coco\SourceWatcher\Core\Transformers\ChooseColumnsTransformer;
 use Coco\SourceWatcher\Core\Transformers\DeriveFieldTransformer;
+use Coco\SourceWatcher\Core\Transformers\TypeConversionTransformer;
+use Coco\SourceWatcher\Core\Transformers\ValidateRowsTransformer;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 
@@ -174,6 +176,34 @@ class PipelineTest extends TestCase
         $pipeline->execute();
 
         $this->assertSame( "Avery (#9)", $pipeline->getResults()[0]->get( "display" ) );
+    }
+
+    public function testTypeConversionAndValidationTransformPipelineRows () : void
+    {
+        $pipeline = new Pipeline();
+
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
+        $pipeline->pipe( $csvExtractor );
+
+        $conversion = new TypeConversionTransformer();
+        $conversion->options( [ "fields" => [ "id" => "integer" ] ] );
+        $pipeline->pipe( $conversion );
+
+        $validation = new ValidateRowsTransformer();
+        $validation->options( [
+            "mode" => "annotate",
+            "rules" => [
+                "id" => [ "required" => true, "type" => "integer", "min" => 1 ],
+                "email" => [ "required" => true, "format" => "email" ],
+            ],
+        ] );
+        $pipeline->pipe( $validation );
+
+        $pipeline->execute();
+
+        $this->assertSame( 9, $pipeline->getResults()[0]->get( "id" ) );
+        $this->assertSame( [], $pipeline->getResults()[0]->get( "_validation_errors" ) );
     }
 
     public function testIterator () : void
