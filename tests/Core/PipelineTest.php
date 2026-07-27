@@ -14,6 +14,7 @@ use Coco\SourceWatcher\Core\Transformers\FilterRowsTransformer;
 use Coco\SourceWatcher\Core\Transformers\SortRowsTransformer;
 use Coco\SourceWatcher\Core\Transformers\DeduplicateRowsTransformer;
 use Coco\SourceWatcher\Core\Transformers\ChooseColumnsTransformer;
+use Coco\SourceWatcher\Core\Transformers\DeriveFieldTransformer;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 
@@ -153,6 +154,26 @@ class PipelineTest extends TestCase
             [ "name" => "Avery", "id" => "9" ],
             $pipeline->getResults()[0]->getAttributes()
         );
+    }
+
+    public function testDeriveFieldTransformerAddsCalculatedField () : void
+    {
+        $pipeline = new Pipeline();
+
+        $csvExtractor = new CsvExtractor();
+        $csvExtractor->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
+        $pipeline->pipe( $csvExtractor );
+
+        $deriveField = new DeriveFieldTransformer();
+        $deriveField->options( [
+            "targetField" => "display",
+            "expression" => "concat(name, ' (#', id, ')')",
+        ] );
+        $pipeline->pipe( $deriveField );
+
+        $pipeline->execute();
+
+        $this->assertSame( "Avery (#9)", $pipeline->getResults()[0]->get( "display" ) );
     }
 
     public function testIterator () : void
