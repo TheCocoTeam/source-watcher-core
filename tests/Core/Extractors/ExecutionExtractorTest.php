@@ -54,6 +54,17 @@ class ExecutionExtractorTest extends TestCase
         $this->assertSame( $previousResult, $result );
     }
 
+    public function testExtractThrowsWhenExtractorResultInputHasNoPreviousExtractor () : void
+    {
+        $extractor = new ExecutionExtractor();
+        $extractor->setInput( new ExtractorResultInput( null ) );
+
+        $this->expectException( SourceWatcherException::class );
+        $this->expectExceptionMessage( "The previous extractor must be provided." );
+
+        $extractor->extract();
+    }
+
     public function testExtractReturnsCurrentPipelineResultSet () : void
     {
         $currentResult = [ new Row( [ "id" => 2 ] ), new Row( [ "id" => 4 ] ) ];

@@ -3,6 +3,7 @@
 namespace Coco\SourceWatcher\Tests\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Data\Row;
+use Coco\SourceWatcher\Core\Exception\SourceWatcherException;
 use Coco\SourceWatcher\Core\Extractors\FindMissingFromSequenceExtractor;
 use Coco\SourceWatcher\Core\IO\Inputs\ExtractorResultInput;
 use Coco\SourceWatcher\Core\Step\Extractor;
@@ -55,6 +56,7 @@ class FindMissingFromSequenceExtractorTest extends TestCase
         $this->assertCount( 2, $result );
         $this->assertSame( 2, $result[0]["id"] );
         $this->assertSame( 4, $result[1]["id"] );
+        $this->assertSame( $result, $this->findMissingFromSequenceExtractor->getResult() );
     }
 
     public function testExtractReturnsEmptyWhenNoGaps () : void
@@ -71,5 +73,56 @@ class FindMissingFromSequenceExtractorTest extends TestCase
         $result = $this->findMissingFromSequenceExtractor->extract();
 
         $this->assertCount( 0, $result );
+    }
+
+    public function testExtractAcceptsIntegerLikeNumericStrings () : void
+    {
+        $stub = new StubExtractorForFindMissing();
+        $stub->setResult( [
+            new Row( [ "id" => "1" ] ),
+            new Row( [ "id" => "3" ] ),
+        ] );
+        $this->findMissingFromSequenceExtractor->setInput( new ExtractorResultInput( $stub ) );
+
+        $result = $this->findMissingFromSequenceExtractor->extract();
+
+        $this->assertCount( 1, $result );
+        $this->assertSame( 2, $result[0]["id"] );
+    }
+
+    public function testExtractRejectsItemsThatAreNotRows () : void
+    {
+        $stub = new StubExtractorForFindMissing();
+        $stub->setResult( [ [ "id" => 1 ] ] );
+        $this->findMissingFromSequenceExtractor->setInput( new ExtractorResultInput( $stub ) );
+
+        $this->expectException( SourceWatcherException::class );
+        $this->expectExceptionMessage( "requires every input item to be a Row; item 0 is array" );
+
+        $this->findMissingFromSequenceExtractor->extract();
+    }
+
+    public function testExtractRejectsRowsMissingTheFilterField () : void
+    {
+        $stub = new StubExtractorForFindMissing();
+        $stub->setResult( [ new Row( [ "name" => "Alice" ] ) ] );
+        $this->findMissingFromSequenceExtractor->setInput( new ExtractorResultInput( $stub ) );
+
+        $this->expectException( SourceWatcherException::class );
+        $this->expectExceptionMessage( 'requires field "id" on every input row; row 0 does not contain it' );
+
+        $this->findMissingFromSequenceExtractor->extract();
+    }
+
+    public function testExtractRejectsNonIntegerSequenceValues () : void
+    {
+        $stub = new StubExtractorForFindMissing();
+        $stub->setResult( [ new Row( [ "id" => "1.5" ] ) ] );
+        $this->findMissingFromSequenceExtractor->setInput( new ExtractorResultInput( $stub ) );
+
+        $this->expectException( SourceWatcherException::class );
+        $this->expectExceptionMessage( 'requires field "id" to contain an integer value; row 0 contains string' );
+
+        $this->findMissingFromSequenceExtractor->extract();
     }
 }
