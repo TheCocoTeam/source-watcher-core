@@ -4,6 +4,7 @@ namespace Coco\SourceWatcher\Core\Extractors;
 
 use Coco\SourceWatcher\Core\Step\Extractor;
 use Coco\SourceWatcher\Core\IO\Inputs\ExtractorResultInput;
+use Coco\SourceWatcher\Core\IO\Inputs\ResultSetInput;
 use Coco\SourceWatcher\Core\Exception\SourceWatcherException;
 
 /**
@@ -23,17 +24,28 @@ class ExecutionExtractor extends Extractor
             throw new SourceWatcherException( "An input must be provided." );
         }
 
-        $inputIsValid = $this->input instanceof ExtractorResultInput;
+        if ( $this->input instanceof ResultSetInput ) {
+            $this->result = $this->input->getInput();
 
-        if ( !$inputIsValid ) {
-            throw new SourceWatcherException( sprintf( "The input must be an instance of %s",
-                ExtractorResultInput::class ) );
+            return $this->result;
         }
 
-        $previousExtractor = $this->input->getInput();
+        if ( $this->input instanceof ExtractorResultInput ) {
+            $previousExtractor = $this->input->getInput();
 
-        $this->result = $previousExtractor->getResult();
+            if ( $previousExtractor === null ) {
+                throw new SourceWatcherException( "The previous extractor must be provided." );
+            }
 
-        return $this->result;
+            $this->result = $previousExtractor->getResult();
+
+            return $this->result;
+        }
+
+        throw new SourceWatcherException( sprintf(
+            "The input must be an instance of %s or %s",
+            ResultSetInput::class,
+            ExtractorResultInput::class
+        ) );
     }
 }

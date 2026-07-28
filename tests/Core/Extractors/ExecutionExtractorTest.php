@@ -6,6 +6,7 @@ use Coco\SourceWatcher\Core\Data\Row;
 use Coco\SourceWatcher\Core\Exception\SourceWatcherException;
 use Coco\SourceWatcher\Core\Extractors\ExecutionExtractor;
 use Coco\SourceWatcher\Core\IO\Inputs\ExtractorResultInput;
+use Coco\SourceWatcher\Core\IO\Inputs\ResultSetInput;
 use Coco\SourceWatcher\Core\Step\Extractor;
 use PHPUnit\Framework\TestCase;
 
@@ -51,5 +52,25 @@ class ExecutionExtractorTest extends TestCase
 
         $result = $extractor->extract();
         $this->assertSame( $previousResult, $result );
+    }
+
+    public function testExtractThrowsWhenExtractorResultInputHasNoPreviousExtractor () : void
+    {
+        $extractor = new ExecutionExtractor();
+        $extractor->setInput( new ExtractorResultInput( null ) );
+
+        $this->expectException( SourceWatcherException::class );
+        $this->expectExceptionMessage( "The previous extractor must be provided." );
+
+        $extractor->extract();
+    }
+
+    public function testExtractReturnsCurrentPipelineResultSet () : void
+    {
+        $currentResult = [ new Row( [ "id" => 2 ] ), new Row( [ "id" => 4 ] ) ];
+        $extractor = new ExecutionExtractor();
+        $extractor->setInput( new ResultSetInput( $currentResult ) );
+
+        $this->assertSame( $currentResult, $extractor->extract() );
     }
 }

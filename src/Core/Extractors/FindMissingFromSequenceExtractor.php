@@ -45,10 +45,45 @@ class FindMissingFromSequenceExtractor extends ExecutionExtractor
     {
         $previousExtractorResult = parent::extract();
 
+        if ( $previousExtractorResult === [] ) {
+            return $this->result;
+        }
+
         $copy = [];
 
-        foreach ( $previousExtractorResult as $currentRow ) {
-            $copy[] = $currentRow[$this->filterField];
+        foreach ( $previousExtractorResult as $index => $currentRow ) {
+            if ( !$currentRow instanceof Row ) {
+                throw new SourceWatcherException( sprintf(
+                    "Find Missing From Sequence requires every input item to be a Row; item %s is %s.",
+                    $index,
+                    get_debug_type( $currentRow )
+                ) );
+            }
+
+            if ( !$currentRow->offsetExists( $this->filterField ) ) {
+                throw new SourceWatcherException( sprintf(
+                    'Find Missing From Sequence requires field "%s" on every input row; row %s does not contain it.',
+                    $this->filterField,
+                    $index
+                ) );
+            }
+
+            $value = $currentRow[$this->filterField];
+
+            if (
+                !is_int( $value )
+                && !( is_float( $value ) && is_finite( $value ) && floor( $value ) === $value )
+                && !( is_string( $value ) && preg_match( '/^[+-]?\d+$/', trim( $value ) ) === 1 )
+            ) {
+                throw new SourceWatcherException( sprintf(
+                    'Find Missing From Sequence requires field "%s" to contain an integer value; row %s contains %s.',
+                    $this->filterField,
+                    $index,
+                    get_debug_type( $value )
+                ) );
+            }
+
+            $copy[] = (int) $value;
         }
 
         asort( $copy );
@@ -56,14 +91,14 @@ class FindMissingFromSequenceExtractor extends ExecutionExtractor
         $min = reset( $copy );
         $max = end( $copy );
 
-        $result = [];
+        $this->result = [];
 
         for ( $i = $min; $i <= $max; $i++ ) {
-            if ( !in_array( $i, $copy ) ) {
-                $result[] = new Row( [ $this->filterField => $i ] );
+            if ( !in_array( $i, $copy, true ) ) {
+                $this->result[] = new Row( [ $this->filterField => $i ] );
             }
         }
 
-        return $result;
+        return $this->result;
     }
 }
