@@ -3,7 +3,8 @@
 namespace Coco\SourceWatcher\Core\Pipeline;
 
 use Coco\SourceWatcher\Core\Extractors\ExecutionExtractor;
-use Coco\SourceWatcher\Core\IO\Inputs\ExtractorResultInput;
+use Coco\SourceWatcher\Core\Exception\SourceWatcherException;
+use Coco\SourceWatcher\Core\IO\Inputs\ResultSetInput;
 use Coco\SourceWatcher\Core\Step\Extractor;
 use Coco\SourceWatcher\Core\Step\ExecutionTransformer;
 use Coco\SourceWatcher\Core\Step\Loader;
@@ -61,18 +62,29 @@ class Pipeline implements Iterator
 
     public function pipe ( Step $step ) : void
     {
-        if ( $step instanceof ExecutionExtractor ) {
-            $step->setInput( new ExtractorResultInput( end( $this->steps ) ) );
-        }
-
         $this->steps[] = $step;
     }
 
     public function execute () : void
     {
+        $hasResultSet = false;
+
         foreach ( $this->steps as $currentStep ) {
+            if ( $currentStep instanceof ExecutionExtractor ) {
+                if ( !$hasResultSet ) {
+                    throw new SourceWatcherException(
+                        "An execution extractor requires a preceding result-producing step."
+                    );
+                }
+
+                $currentStep->setInput( new ResultSetInput( $this->results ) );
+                $this->results = $currentStep->extract();
+                continue;
+            }
+
             if ( $currentStep instanceof Extractor ) {
                 $this->results = $currentStep->extract();
+                $hasResultSet = true;
             }
 
             if ( $currentStep instanceof ExecutionTransformer ) {

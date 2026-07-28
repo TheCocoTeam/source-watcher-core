@@ -45,6 +45,10 @@ class FindMissingFromSequenceExtractor extends ExecutionExtractor
     {
         $previousExtractorResult = parent::extract();
 
+        if ( $previousExtractorResult === [] ) {
+            return $this->result;
+        }
+
         $copy = [];
 
         foreach ( $previousExtractorResult as $currentRow ) {
@@ -56,14 +60,14 @@ class FindMissingFromSequenceExtractor extends ExecutionExtractor
         $min = reset( $copy );
         $max = end( $copy );
 
-        $result = [];
+        $this->result = [];
 
         for ( $i = $min; $i <= $max; $i++ ) {
             if ( !in_array( $i, $copy ) ) {
-                $result[] = new Row( [ $this->filterField => $i ] );
+                $this->result[] = new Row( [ $this->filterField => $i ] );
             }
         }
 
-        return $result;
+        return $this->result;
     }
 }

@@ -273,6 +273,99 @@ class PipelineTest extends TestCase
         $this->assertIsArray( $results );
     }
 
+    public function testExecutionExtractorReceivesTransformedPipelineResults () : void
+    {
+        $pipeline = new Pipeline();
+
+        $csv = new CsvExtractor();
+        $csv->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
+        $pipeline->pipe( $csv );
+
+        $filter = new FilterRowsTransformer();
+        $filter->options( [
+            "conditions" => [
+                [ "field" => "id", "operator" => "notEquals", "value" => 6 ],
+            ],
+        ] );
+        $pipeline->pipe( $filter );
+
+        $findMissing = new FindMissingFromSequenceExtractor();
+        $findMissing->setFilterField( "id" );
+        $pipeline->pipe( $findMissing );
+
+        $pipeline->execute();
+
+        $this->assertSame(
+            [ 6 ],
+            array_map( fn( $row ) => $row["id"], $pipeline->getResults() )
+        );
+    }
+
+    public function testExecutionExtractorsCanBeChained () : void
+    {
+        $pipeline = new Pipeline();
+
+        $csv = new CsvExtractor();
+        $csv->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
+        $pipeline->pipe( $csv );
+
+        $filter = new FilterRowsTransformer();
+        $filter->options( [
+            "conditions" => [
+                [ "field" => "id", "operator" => "notEquals", "value" => 6 ],
+            ],
+        ] );
+        $pipeline->pipe( $filter );
+
+        $firstFindMissing = new FindMissingFromSequenceExtractor();
+        $firstFindMissing->setFilterField( "id" );
+        $pipeline->pipe( $firstFindMissing );
+
+        $secondFindMissing = new FindMissingFromSequenceExtractor();
+        $secondFindMissing->setFilterField( "id" );
+        $pipeline->pipe( $secondFindMissing );
+
+        $pipeline->execute();
+
+        $this->assertSame( [], $pipeline->getResults() );
+    }
+
+    public function testExecutionExtractorAcceptsAnEmptyTransformedResultSet () : void
+    {
+        $pipeline = new Pipeline();
+
+        $csv = new CsvExtractor();
+        $csv->setInput( new FileInput( __DIR__ . "/../../samples/data/csv/csv1.csv" ) );
+        $pipeline->pipe( $csv );
+
+        $filter = new FilterRowsTransformer();
+        $filter->options( [
+            "conditions" => [
+                [ "field" => "id", "operator" => "greaterThan", "value" => 100 ],
+            ],
+        ] );
+        $pipeline->pipe( $filter );
+
+        $findMissing = new FindMissingFromSequenceExtractor();
+        $findMissing->setFilterField( "id" );
+        $pipeline->pipe( $findMissing );
+
+        $pipeline->execute();
+
+        $this->assertSame( [], $pipeline->getResults() );
+    }
+
+    public function testExecutionExtractorCannotStartAPipeline () : void
+    {
+        $pipeline = new Pipeline();
+        $pipeline->pipe( new FindMissingFromSequenceExtractor() );
+
+        $this->expectException( \Coco\SourceWatcher\Core\Exception\SourceWatcherException::class );
+        $this->expectExceptionMessage( "requires a preceding result-producing step" );
+
+        $pipeline->execute();
+    }
+
     /**
      * Loader that throws in load() is caught and logged; pipeline continues
      */
